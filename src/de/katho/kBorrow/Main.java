@@ -1,21 +1,31 @@
 package de.katho.kBorrow;
 
-import java.io.FileNotFoundException;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.awt.EventQueue;
 
-import de.katho.kBorrow.db.*;
+import de.katho.kBorrow.gui.MainWindow;
 
 public class Main {
-
-	public static void main(String[] args) {		
-		try {
-			SqliteConnector sqlite = new SqliteConnector("test.db");
-		} catch (FileNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	public static void main(String[] args){
+		new Main();
 	}
-
+	
+	public Main(){
+		
+		System.out.println(System.getProperty("user.home"));
+		
+		
+		/*
+		 * Create the apps main window.
+		 */
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainWindow window = new MainWindow();
+					
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 }
