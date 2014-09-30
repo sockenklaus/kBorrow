@@ -17,7 +17,7 @@ public class Settings {
 	
 	public Settings() {
 		this.properties = new Properties();
-		this.filePath = System.getProperty("user.home")+"\\kBorrow";
+		this.filePath = System.getProperty("user.home")+"/kBorrow";
 		this.fileName = "Settings.cfg";
 				
 		if(!this.filePathHasValidConfig()){
@@ -31,7 +31,7 @@ public class Settings {
 	 */
 	private boolean filePathHasValidConfig(){
 		try {
-			InputStream in = new FileInputStream(this.filePath+"\\"+this.fileName);
+			InputStream in = new FileInputStream(this.filePath+"/"+this.fileName);
 			this.properties = new Properties();
 			
 			this.properties.load(in);
@@ -63,7 +63,7 @@ public class Settings {
 	private void createDefaultConfig() {		
 		try {
 			File dir = new File(this.filePath);
-			File file = new File(this.filePath+"\\"+this.fileName);
+			File file = new File(this.filePath+"/"+this.fileName);
 			if(!dir.isDirectory()) dir.mkdir();
 			if(!file.isFile()) file.createNewFile();
 			else {
@@ -71,10 +71,10 @@ public class Settings {
 				file.createNewFile();
 			}
 			
-			OutputStream os = new FileOutputStream(this.filePath+"\\"+this.fileName);
+			OutputStream os = new FileOutputStream(this.filePath+"/"+this.fileName);
 			
 			this.properties.put("dBType", "sqlite");
-			this.properties.put("sqlitePath", System.getProperty("user.home")+"\\kBorrow\\kBorrow.db" );
+			this.properties.put("sqlitePath",System.getProperty("user.home").replace("\\", "/")+"/kBorrow/kBorrow.db" );
 			this.properties.store(os, null);
 			
 			os.close();

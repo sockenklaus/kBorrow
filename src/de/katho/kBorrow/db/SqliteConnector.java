@@ -1,8 +1,9 @@
 package de.katho.kBorrow.db;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * @class sqliteConnector
@@ -10,31 +11,35 @@ import java.sql.*;
  *
  * This class handles connections to a sqlite database.
  */
-public class SqliteConnector {
+public class SqliteConnector implements DbConnector {
 	private Connection connection;
 	private String dbHandle;
 	
 	/**
-	 * @param dbHandle This string contains the path to database file the connector has to use
+	 * @param pHandle This string contains the path to database file the connector has to use
 	 * @throws FileNotFoundException, SQLException
 	 */
-	public SqliteConnector(String dbHandle) throws SQLException, FileNotFoundException {
-		this.dbHandle = dbHandle;
-		File f = new File(this.dbHandle);
-		
-		if(!f.exists() || f.isDirectory()){
-			throw new FileNotFoundException("Provided database file \""+this.dbHandle+"\" not found.");
-		}
-		
+	public SqliteConnector(String pHandle) {
+		this.dbHandle = pHandle;
+	
 		try {
 			Class.forName("org.sqlite.JDBC");	
-			
+			System.out.println(this.dbHandle);
 			this.connection = DriverManager.getConnection("jdbc:sqlite:"+this.dbHandle);
-			Statement st = this.connection.createStatement();
 			
-			st.executeUpdate("create table object (id integer, name string, comment string)");
+			/*String query = "create table test "
+					+ "(ID INT PRIMARY KEY NOT NULL,"
+					+ "NAME TEXT NOT NULL)";
+			
+			Statement stm = this.connection.createStatement();
+			stm.executeUpdate(query);
+			stm.close();
+			this.connection.close();*/
 		}
 		catch (ClassNotFoundException e){
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
