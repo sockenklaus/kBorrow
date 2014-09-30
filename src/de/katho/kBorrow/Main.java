@@ -7,6 +7,7 @@ import de.katho.kBorrow.gui.MainWindow;
 public class Main {
 	public static void main(String[] args){
 		new Main();
+		Settings set = new Settings();
 	}
 	
 	public Main(){
