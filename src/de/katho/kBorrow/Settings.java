@@ -82,7 +82,6 @@ public class Settings {
 			System.out.println("I couldn't find the specified properties file while trying to create a default config.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println(this.filePath);
 			System.out.println("I had problems, writing to the properties file while trying to create a default config.");
 			e.printStackTrace();
 		}		
@@ -94,5 +93,19 @@ public class Settings {
 	
 	public void setProperty(String pKey, String pValue){
 		this.properties.put(pKey, pValue);
+		
+		OutputStream os;
+		try {
+			os = new FileOutputStream(this.filePath+"/"+this.fileName);
+			this.properties.store(os, null);
+			
+			os.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("I couldn't find the specified properties file while trying to write the config.");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("I had problems, writing to the properties file while saving a setting.");
+			e.printStackTrace();
+		}		
 	}
 }
