@@ -1,3 +1,8 @@
+CREATE TABLE kborrow (
+	setting_name TEXT,
+	value INTEGER
+);
+
 CREATE TABLE article (
 	id INTEGER PRIMARY KEY,
 	name TEXT NOT NULL,
@@ -28,3 +33,9 @@ CREATE TABLE lending (
 	end_date DATE,
 	comment
 );
+
+insert into kborrow
+	(setting_name, value)
+	VALUES
+	('is_configured', 1)
+;

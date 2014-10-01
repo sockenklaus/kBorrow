@@ -2,8 +2,11 @@ package de.katho.kBorrow.db;
 
 import java.io.FileNotFoundException;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * @class sqliteConnector
@@ -27,20 +30,29 @@ public class SqliteConnector implements DbConnector {
 			System.out.println(this.dbHandle);
 			this.connection = DriverManager.getConnection("jdbc:sqlite:"+this.dbHandle);
 			
-			/*String query = "create table test "
-					+ "(ID INT PRIMARY KEY NOT NULL,"
-					+ "NAME TEXT NOT NULL)";
-			
-			Statement stm = this.connection.createStatement();
-			stm.executeUpdate(query);
-			stm.close();
-			this.connection.close();*/
+			System.out.println(this.isConfigured());
 		}
 		catch (ClassNotFoundException e){
 			e.printStackTrace();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+	
+	private boolean isConfigured(){
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "SELECT value FROM kborrow WHERE setting_name='is_configured' LIMIT 1";
+			
+			ResultSet rs = st.executeQuery(query);
+			
+			return rs.getBoolean("value");
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	
