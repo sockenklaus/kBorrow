@@ -1,16 +1,16 @@
 CREATE TABLE kborrow (
 	setting_name TEXT,
-	value INTEGER
+	value INT
 );
 
 CREATE TABLE article (
-	id INTEGER PRIMARY KEY,
+	id INT PRIMARY KEY,
 	name TEXT NOT NULL,
 	description TEXT
 );
 
 CREATE TABLE lender (
-	id INTEGER PRIMARY KEY,
+	id INT PRIMARY KEY,
 	name TEXT,
 	surname TEXT,
 	student_number INT,
@@ -18,13 +18,13 @@ CREATE TABLE lender (
 );
 
 CREATE TABLE user (
-	id INTEGER PRIMARY KEY,
+	id INT PRIMARY KEY,
 	name TEXT,
 	surname TEXT
 );
 
 CREATE TABLE lending (
-	id INTEGER PRIMARY KEY,
+	id INT PRIMARY KEY,
 	article_id INT,
 	user_id INT,
 	lender_id INT,

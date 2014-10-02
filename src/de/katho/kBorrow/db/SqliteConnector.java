@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Hashtable;
+import java.util.Map.Entry;
 
 /**
  * @class sqliteConnector
@@ -28,7 +29,7 @@ public class SqliteConnector implements DbConnector {
 	public SqliteConnector(String pHandle) {
 			
 		this.dbHandle = pHandle;
-		this.loadScheme();
+		this.sqlScheme = this.loadScheme();
 		
 		try {
 			File dbFile = new File(this.dbHandle);
@@ -37,18 +38,24 @@ public class SqliteConnector implements DbConnector {
 			if(dbFile.exists()){
 				if(dbFile.isFile()){
 					this.connection = DriverManager.getConnection("jdbc:sqlite:"+this.dbHandle);
-					
-					//Prüfe Schema
+										
+					if(!this.isValidDB(this.sqlScheme, this.connection)){
+						throw new SQLException("The given db file doesn't match the required sql schema.");
+					}
+					else {
+						System.out.println("Db Scheme looks fine to me.");
+					}
 				}
 				else {
 					throw new IOException("Provided db handle may not be a file but a directory or a symlink!");
 				}
 			}
 			else {
+				System.out.println("There is no db file yet... creating a new db.");
 				dbFile.createNewFile();
 				
 				this.connection = DriverManager.getConnection("jdbc:sqlite:"+this.dbHandle);
-				//INitialisiere
+				this.initNewDB(this.sqlScheme, this.connection);
 			}			
 		}
 		catch (ClassNotFoundException e){
@@ -62,39 +69,71 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 	
-	private boolean isConfigured(){
+	private boolean isValidDB(Hashtable<String, String> pScheme, Connection pConn){
 		try {
-			Statement st = this.connection.createStatement();
-			String query = "SELECT value FROM kborrow WHERE setting_name='is_configured' LIMIT 1";
+			Statement st = pConn.createStatement();
+			String query = "SELECT name, sql FROM sqlite_master WHERE type = 'table'";
+			Hashtable<String, String> dbScheme = new Hashtable<String, String>();
 			
 			ResultSet rs = st.executeQuery(query);
 			
-			return rs.getBoolean("value");
+			while(rs.next()){
+				dbScheme.put(rs.getString("name"), this.removeLineBreaks(rs.getString("sql")));
+			}
 			
+			for (Entry<String, String> pEntry : pScheme.entrySet()){
+				String pSql = pEntry.getValue();
+				boolean match = false;
+				
+				for (Entry<String, String> dbEntry : dbScheme.entrySet()){
+					if(pSql.equalsIgnoreCase(dbEntry.getValue())){
+						match = true;
+						break;
+					}
+				}
+				if(!match) return false;
+			}
+			
+			return true;
 			
 		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}		
+	}
+	
+	private boolean initNewDB(Hashtable<String, String> pScheme, Connection pConn){
+		try {
+			Statement st = pConn.createStatement();
+			
+			for (Entry<String, String> pEntry : pScheme.entrySet()){
+				st.executeUpdate(pEntry.getValue());
+			}
+			return true;
+		}
+		catch (SQLException e){
 			e.printStackTrace();
 			return false;
 		}
 	}
 	
-	private void loadScheme(){
-		this.sqlScheme = new Hashtable<String, String>();
+	private Hashtable<String, String> loadScheme(){
+		Hashtable<String, String> tScheme= new Hashtable<String, String>();
 		
-		this.sqlScheme.put("kborrow",
+		tScheme.put("kborrow",
 				"CREATE TABLE kborrow ("
 					+ "setting_name TEXT,"
 					+ "value INT"
 				+ ")");
 		
-		this.sqlScheme.put("article",
+		tScheme.put("article",
 				"CREATE TABLE article ("
 					+ "id INT PRIMARY KEY,"
 					+ "name TEXT NOT NULL,"
 					+ "description TEXT"
 				+ ")");
 		
-		this.sqlScheme.put("lender",
+		tScheme.put("lender",
 				"CREATE TABLE lender ("
 					+ "id INT PRIMARY KEY,"
 					+ "name TEXT,"
@@ -103,14 +142,14 @@ public class SqliteConnector implements DbConnector {
 					+ "comment TEXT"
 				+ ")");
 		
-		this.sqlScheme.put("user",
+		tScheme.put("user",
 				"CREATE TABLE user ("
 					+ "id INT PRIMARY KEY,"
 					+ "name TEXT,"
 					+ "surname TEXT"
 				+ ")");
 		
-		this.sqlScheme.put("lending",
+		tScheme.put("lending",
 				"CREATE TABLE lending ("
 					+ "id INT PRIMARY KEY,"
 					+ "article_id INT,"
@@ -121,6 +160,40 @@ public class SqliteConnector implements DbConnector {
 					+ "end_date DATE,"
 					+ "comment TEXT"
 				+ ")");
+		
+		return tScheme;
+	}
+	
+	private String removeLineBreaks(String pString){
+		StringBuffer text = new StringBuffer(pString);
+		int i = 0;
+		boolean addI = true;
+		
+		while (i < text.length()) {
+			if (text.charAt(i) == '\n') {
+				text.deleteCharAt(i);
+				addI = false;
+
+			}
+
+			if (text.charAt(i) == '\r') {
+				text.deleteCharAt(i);
+				addI = false;
+			}
+
+			if (text.charAt(i) == '\t') {
+				text.deleteCharAt(i);
+				addI = false;
+			}
+
+			if (addI) {
+				i++;
+			}
+
+			addI = true;
+		}
+
+		return text.toString();
 	}
 	
 }
