@@ -8,8 +8,11 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map.Entry;
+
+import de.katho.kBorrow.data.KUser;
 
 /**
  * @class sqliteConnector
@@ -108,45 +111,39 @@ public class SqliteConnector implements DbConnector {
 	
 	private Hashtable<String, String> loadScheme(){
 		Hashtable<String, String> tScheme= new Hashtable<String, String>();
-		
-		tScheme.put("kborrow",
-				"CREATE TABLE kborrow ("
-					+ "setting_name TEXT,"
-					+ "value INT"
-				+ ")");
-		
+				
 		tScheme.put("article",
 				"CREATE TABLE article ("
-					+ "id INT PRIMARY KEY,"
+					+ "id INTEGER PRIMARY KEY NOT NULL,"
 					+ "name TEXT NOT NULL,"
 					+ "description TEXT"
 				+ ")");
 		
 		tScheme.put("lender",
 				"CREATE TABLE lender ("
-					+ "id INT PRIMARY KEY,"
+					+ "id INTEGER PRIMARY KEY NOT NULL,"
 					+ "name TEXT,"
 					+ "surname TEXT,"
-					+ "student_number INT,"
+					+ "student_number INTEGER,"
 					+ "comment TEXT"
 				+ ")");
 		
 		tScheme.put("user",
 				"CREATE TABLE user ("
-					+ "id INT PRIMARY KEY,"
+					+ "id INTEGER PRIMARY KEY NOT NULL,"
 					+ "name TEXT,"
 					+ "surname TEXT"
 				+ ")");
 		
 		tScheme.put("lending",
 				"CREATE TABLE lending ("
-					+ "id INT PRIMARY KEY,"
-					+ "article_id INT,"
-					+ "user_id INT,"
-					+ "lender_id INT,"
-					+ "start_date DATE DEFAULT CURRENT_DATE,"
-					+ "expected_end_date DATE,"
-					+ "end_date DATE,"
+					+ "id INTEGER PRIMARY KEY NOT NULL,"
+					+ "article_id INTEGER,"
+					+ "user_id INTEGER,"
+					+ "lender_id INTEGER,"
+					+ "start_date INTEGER DEFAULT CURRENT_DATE,"
+					+ "expected_end_date INTEGER,"
+					+ "end_date INTEGER,"
 					+ "comment TEXT"
 				+ ")");
 		
@@ -197,6 +194,26 @@ public class SqliteConnector implements DbConnector {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	public ArrayList<KUser> getUserList(){
+		ArrayList<KUser> userArr = new ArrayList<KUser>();
+		
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "SELECT id, name, surname FROM user";
+			ResultSet rs = st.executeQuery(query);
+			
+			while (rs.next()){
+				userArr.add(new KUser(rs.getInt("id"), rs.getString("name"), rs.getString("surname")));
+			}
+			
+			return userArr;
+		} 
+		catch (SQLException e){
+			e.printStackTrace();
+			return null;
 		}
 	}
 	

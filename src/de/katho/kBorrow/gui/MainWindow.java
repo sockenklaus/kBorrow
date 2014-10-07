@@ -7,16 +7,12 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-
-
-import javax.swing.BoxLayout;
-
-
 import javax.swing.border.TitledBorder;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
@@ -26,19 +22,17 @@ import java.awt.event.ActionListener;
 
 
 
+
+
+
 import de.katho.kBorrow.Main;
+import de.katho.kBorrow.db.DbConnector;
 
 import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.FlowLayout;
-import java.awt.Component;
-import java.awt.GridLayout;
 
 public class MainWindow implements ActionListener {
 
-	private Main mainObject;
+	private DbConnector dbCon;
 	private boolean userModeSave = true;
 	
 	private JFrame frame;
@@ -53,8 +47,10 @@ public class MainWindow implements ActionListener {
 	private JButton btnUserSave;
 	private JLabel lblUserStatus;
 	private JTable userTable;
+	private UserTableModel userTableModel;
 	private JScrollPane scrollUserList;
 	private JPanel panelUserList;
+	
 
 	/**
 	 * Create the application.
@@ -63,8 +59,8 @@ public class MainWindow implements ActionListener {
 	 * @throws InstantiationException 
 	 * @throws ClassNotFoundException 
 	 */
-	public MainWindow(Main pMainObject) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
-		this.mainObject = pMainObject;
+	public MainWindow(DbConnector pDbCon) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+		this.dbCon = pDbCon;
 		initialize();
 		this.frame.setVisible(true);
 	}
@@ -107,13 +103,16 @@ public class MainWindow implements ActionListener {
 		panelUser.setLayout(null);
 		
 		panelUserList = new JPanel();
-		panelUserList.setBounds(0, 0, 589, 344);
+		panelUserList.setBounds(0, 0, 589, 320);
 		panelUserList.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Benutzerliste", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelUser.add(panelUserList);
 		panelUserList.setLayout(new BorderLayout(0, 0));
 		
-		userTable = new JTable(new UserTableModel());
+		userTable = new JTable(new UserTableModel(this.dbCon));
 		userTable.setFillsViewportHeight(true);
+		userTableModel = (UserTableModel)userTable.getModel();
+		//userTableModel.
+		
 		
 		scrollUserList = new JScrollPane(userTable);
 		panelUserList.add(scrollUserList);
@@ -121,7 +120,7 @@ public class MainWindow implements ActionListener {
 		
 		// User-Edit-Pane
 		panelUserEdit = new JPanel();
-		panelUserEdit.setBounds(0, 355, 589, 87);
+		panelUserEdit.setBounds(0, 331, 589, 111);
 		panelUserEdit.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Benutzer hinzuf\u00FCgen / bearbeiten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelUserEdit.setLayout(null);
 		panelUser.add(this.panelUserEdit);
@@ -162,10 +161,11 @@ public class MainWindow implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == this.btnUserSave){
 			if(this.userModeSave){
-				if(this.mainObject.userSave(this.textFieldUserName.getText(), this.textFieldUserSurname.getText())){
+				if(this.dbCon.createUser(this.textFieldUserName.getText(), this.textFieldUserSurname.getText())){
 					this.lblUserStatus.setText("Benutzer \""+this.textFieldUserName.getText()+" "+this.textFieldUserSurname.getText()+"\" erfolgreich hinzugefügt.");
 					this.textFieldUserName.setText("");
 					this.textFieldUserSurname.setText("");
+					this.userTableModel.updateTable();
 				}
 				else {
 					this.lblUserStatus.setText("Benutzer konnte nicht erstellt werden.");

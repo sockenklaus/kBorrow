@@ -38,7 +38,7 @@ public class Main {
 			this.dbCon = new SqlConnector();
 		}
 		try {
-			MainWindow window = new MainWindow(this);
+			MainWindow window = new MainWindow(this.dbCon);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -54,9 +54,5 @@ public class Main {
 				}
 			}
 		});*/
-	}
-
-	public boolean userSave(String pName, String pSurname) {
-		return this.dbCon.createUser(pName, pSurname);
 	}
 }
