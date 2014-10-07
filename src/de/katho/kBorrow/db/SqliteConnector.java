@@ -26,46 +26,35 @@ public class SqliteConnector implements DbConnector {
 	 * @param pHandle This string contains the path to database file the connector has to use
 	 * @throws FileNotFoundException, SQLException
 	 */
-	public SqliteConnector(String pHandle) {
+	public SqliteConnector(String pHandle) throws ClassNotFoundException, SQLException, IOException {
 			
 		this.dbHandle = pHandle;
 		this.sqlScheme = this.loadScheme();
 		
-		try {
-			File dbFile = new File(this.dbHandle);
-			Class.forName("org.sqlite.JDBC");
+		File dbFile = new File(this.dbHandle);
+		Class.forName("org.sqlite.JDBC");
 			
-			if(dbFile.exists()){
-				if(dbFile.isFile()){
-					this.connection = DriverManager.getConnection("jdbc:sqlite:"+this.dbHandle);
+		if(dbFile.exists()){
+			if(dbFile.isFile()){
+				this.connection = DriverManager.getConnection("jdbc:sqlite:"+this.dbHandle);
 										
-					if(!this.isValidDB(this.sqlScheme, this.connection)){
-						throw new SQLException("The given db file doesn't match the required sql schema.");
-					}
-					else {
-						System.out.println("Db Scheme looks fine to me.");
-					}
+				if(!this.isValidDB(this.sqlScheme, this.connection)){
+					throw new SQLException("The given db file doesn't match the required sql schema.");
 				}
 				else {
-					throw new IOException("Provided db handle may not be a file but a directory or a symlink!");
+					System.out.println("Db Scheme looks fine to me.");
 				}
 			}
 			else {
-				System.out.println("There is no db file yet... creating a new db.");
-				dbFile.createNewFile();
-				
-				this.connection = DriverManager.getConnection("jdbc:sqlite:"+this.dbHandle);
-				this.initNewDB(this.sqlScheme, this.connection);
-			}			
+				throw new IOException("Provided db handle may not be a file but a directory or a symlink!");
+			}
 		}
-		catch (ClassNotFoundException e){
-			e.printStackTrace();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		else {
+			System.out.println("There is no db file yet... creating a new db.");
+			dbFile.createNewFile();
+			
+			this.connection = DriverManager.getConnection("jdbc:sqlite:"+this.dbHandle);
+			this.initNewDB(this.sqlScheme, this.connection);
 		}
 	}
 	
@@ -194,6 +183,21 @@ public class SqliteConnector implements DbConnector {
 		}
 
 		return text.toString();
+	}
+	
+	public boolean createUser(String pName, String pSurname){
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "INSERT INTO user (name, surname) VALUES ('"+pName+"', '"+pSurname+"')";
+			
+			st.executeUpdate(query);
+			
+			return true;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 }
