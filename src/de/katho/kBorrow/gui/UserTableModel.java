@@ -14,7 +14,7 @@ public class UserTableModel extends AbstractTableModel {
 	 */
 	private static final long serialVersionUID = 435829735305533728L;
 	private DbConnector dbCon;
-	private String[] header = {"Vorname", "Nachname", "Aktion"};
+	private String[] header = {"Vorname", "Nachname", "Bearbeiten", "Löschen"};
 	private ArrayList<KUser> data;
 	
 	public UserTableModel(DbConnector pDbCon){
@@ -46,5 +46,39 @@ public class UserTableModel extends AbstractTableModel {
 	public void updateTable(){
 		this.data = this.dbCon.getUserList();
 		this.fireTableDataChanged();
+	}
+	
+	// Die Funktion muss differenzierter werden
+	public boolean isCellEditable(int row, int col){
+		if (col > 1) return true;
+		return false;
+	}
+	
+	public int getUserId(int row){
+		return this.data.get(row).getId();
+	}
+	
+	public String getUserName(int row){
+		return this.data.get(row).getName();
+	}
+	
+	public String getUserSurname(int row){
+		return this.data.get(row).getSurname();
+	}
+	
+	public boolean deleteUser(int id){
+		if (dbCon.deleteUser(id)){
+			updateTable();
+			return true;
+		}
+		return false;
+	}
+	
+	public int createUser(String pName, String pSurname){
+		int status = this.dbCon.createUser(pName, pSurname);
+		
+		updateTable();
+		
+		return status;
 	}
 }

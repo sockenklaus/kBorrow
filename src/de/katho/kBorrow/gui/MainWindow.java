@@ -1,5 +1,6 @@
 package de.katho.kBorrow.gui;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
@@ -11,21 +12,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
-
-
-
-
-
-import de.katho.kBorrow.Main;
 import de.katho.kBorrow.db.DbConnector;
 
 import javax.swing.JTable;
@@ -111,8 +103,13 @@ public class MainWindow implements ActionListener {
 		userTable = new JTable(new UserTableModel(this.dbCon));
 		userTable.setFillsViewportHeight(true);
 		userTableModel = (UserTableModel)userTable.getModel();
-		//userTableModel.
 		
+		TableButton userDeleteButton = new TableButton("Löschen", this.userTable, new UserDeleteListener(userTable));
+		userTable.getColumn("Löschen").setCellEditor(userDeleteButton);
+		userTable.getColumn("Löschen").setCellRenderer(userDeleteButton);
+		TableButton userEditButton = new TableButton("Bearbeiten", this.userTable, new UserEditListener());
+		userTable.getColumn("Bearbeiten").setCellEditor(userEditButton);
+		userTable.getColumn("Bearbeiten").setCellRenderer(userEditButton);
 		
 		scrollUserList = new JScrollPane(userTable);
 		panelUserList.add(scrollUserList);
@@ -161,14 +158,24 @@ public class MainWindow implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == this.btnUserSave){
 			if(this.userModeSave){
-				if(this.dbCon.createUser(this.textFieldUserName.getText(), this.textFieldUserSurname.getText())){
+				int re = this.userTableModel.createUser(this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
+				
+				switch (re){
+				case 0:
 					this.lblUserStatus.setText("Benutzer \""+this.textFieldUserName.getText()+" "+this.textFieldUserSurname.getText()+"\" erfolgreich hinzugefügt.");
 					this.textFieldUserName.setText("");
 					this.textFieldUserSurname.setText("");
-					this.userTableModel.updateTable();
-				}
-				else {
-					this.lblUserStatus.setText("Benutzer konnte nicht erstellt werden.");
+					break;
+				
+				case 1:
+					this.lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht erstellt werden.");
+					this.textFieldUserName.setText("");
+					this.textFieldUserSurname.setText("");
+					break;
+				
+				case 2:
+					this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
+					break;
 				}
 			}
 			else {

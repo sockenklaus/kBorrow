@@ -181,17 +181,39 @@ public class SqliteConnector implements DbConnector {
 
 		return text.toString();
 	}
-	
-	public boolean createUser(String pName, String pSurname){
+	/**
+	 * 
+	 * @return  0: Benutzer erfolgreich erzeugt
+	 * 			1: SQL-Fehler beim Erzeugen
+	 * 			2: Benutzername ist leer
+	 */
+	public int createUser(String pName, String pSurname){
+		if (pName.isEmpty() && pSurname.isEmpty()) return 2;
 		try {
 			Statement st = this.connection.createStatement();
 			String query = "INSERT INTO user (name, surname) VALUES ('"+pName+"', '"+pSurname+"')";
 			
 			st.executeUpdate(query);
 			
-			return true;
+			return 0;
 			
 		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
+	
+	public boolean deleteUser(int id){
+		// @TODO: Ausleihen auf einen anderen User umschreiben!
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "DELETE FROM user WHERE id = '"+id+"'";
+			
+			st.executeUpdate(query);
+			
+			return true;
+		}
+		catch (SQLException e){
 			e.printStackTrace();
 			return false;
 		}

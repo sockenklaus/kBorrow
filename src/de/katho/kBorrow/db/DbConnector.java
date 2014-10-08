@@ -6,7 +6,8 @@ import de.katho.kBorrow.data.KUser;
 
 public interface DbConnector {
 
-	public boolean createUser(String pName, String pSurname);
+	public int createUser(String pName, String pSurname);
 	public ArrayList<KUser> getUserList();
+	public boolean deleteUser(int id);
 	
 }
