@@ -1,5 +1,6 @@
 package de.katho.kBorrow.gui;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
@@ -10,6 +11,7 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -21,6 +23,12 @@ import de.katho.kBorrow.db.DbConnector;
 
 import javax.swing.JTable;
 
+import java.awt.Color;
+
+import javax.swing.JTextArea;
+
+import java.awt.Font;
+
 public class MainWindow implements ActionListener {
 
 	private DbConnector dbCon;
@@ -28,8 +36,6 @@ public class MainWindow implements ActionListener {
 	private int editId;
 	
 	private JFrame frame;
-	private JTextField textField;
-	private JTextField textField_1;
 	private JTabbedPane tabbedPane;
 	private JPanel panelUserEdit;
 	private JLabel lblUserName;
@@ -43,6 +49,11 @@ public class MainWindow implements ActionListener {
 	private JScrollPane scrollUserList;
 	private JPanel panelUserList;
 	private JButton btnUserCancel;
+	private JPanel panelArticleList;
+	private JPanel panelArticleEdit;
+	private JScrollPane scrollArticleList;
+	private JTable articleTable;
+	private JTextField textFieldArticleName;
 	
 
 	/**
@@ -75,20 +86,55 @@ public class MainWindow implements ActionListener {
 		this.tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		this.frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 		
-		JPanel panel = new JPanel();
-		this.tabbedPane.addTab("New tab", null, panel, null);
-		
-		this.textField_1 = new JTextField();
-		panel.add(this.textField_1);
-		this.textField_1.setColumns(10);
-		
-		this.textField = new JTextField();
-		panel.add(this.textField);
-		this.textField.setColumns(10);
-		
+		this.initArticleTab();
 		this.initUserTab();
 	}
 	
+	private void initArticleTab() {
+		JPanel panelArticle = new JPanel();
+		articleTable = new JTable();
+		panelArticleList = new JPanel();
+		
+		this.tabbedPane.addTab("Artikel verwalten", null, panelArticle, null);
+		panelArticle.setLayout(null);
+		
+		panelArticleList.setBorder(new TitledBorder(null, "Artikelliste", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelArticleList.setBounds(0, 0, 589, 275);
+		panelArticle.add(panelArticleList);
+		panelArticleList.setLayout(new BorderLayout(0, 0));
+		
+		articleTable.setFillsViewportHeight(true);
+		scrollArticleList = new JScrollPane(articleTable);
+		panelArticleList.add(scrollArticleList);
+		
+		panelArticleEdit = new JPanel();
+		panelArticleEdit.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Artikel hinzuf\u00FCgen / bearbeiten", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelArticleEdit.setBounds(0, 273, 589, 170);
+		panelArticle.add(panelArticleEdit);
+		panelArticleEdit.setLayout(null);
+		
+		JLabel lblNewLabel = new JLabel("Name");
+		lblNewLabel.setBounds(10, 30, 70, 20);
+		panelArticleEdit.add(lblNewLabel);
+		
+		JLabel lblBeschreibung = new JLabel("Beschreibung");
+		lblBeschreibung.setBounds(10, 61, 70, 20);
+		panelArticleEdit.add(lblBeschreibung);
+		
+		textFieldArticleName = new JTextField();
+		textFieldArticleName.setBounds(90, 30, 250, 20);
+		panelArticleEdit.add(textFieldArticleName);
+		textFieldArticleName.setColumns(10);
+		
+		JTextArea textAreaArticleDescription = new JTextArea(5, 30);
+		textAreaArticleDescription.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		textAreaArticleDescription.setLineWrap(true);
+		textAreaArticleDescription.setBounds(90, 59, 250, 100);
+		textAreaArticleDescription.setBorder(BorderFactory.createEtchedBorder());
+		panelArticleEdit.add(textAreaArticleDescription);
+				
+	}
+
 	private void initUserTab(){
 		JPanel panelUser = new JPanel();
 		this.tabbedPane.addTab("Benutzer verwalten", null, panelUser, null);
@@ -125,24 +171,23 @@ public class MainWindow implements ActionListener {
 		panelUser.add(this.panelUserEdit);
 		
 		lblUserName = new JLabel("Vorname");
-		lblUserName.setBounds(6, 27, 55, 20);
-				
-		textFieldUserName = new JTextField();
-		textFieldUserName.setBounds(71, 27, 120, 20);
-		textFieldUserName.setColumns(10);
-		
 		lblUserSurname = new JLabel("Nachname");
-		lblUserSurname.setBounds(6, 58, 62, 20);
-		
-		textFieldUserSurname= new JTextField();
-		textFieldUserSurname.setBounds(70, 58, 121, 20);
-		textFieldUserSurname.setColumns(10);
-		
-		btnUserSave = new JButton("Speichern");
-		btnUserSave.addActionListener(this);
-		btnUserSave.setBounds(333, 27, 103, 20);
-		
 		lblUserStatus = new JLabel("");
+		textFieldUserName = new JTextField();
+		textFieldUserSurname= new JTextField();
+		btnUserSave = new JButton("Speichern");
+		btnUserCancel = new JButton("Abbrechen");
+		
+		lblUserName.setBounds(10, 30, 70, 20);
+		textFieldUserName.setBounds(90, 30, 120, 20);
+		textFieldUserName.setColumns(10);
+		lblUserSurname.setBounds(10, 61, 70, 20);
+		textFieldUserSurname.setBounds(90, 61, 121, 20);
+		textFieldUserSurname.setColumns(10);
+		btnUserSave.addActionListener(this);
+		btnUserSave.setBounds(479, 61, 100, 20);
+		btnUserCancel.setBounds(479, 30, 100, 20);
+		btnUserCancel.addActionListener(this);
 		lblUserStatus.setBounds(6, 89, 413, 14);
 		
 		panelUserEdit.add(this.lblUserName);
@@ -151,12 +196,8 @@ public class MainWindow implements ActionListener {
 		panelUserEdit.add(this.textFieldUserSurname);
 		panelUserEdit.add(this.textFieldUserSurname);
 		panelUserEdit.add(this.btnUserSave);
-		panelUserEdit.add(this.lblUserStatus);
-		
-		btnUserCancel = new JButton("Abbrechen");
-		btnUserCancel.setBounds(333, 57, 103, 23);
-		btnUserCancel.addActionListener(this);
-		panelUserEdit.add(btnUserCancel);
+		panelUserEdit.add(this.lblUserStatus);		
+		panelUserEdit.add(this.btnUserCancel);
 	}
 	
 	public void setModeEditUser(int pId, String pName, String pSurname){
