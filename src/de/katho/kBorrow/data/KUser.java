@@ -22,4 +22,12 @@ public class KUser {
 	public int getId(){
 		return this.id;
 	}
+	
+	public void setName(String pName){
+		this.name = pName;
+	}
+	
+	public void setSurname(String pSurname){
+		this.surname = pSurname;
+	}
 }

@@ -28,5 +28,11 @@ public class SqlConnector implements DbConnector{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public int editUser(int pId, String pName, String pSurname) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

@@ -1,6 +1,5 @@
 package de.katho.kBorrow.gui;
 
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
@@ -25,7 +24,8 @@ import javax.swing.JTable;
 public class MainWindow implements ActionListener {
 
 	private DbConnector dbCon;
-	private boolean userModeSave = true;
+	private boolean userModeEdit = false;
+	private int editId;
 	
 	private JFrame frame;
 	private JTextField textField;
@@ -42,6 +42,7 @@ public class MainWindow implements ActionListener {
 	private UserTableModel userTableModel;
 	private JScrollPane scrollUserList;
 	private JPanel panelUserList;
+	private JButton btnUserCancel;
 	
 
 	/**
@@ -100,17 +101,18 @@ public class MainWindow implements ActionListener {
 		panelUser.add(panelUserList);
 		panelUserList.setLayout(new BorderLayout(0, 0));
 		
-		userTable = new JTable(new UserTableModel(this.dbCon));
+		userTableModel = new UserTableModel(this.dbCon);
+		userTable = new JTable(userTableModel);
 		userTable.setFillsViewportHeight(true);
-		userTableModel = (UserTableModel)userTable.getModel();
+	
+		UserDeleteTableButton userDeleteTableButton = new UserDeleteTableButton("Löschen", this.userTable);
+		userTable.getColumnModel().getColumn(4).setCellEditor(userDeleteTableButton);
+		userTable.getColumnModel().getColumn(4).setCellRenderer(userDeleteTableButton);
 		
-		TableButton userDeleteButton = new TableButton("Löschen", this.userTable, new UserDeleteListener(userTable));
-		userTable.getColumn("Löschen").setCellEditor(userDeleteButton);
-		userTable.getColumn("Löschen").setCellRenderer(userDeleteButton);
-		TableButton userEditButton = new TableButton("Bearbeiten", this.userTable, new UserEditListener());
-		userTable.getColumn("Bearbeiten").setCellEditor(userEditButton);
-		userTable.getColumn("Bearbeiten").setCellRenderer(userEditButton);
-		
+		UserEditTableButton userEditTableButton = new UserEditTableButton("Bearbeiten", this.userTable, this);
+		userTable.getColumnModel().getColumn(3).setCellEditor(userEditTableButton);
+		userTable.getColumnModel().getColumn(3).setCellRenderer(userEditTableButton);
+				
 		scrollUserList = new JScrollPane(userTable);
 		panelUserList.add(scrollUserList);
 		scrollUserList.setViewportBorder(null);
@@ -138,11 +140,10 @@ public class MainWindow implements ActionListener {
 		
 		btnUserSave = new JButton("Speichern");
 		btnUserSave.addActionListener(this);
-		btnUserSave.setBounds(333, 58, 86, 20);
+		btnUserSave.setBounds(333, 27, 103, 20);
 		
 		lblUserStatus = new JLabel("");
 		lblUserStatus.setBounds(6, 89, 413, 14);
-		
 		
 		panelUserEdit.add(this.lblUserName);
 		panelUserEdit.add(this.textFieldUserName);
@@ -152,12 +153,48 @@ public class MainWindow implements ActionListener {
 		panelUserEdit.add(this.btnUserSave);
 		panelUserEdit.add(this.lblUserStatus);
 		
+		btnUserCancel = new JButton("Abbrechen");
+		btnUserCancel.setBounds(333, 57, 103, 23);
+		btnUserCancel.addActionListener(this);
+		panelUserEdit.add(btnUserCancel);
+	}
+	
+	public void setModeEditUser(int pId, String pName, String pSurname){
+		this.userModeEdit = true;
+		this.editId = pId;
+		this.textFieldUserName.setText(pName);
+		this.textFieldUserSurname.setText(pSurname);		
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == this.btnUserSave){
-			if(this.userModeSave){
+			if(this.userModeEdit){
+				int re = this.userTableModel.editUser(this.editId, this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
+				
+				switch(re){
+				case 0:
+					this.lblUserStatus.setText("Benutzer-ID \""+this.editId+"\" erfolgreich bearbeitet.");
+					this.textFieldUserName.setText("");
+					this.textFieldUserSurname.setText("");
+					break;
+					
+				case 1:
+					this.lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht bearbeitet werden.");
+					this.textFieldUserName.setText("");
+					this.textFieldUserSurname.setText("");
+					break;
+					
+				case 2:
+					this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
+					break;
+					
+				}
+				
+				this.userModeEdit = false;
+				this.editId = 0;
+			}
+			else {
 				int re = this.userTableModel.createUser(this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
 				
 				switch (re){
@@ -178,11 +215,11 @@ public class MainWindow implements ActionListener {
 					break;
 				}
 			}
-			else {
-				// Hier kommt die Funktion rein, die Benutzer editieren lässt.
-			}
-			
 		}
-		
+		if(e.getSource() == this.btnUserCancel){
+			this.userModeEdit = false;
+			this.textFieldUserName.setText("");
+			this.textFieldUserSurname.setText("");
+		}
 	}
 }

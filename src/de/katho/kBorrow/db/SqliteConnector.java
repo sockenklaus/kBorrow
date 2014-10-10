@@ -238,5 +238,22 @@ public class SqliteConnector implements DbConnector {
 			return null;
 		}
 	}
+
+	@Override
+	public int editUser(int pId, String pName, String pSurname) {
+		if(pName.isEmpty() && pSurname.isEmpty()) return 2;
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "UPDATE user SET name = '"+pName+"', surname = '"+pSurname+"' WHERE id = '"+pId+"'";
+			
+			st.executeUpdate(query);
+			
+			return 0;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return 1;
+		}
+	}
 	
 }
