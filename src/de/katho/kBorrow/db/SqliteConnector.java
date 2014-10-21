@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map.Entry;
 
+import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.data.KUser;
 
 /**
@@ -235,6 +236,27 @@ public class SqliteConnector implements DbConnector {
 		} 
 		catch (SQLException e){
 			e.printStackTrace();
+			return null;
+		}
+	}
+
+	@Override
+	public ArrayList<KArticle> getArticleList() {
+		ArrayList<KArticle> artArr = new ArrayList<KArticle>();
+		
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "SELECT id, name, description FROM article";
+			ResultSet rs = st.executeQuery(query);
+			
+			while (rs.next()){
+				artArr.add(new KArticle(rs.getInt("id"), rs.getString("name"), rs.getString("description")));
+			}
+			
+			return artArr;
+		}
+		catch (SQLException ex){
+			ex.printStackTrace();
 			return null;
 		}
 	}

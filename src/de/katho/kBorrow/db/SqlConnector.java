@@ -2,6 +2,7 @@ package de.katho.kBorrow.db;
 
 import java.util.ArrayList;
 
+import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.data.KUser;
 
 public class SqlConnector implements DbConnector{
@@ -33,6 +34,12 @@ public class SqlConnector implements DbConnector{
 	public int editUser(int pId, String pName, String pSurname) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public ArrayList<KArticle> getArticleList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

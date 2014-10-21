@@ -11,7 +11,6 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -20,6 +19,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.listener.ArticleDeleteTableButton;
+import de.katho.kBorrow.listener.ArticleEditTableButton;
+import de.katho.kBorrow.listener.UserDeleteTableButton;
+import de.katho.kBorrow.listener.UserEditTableButton;
 
 import javax.swing.JTable;
 
@@ -33,6 +36,7 @@ public class MainWindow implements ActionListener {
 
 	private DbConnector dbCon;
 	private boolean userModeEdit = false;
+	private boolean articleModeEdit = false;
 	private int editId;
 	
 	private JFrame frame;
@@ -46,6 +50,7 @@ public class MainWindow implements ActionListener {
 	private JLabel lblUserStatus;
 	private JTable userTable;
 	private UserTableModel userTableModel;
+	private ArticleTableModel articleTableModel;
 	private JScrollPane scrollUserList;
 	private JPanel panelUserList;
 	private JButton btnUserCancel;
@@ -54,6 +59,10 @@ public class MainWindow implements ActionListener {
 	private JScrollPane scrollArticleList;
 	private JTable articleTable;
 	private JTextField textFieldArticleName;
+	private JButton btnArticleSave;
+	private JButton btnArticleCancel;
+	private JTextArea textAreaArticleDescription;
+	
 	
 
 	/**
@@ -92,8 +101,17 @@ public class MainWindow implements ActionListener {
 	
 	private void initArticleTab() {
 		JPanel panelArticle = new JPanel();
-		articleTable = new JTable();
+		articleTableModel = new ArticleTableModel(this.dbCon);
+		articleTable = new JTable(articleTableModel);
 		panelArticleList = new JPanel();
+		
+		ArticleDeleteTableButton articleDeleteTableButton = new ArticleDeleteTableButton("Löschen", this.articleTable);
+		articleTable.getColumnModel().getColumn(4).setCellEditor(articleDeleteTableButton);
+		articleTable.getColumnModel().getColumn(4).setCellRenderer(articleDeleteTableButton);
+		
+		ArticleEditTableButton articleEditTableButton = new ArticleEditTableButton("Bearbeiten", this.articleTable, this);
+		articleTable.getColumnModel().getColumn(3).setCellEditor(articleEditTableButton);
+		articleTable.getColumnModel().getColumn(3).setCellRenderer(articleEditTableButton);
 		
 		this.tabbedPane.addTab("Artikel verwalten", null, panelArticle, null);
 		panelArticle.setLayout(null);
@@ -126,12 +144,24 @@ public class MainWindow implements ActionListener {
 		panelArticleEdit.add(textFieldArticleName);
 		textFieldArticleName.setColumns(10);
 		
-		JTextArea textAreaArticleDescription = new JTextArea(5, 30);
-		textAreaArticleDescription.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		textAreaArticleDescription.setLineWrap(true);
-		textAreaArticleDescription.setBounds(90, 59, 250, 100);
-		textAreaArticleDescription.setBorder(BorderFactory.createEtchedBorder());
-		panelArticleEdit.add(textAreaArticleDescription);
+		this.textAreaArticleDescription = new JTextArea(5, 30);
+		this.textAreaArticleDescription.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		this.textAreaArticleDescription.setLineWrap(true);
+		this.textAreaArticleDescription.setBounds(90, 59, 250, 100);
+		this.textAreaArticleDescription.setBorder(BorderFactory.createEtchedBorder());
+		panelArticleEdit.add(this.textAreaArticleDescription);
+		
+		this.btnArticleSave = new JButton("Speichern");
+		this.btnArticleSave.addActionListener(this);
+		this.btnArticleSave.setBounds(490, 136, 89, 23);
+		panelArticleEdit.add(this.btnArticleSave);
+		
+		this.btnArticleCancel = new JButton("Abbrechen");
+		this.btnArticleCancel.addActionListener(this);
+		this.btnArticleCancel.setBounds(490, 102, 89, 23);
+		panelArticleEdit.add(this.btnArticleCancel);
+		
+			
 				
 	}
 
@@ -262,5 +292,17 @@ public class MainWindow implements ActionListener {
 			this.textFieldUserName.setText("");
 			this.textFieldUserSurname.setText("");
 		}
+		
+		if(e.getSource() == this.btnArticleCancel){
+			this.articleModeEdit = false;
+			this.textFieldArticleName.setText("");
+			this.textAreaArticleDescription.setText("");
+		}
+	}
+
+	public void setModeEditArticle(int articleId, String articleName,
+			String articleDescription) {
+		// TODO Auto-generated method stub
+		
 	}
 }
