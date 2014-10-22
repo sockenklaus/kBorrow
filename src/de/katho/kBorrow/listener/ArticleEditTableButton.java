@@ -14,12 +14,9 @@ public class ArticleEditTableButton extends TableButton {
 	 * 
 	 */
 	private static final long serialVersionUID = -5902626427691636902L;
-	private MainWindow mainwindow;
 
-	public ArticleEditTableButton(String pLabel, JTable pTable, MainWindow pMainwindow) {
+	public ArticleEditTableButton(String pLabel, JTable pTable, final MainWindow pMainWindow) {
 		super(pLabel, pTable);
-		
-		this.mainwindow = pMainwindow;
 		
 		this.buttonE.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -28,7 +25,7 @@ public class ArticleEditTableButton extends TableButton {
 				ArticleTableModel model = (ArticleTableModel) table.getModel();
 				int row = table.getSelectedRow();
 				
-				mainwindow.setModeEditArticle(model.getArticleId(row), model.getArticleName(row), model.getArticleDescription(row));
+				pMainWindow.setModeEditArticle(model.getArticleId(row), model.getArticleName(row), model.getArticleDescription(row));
 			}
 		});
 	}

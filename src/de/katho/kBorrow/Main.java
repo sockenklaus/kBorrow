@@ -38,21 +38,11 @@ public class Main {
 			this.dbCon = new SqlConnector();
 		}
 		try {
-			MainWindow window = new MainWindow(this.dbCon);
+			new MainWindow(this.dbCon);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.exit(1);
 		}
-		
-		/*EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainWindow window = new MainWindow((Main)this);
-					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});*/
 	}
 }

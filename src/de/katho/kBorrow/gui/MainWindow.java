@@ -37,7 +37,8 @@ public class MainWindow implements ActionListener {
 	private DbConnector dbCon;
 	private boolean userModeEdit = false;
 	private boolean articleModeEdit = false;
-	private int editId;
+	private int userEditId;
+	private int articleEditId;
 	
 	private JFrame frame;
 	private JTabbedPane tabbedPane;
@@ -62,7 +63,7 @@ public class MainWindow implements ActionListener {
 	private JButton btnArticleSave;
 	private JButton btnArticleCancel;
 	private JTextArea textAreaArticleDescription;
-	
+	private JLabel lblArticleStatus;
 	
 
 	/**
@@ -147,7 +148,7 @@ public class MainWindow implements ActionListener {
 		this.textAreaArticleDescription = new JTextArea(5, 30);
 		this.textAreaArticleDescription.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		this.textAreaArticleDescription.setLineWrap(true);
-		this.textAreaArticleDescription.setBounds(90, 59, 250, 100);
+		this.textAreaArticleDescription.setBounds(90, 59, 250, 80);
 		this.textAreaArticleDescription.setBorder(BorderFactory.createEtchedBorder());
 		panelArticleEdit.add(this.textAreaArticleDescription);
 		
@@ -160,6 +161,10 @@ public class MainWindow implements ActionListener {
 		this.btnArticleCancel.addActionListener(this);
 		this.btnArticleCancel.setBounds(490, 102, 89, 23);
 		panelArticleEdit.add(this.btnArticleCancel);
+		
+		this.lblArticleStatus = new JLabel("");
+		lblArticleStatus.setBounds(90, 145, 46, 14);
+		panelArticleEdit.add(lblArticleStatus);
 		
 			
 				
@@ -232,20 +237,31 @@ public class MainWindow implements ActionListener {
 	
 	public void setModeEditUser(int pId, String pName, String pSurname){
 		this.userModeEdit = true;
-		this.editId = pId;
+		this.userEditId = pId;
 		this.textFieldUserName.setText(pName);
 		this.textFieldUserSurname.setText(pSurname);		
 	}
 	
+	public void setModeEditArticle(int articleId, String articleName, String articleDescription) {
+		this.articleModeEdit = true;
+		this.articleEditId = articleId;
+		this.textFieldArticleName.setText(articleName);
+		this.textAreaArticleDescription.setText(articleDescription);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		/**
+		 * Aktionen für den Button "Benutzer speichern"
+		 */
 		if(e.getSource() == this.btnUserSave){
 			if(this.userModeEdit){
-				int re = this.userTableModel.editUser(this.editId, this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
+				int re = this.userTableModel.editUser(this.userEditId, this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
 				
 				switch(re){
 				case 0:
-					this.lblUserStatus.setText("Benutzer-ID \""+this.editId+"\" erfolgreich bearbeitet.");
+					this.lblUserStatus.setText("Benutzer-ID \""+this.userEditId+"\" erfolgreich bearbeitet.");
 					this.textFieldUserName.setText("");
 					this.textFieldUserSurname.setText("");
 					break;
@@ -263,7 +279,7 @@ public class MainWindow implements ActionListener {
 				}
 				
 				this.userModeEdit = false;
-				this.editId = 0;
+				this.userEditId = -1;
 			}
 			else {
 				int re = this.userTableModel.createUser(this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
@@ -287,22 +303,76 @@ public class MainWindow implements ActionListener {
 				}
 			}
 		}
+		
+		/**
+		 * Aktionen für den Button "Artikel speichern"
+		 */
+		if(e.getSource() == this.btnArticleSave){
+			if(this.userModeEdit){
+				int re = this.articleTableModel.editArticle(this.articleEditId, this.textFieldArticleName.getText(), this.textAreaArticleDescription.getText());
+				
+				switch(re){
+				case 0:
+					this.lblArticleStatus.setText("Artikel-ID \""+this.articleEditId+"\" erfolgreich bearbeitet.");
+					this.textFieldArticleName.setText("");
+					this.textAreaArticleDescription.setText("");
+					break;
+					
+				case 1:
+					this.lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht bearbeitet werden.");
+					this.textFieldArticleName.setText("");
+					this.textAreaArticleDescription.setText("");
+					break;
+					
+				case 2:
+					this.lblArticleStatus.setText("Artikelname muss ausgefüllt sein.");
+					break;
+					
+				}
+				
+				this.articleModeEdit = false;
+				this.articleEditId = -1;
+			}
+			
+			else {
+				int re = this.articleTableModel.createArticle(this.textFieldArticleName.getText(), this.textAreaArticleDescription.getText());
+				
+				switch(re){
+				case 0:
+					this.lblArticleStatus.setText("Artikel \""+this.textFieldArticleName.getText()+"\" erfolgreich hinzugefügt.");
+					this.textFieldArticleName.setText("");
+					this.textAreaArticleDescription.setText("");
+					break;
+					
+				case 1:
+					this.lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht erstellt werden.");
+					this.textFieldArticleName.setText("");
+					this.textAreaArticleDescription.setText("");
+					break;
+				
+				case 2:
+					this.lblArticleStatus.setText("Es muss ein Artikelname vergeben werden");
+					break;
+				}
+			}
+		}
+		
+		/**
+		 * Aktionen für den Button "Benutzer abbrechen"
+		 */
 		if(e.getSource() == this.btnUserCancel){
 			this.userModeEdit = false;
 			this.textFieldUserName.setText("");
 			this.textFieldUserSurname.setText("");
 		}
 		
+		/**
+		 * Aktionen für den Button "Artikel abbrechen"
+		 */
 		if(e.getSource() == this.btnArticleCancel){
 			this.articleModeEdit = false;
 			this.textFieldArticleName.setText("");
 			this.textAreaArticleDescription.setText("");
 		}
-	}
-
-	public void setModeEditArticle(int articleId, String articleName,
-			String articleDescription) {
-		// TODO Auto-generated method stub
-		
 	}
 }

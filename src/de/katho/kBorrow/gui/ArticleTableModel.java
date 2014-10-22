@@ -65,21 +65,30 @@ public class ArticleTableModel extends AbstractTableModel {
 	}
 
 	public int getArticleId(int row) {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.data.get(row).getId();
 	}
 	
 	public String getArticleName(int pRow){
-		return "";
+		return this.data.get(pRow).getName();
 	}
 	
 	public String getArticleDescription(int pRow){
-		return null;
+		return this.data.get(pRow).getDescription();
 	}
 
 	public void deleteArticle(int id) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public int createArticle(String pName, String pDesc) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int editArticle(int pId, String pName, String pDesc) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

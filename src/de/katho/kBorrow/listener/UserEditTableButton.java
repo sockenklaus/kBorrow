@@ -14,14 +14,10 @@ public class UserEditTableButton extends TableButton {
 	 * 
 	 */
 	private static final long serialVersionUID = -886584066497429394L;
-
-	private MainWindow mainwindow;
 	
-	public UserEditTableButton(String pLabel, JTable pTable, MainWindow pMainWindow){
+	public UserEditTableButton(String pLabel, JTable pTable, final MainWindow pMainWindow){
 		super(pLabel, pTable);
-		
-		this.mainwindow = pMainWindow;
-				
+					
 		this.buttonE.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				fireEditingStopped();
@@ -29,7 +25,7 @@ public class UserEditTableButton extends TableButton {
 				UserTableModel model = (UserTableModel) table.getModel();
 				int row = table.getSelectedRow();
 				
-				mainwindow.setModeEditUser(model.getUserId(row), model.getUserName(row), model.getUserSurname(row));	
+				pMainWindow.setModeEditUser(model.getUserId(row), model.getUserName(row), model.getUserSurname(row));	
 			}
 		});
 		
