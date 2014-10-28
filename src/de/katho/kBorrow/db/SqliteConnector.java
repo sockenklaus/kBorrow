@@ -240,7 +240,6 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
-	@Override
 	public ArrayList<KArticle> getArticleList() {
 		ArrayList<KArticle> artArr = new ArrayList<KArticle>();
 		
@@ -261,12 +260,58 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
-	@Override
 	public int editUser(int pId, String pName, String pSurname) {
 		if(pName.isEmpty() && pSurname.isEmpty()) return 2;
 		try {
 			Statement st = this.connection.createStatement();
 			String query = "UPDATE user SET name = '"+pName+"', surname = '"+pSurname+"' WHERE id = '"+pId+"'";
+			
+			st.executeUpdate(query);
+			
+			return 0;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return 1;
+		}
+	}
+
+	public int createArticle(String pName, String pDesc) {
+		if (pName.isEmpty()) return 2;
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "INSERT INTO article (name, description) VALUES ('"+pName+"', '"+pDesc+"')";
+			
+			st.executeUpdate(query);
+			
+			return 0;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
+
+	public boolean deleteArticle(int id) {
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "DELETE FROM article WHERE id = '"+id+"'";
+			
+			st.executeUpdate(query);
+			
+			return true;
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public int editArticle(int pId, String pName, String pDesc) {
+		if(pName.isEmpty()) return 2;
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "UPDATE article SET name = '"+pName+"', description = '"+pDesc+"' WHERE id = '"+pId+"'";
 			
 			st.executeUpdate(query);
 			

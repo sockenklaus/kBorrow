@@ -12,5 +12,8 @@ public interface DbConnector {
 	public boolean deleteUser(int id);
 	public int editUser(int pId, String pName, String pSurname);
 	public ArrayList<KArticle> getArticleList();
+	public int createArticle(String pName, String pDesc);
+	public boolean deleteArticle(int id);
+	public int editArticle(int pId, String pName, String pDesc);
 	
 }

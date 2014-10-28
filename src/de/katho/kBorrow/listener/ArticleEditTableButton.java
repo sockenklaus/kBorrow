@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JTable;
 
+import de.katho.kBorrow.gui.ArticleTab;
 import de.katho.kBorrow.gui.ArticleTableModel;
-import de.katho.kBorrow.gui.MainWindow;
 
 public class ArticleEditTableButton extends TableButton {
 
@@ -15,7 +15,7 @@ public class ArticleEditTableButton extends TableButton {
 	 */
 	private static final long serialVersionUID = -5902626427691636902L;
 
-	public ArticleEditTableButton(String pLabel, JTable pTable, final MainWindow pMainWindow) {
+	public ArticleEditTableButton(String pLabel, JTable pTable, final ArticleTab articleTab) {
 		super(pLabel, pTable);
 		
 		this.buttonE.addActionListener(new ActionListener(){
@@ -25,7 +25,7 @@ public class ArticleEditTableButton extends TableButton {
 				ArticleTableModel model = (ArticleTableModel) table.getModel();
 				int row = table.getSelectedRow();
 				
-				pMainWindow.setModeEditArticle(model.getArticleId(row), model.getArticleName(row), model.getArticleDescription(row));
+				articleTab.setModeEditArticle(model.getArticleId(row), model.getArticleName(row), model.getArticleDescription(row));
 			}
 		});
 	}
