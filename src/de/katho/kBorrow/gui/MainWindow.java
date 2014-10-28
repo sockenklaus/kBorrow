@@ -50,6 +50,8 @@ public class MainWindow {
 		this.tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		this.frame.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);
 		
+		this.tabbedPane.addTab("Neue Ausleihe", new NewLendingTab(this.dbCon));
+		this.tabbedPane.addTab("Ausleihen verwalten", new ManageLendingTab(this.dbCon));
 		this.tabbedPane.addTab("Artikel verwalten", new ArticleTab(this.dbCon));
 		this.tabbedPane.addTab("Benutzer verwalten", new UserTab(this.dbCon));
 	}
