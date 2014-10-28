@@ -3,6 +3,7 @@ package de.katho.kBorrow.listener;
 import java.awt.Component;
 
 import javax.swing.AbstractCellEditor;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import javax.swing.table.TableCellEditor;
@@ -15,11 +16,11 @@ public abstract class TableButton extends AbstractCellEditor implements TableCel
 	protected JButton buttonR;
 	protected JButton buttonE;
 	
-	public TableButton (String pLabel, JTable pTable) {
-		this.label = pLabel;
+	public TableButton (ImageIcon pIcon, JTable pTable) {
+		//this.label = pLabel;
 		this.table = pTable;
-		this.buttonR = new JButton(pLabel);
-		this.buttonE = new JButton(pLabel);
+		this.buttonR = new JButton(pIcon);
+		this.buttonE = new JButton(pIcon);
 	}
 
 	public Object getCellEditorValue() {

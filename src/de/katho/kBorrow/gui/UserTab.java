@@ -3,6 +3,7 @@ package de.katho.kBorrow.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -29,20 +30,25 @@ public class UserTab extends JPanel implements ActionListener {
 	private int userEditId;
 	private UserTableModel userTableModel;
 
-	public UserTab(final DbConnector dbCon){
+	public UserTab(final DbConnector dbCon) throws IOException{
 		super();
 		this.setLayout(null);
 		
 		//Tabelle und drumherum
 		this.userTableModel = new UserTableModel(dbCon);
 		JTable userTable = new JTable(userTableModel);
+		userTable.setRowHeight(30);
 		UserDeleteTableButton userDeleteTableButton = new UserDeleteTableButton("Löschen", userTable);
-		userTable.getColumnModel().getColumn(4).setCellEditor(userDeleteTableButton);
-		userTable.getColumnModel().getColumn(4).setCellRenderer(userDeleteTableButton);
-		
 		UserEditTableButton userEditTableButton = new UserEditTableButton("Bearbeiten", userTable, this);
-		userTable.getColumnModel().getColumn(3).setCellEditor(userEditTableButton);
-		userTable.getColumnModel().getColumn(3).setCellRenderer(userEditTableButton);
+		
+		for (int i = 3; i <= 4; i++){
+			userTable.getColumnModel().getColumn(i).setCellEditor(i == 3 ? userEditTableButton : userDeleteTableButton);
+			userTable.getColumnModel().getColumn(i).setCellRenderer(i == 3 ? userEditTableButton : userDeleteTableButton);
+			
+			userTable.getColumnModel().getColumn(i).setMinWidth(30);
+			userTable.getColumnModel().getColumn(i).setMaxWidth(30);
+			userTable.getColumnModel().getColumn(i).setPreferredWidth(30);
+		}
 		
 		userTable.setFillsViewportHeight(true);
 		
@@ -115,7 +121,7 @@ public class UserTab extends JPanel implements ActionListener {
 					break;
 					
 				case 2:
-					this.lblUserStatus.setText("Entweder Vor- oder Nachname mï¿½ssen ausgefï¿½llt sein.");
+					this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
 					break;
 					
 				}
@@ -128,7 +134,7 @@ public class UserTab extends JPanel implements ActionListener {
 				
 				switch (re){
 				case 0:
-					this.lblUserStatus.setText("Benutzer \""+this.textFieldUserName.getText()+" "+this.textFieldUserSurname.getText()+"\" erfolgreich hinzugefï¿½gt.");
+					this.lblUserStatus.setText("Benutzer \""+this.textFieldUserName.getText()+" "+this.textFieldUserSurname.getText()+"\" erfolgreich hinzugefügt.");
 					this.textFieldUserName.setText("");
 					this.textFieldUserSurname.setText("");
 					break;
@@ -140,7 +146,7 @@ public class UserTab extends JPanel implements ActionListener {
 					break;
 				
 				case 2:
-					this.lblUserStatus.setText("Entweder Vor- oder Nachname mï¿½ssen ausgefï¿½llt sein.");
+					this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
 					break;
 				}
 			}

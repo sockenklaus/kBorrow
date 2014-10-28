@@ -6,6 +6,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.BorderLayout;
+import java.io.IOException;
 
 import de.katho.kBorrow.db.DbConnector;
 
@@ -26,8 +27,9 @@ public class MainWindow {
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 * @throws ClassNotFoundException 
+	 * @throws IOException 
 	 */
-	public MainWindow(DbConnector pDbCon) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	public MainWindow(DbConnector pDbCon) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
 		this.dbCon = pDbCon;
 		initialize();
 		this.frame.setVisible(true);
@@ -39,8 +41,9 @@ public class MainWindow {
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 * @throws ClassNotFoundException 
+	 * @throws IOException 
 	 */
-	private void initialize() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
+	private void initialize() throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException, IOException {
 		this.frame = new JFrame();
 		this.frame.setResizable(false);
 		this.frame.setBounds(100, 100, 600, 500);

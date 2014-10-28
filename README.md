@@ -9,3 +9,7 @@ This software uses the Xerial SQLite JDBC (https://bitbucket.org/xerial/sqlite-j
 
 ### MySQL Connector
 This software uses the Oracle MySQL Java Connector (http://dev.mysql.com/downloads/connector/j/). The MySQL Java Connector is provided under the GPL License Version 2.0 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
+
+### Tango Desktop Project
+This software also uses icons provided by the Tango Desktop Project (http://tango.freedesktop.org/).
+License will follow!

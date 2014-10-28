@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -35,8 +36,9 @@ public class ArticleTab extends JPanel implements ActionListener {
 
 	/**
 	 * Create the panel.
+	 * @throws IOException 
 	 */
-	public ArticleTab(final DbConnector dbCon) {	
+	public ArticleTab(final DbConnector dbCon) throws IOException {	
 		super();
 		this.setLayout(null);		
 		
@@ -45,14 +47,18 @@ public class ArticleTab extends JPanel implements ActionListener {
 		 */
 		this.articleTableModel = new ArticleTableModel(dbCon);
 		JTable articleTable = new JTable(articleTableModel);
+		articleTable.setRowHeight(30);
 		ArticleDeleteTableButton articleDeleteTableButton = new ArticleDeleteTableButton("Löschen", articleTable);
 		ArticleEditTableButton articleEditTableButton = new ArticleEditTableButton("Bearbeiten", articleTable, this);
 		
-		articleTable.getColumnModel().getColumn(4).setCellEditor(articleDeleteTableButton);
-		articleTable.getColumnModel().getColumn(4).setCellRenderer(articleDeleteTableButton);
-				
-		articleTable.getColumnModel().getColumn(3).setCellEditor(articleEditTableButton);
-		articleTable.getColumnModel().getColumn(3).setCellRenderer(articleEditTableButton);
+		for (int i = 3; i <= 4; i++){
+			articleTable.getColumnModel().getColumn(i).setCellEditor(i == 3 ? articleEditTableButton : articleDeleteTableButton);
+			articleTable.getColumnModel().getColumn(i).setCellRenderer(i == 3 ? articleEditTableButton : articleDeleteTableButton);
+			
+			articleTable.getColumnModel().getColumn(i).setMinWidth(30);
+			articleTable.getColumnModel().getColumn(i).setMaxWidth(30);
+			articleTable.getColumnModel().getColumn(i).setPreferredWidth(30);
+		}
 		
 		articleTable.setFillsViewportHeight(true);
 		
