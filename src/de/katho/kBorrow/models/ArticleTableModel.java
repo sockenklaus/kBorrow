@@ -1,4 +1,4 @@
-package de.katho.kBorrow.gui;
+package de.katho.kBorrow.models;
 
 import java.util.ArrayList;
 

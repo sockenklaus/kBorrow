@@ -9,22 +9,26 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
-import de.katho.kBorrow.gui.UserTableModel;
+import de.katho.kBorrow.models.UserTableModel;
 
 public class UserDeleteTableButton extends TableButton {
 
 	private static final long serialVersionUID = -886584066497429394L;
 	
-	public UserDeleteTableButton(String pLabel, JTable pTable) throws IOException{
-		super(new ImageIcon(ImageIO.read(new File("assets/icons/edit-delete.png"))), pTable);
-				
+	public UserDeleteTableButton(String pLabel, final JTable pTable) throws IOException{
+		super(pLabel);
+		ImageIcon icon = new ImageIcon(ImageIO.read(new File("assets/icons/edit-delete.png")));
+		
+		this.buttonE.setIcon(icon);
+		this.buttonR.setIcon(icon);
+		
 		this.buttonE.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				fireEditingStopped();
 				
-				UserTableModel model = (UserTableModel) table.getModel();
+				UserTableModel model = (UserTableModel) pTable.getModel();
 				
-				int row = table.getSelectedRow();
+				int row = pTable.getSelectedRow();
 				int id = model.getUserId(row);
 
 				model.deleteUser(id);

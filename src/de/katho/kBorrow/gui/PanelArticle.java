@@ -2,10 +2,14 @@ package de.katho.kBorrow.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -21,8 +25,9 @@ import javax.swing.border.TitledBorder;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.ArticleDeleteTableButton;
 import de.katho.kBorrow.listener.ArticleEditTableButton;
+import de.katho.kBorrow.models.ArticleTableModel;
 
-public class ArticleTab extends JPanel implements ActionListener {
+public class PanelArticle extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = -8511924597640457608L;
 	private ArticleTableModel articleTableModel;
@@ -38,7 +43,7 @@ public class ArticleTab extends JPanel implements ActionListener {
 	 * Create the panel.
 	 * @throws IOException 
 	 */
-	public ArticleTab(final DbConnector dbCon) throws IOException {	
+	public PanelArticle(final DbConnector dbCon) throws IOException {	
 		super();
 		this.setLayout(null);		
 		
@@ -86,6 +91,7 @@ public class ArticleTab extends JPanel implements ActionListener {
 		this.textFieldArticleName = new JTextField();
 		this.textFieldArticleName.setBounds(90, 30, 250, 20);
 		this.textFieldArticleName.setColumns(10);
+		this.textFieldArticleName.addKeyListener(this);
 		
 		//Edit: Desc-TextArea
 		this.textAreaArticleDescription = new JTextArea(5, 30);
@@ -104,6 +110,14 @@ public class ArticleTab extends JPanel implements ActionListener {
 		this.btnArticleCancel.addActionListener(this);
 		this.btnArticleCancel.setBounds(490, 102, 89, 23);
 		
+		//Traversal-Policy
+		Vector<Component> order = new Vector<Component>();
+		order.add(this.textFieldArticleName);
+		order.add(this.textAreaArticleDescription);
+		order.add(this.btnArticleCancel);
+		order.add(this.btnArticleSave);
+		MyFocusTraversalPolicy focusPolicy = new MyFocusTraversalPolicy(order);
+		
 		/*
 		 * PanelArticleEdit
 		 */		
@@ -118,6 +132,8 @@ public class ArticleTab extends JPanel implements ActionListener {
 		panelArticleEdit.add(this.btnArticleSave);
 		panelArticleEdit.add(this.btnArticleCancel);		
 		panelArticleEdit.add(lblArticleStatus);
+		panelArticleEdit.setFocusTraversalPolicy(focusPolicy);
+		panelArticleEdit.setFocusCycleRoot(true);
 		
 		this.add(panelArticleList);
 		this.add(panelArticleEdit);
@@ -156,25 +172,7 @@ public class ArticleTab extends JPanel implements ActionListener {
 			}
 			
 			else {
-				int re = this.articleTableModel.createArticle(this.textFieldArticleName.getText(), this.textAreaArticleDescription.getText());
-				
-				switch(re){
-				case 0:
-					this.lblArticleStatus.setText("Artikel \""+this.textFieldArticleName.getText()+"\" erfolgreich hinzugefügt.");
-					this.textFieldArticleName.setText("");
-					this.textAreaArticleDescription.setText("");
-					break;
-					
-				case 1:
-					this.lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht erstellt werden.");
-					this.textFieldArticleName.setText("");
-					this.textAreaArticleDescription.setText("");
-					break;
-				
-				case 2:
-					this.lblArticleStatus.setText("Es muss ein Artikelname vergeben werden");
-					break;
-				}
+				saveButtonPressed();
 			}
 		}
 				
@@ -193,6 +191,44 @@ public class ArticleTab extends JPanel implements ActionListener {
 		this.articleEditId = articleId;
 		this.textFieldArticleName.setText(articleName);
 		this.textAreaArticleDescription.setText(articleDescription);
+	}
+
+	private void saveButtonPressed(){
+		int re = this.articleTableModel.createArticle(this.textFieldArticleName.getText(), this.textAreaArticleDescription.getText());
+		
+		switch(re){
+		case 0:
+			this.lblArticleStatus.setText("Artikel \""+this.textFieldArticleName.getText()+"\" erfolgreich hinzugefügt.");
+			this.textFieldArticleName.setText("");
+			this.textAreaArticleDescription.setText("");
+			break;
+			
+		case 1:
+			this.lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht erstellt werden.");
+			this.textFieldArticleName.setText("");
+			this.textAreaArticleDescription.setText("");
+			break;
+		
+		case 2:
+			this.lblArticleStatus.setText("Es muss ein Artikelname vergeben werden");
+			break;
+		}
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) saveButtonPressed();
+		
+	}
+
+	public void keyReleased(KeyEvent e) {
+		// Nothign to implement
+		
+	}
+
+	public void keyTyped(KeyEvent e) {
+		// Nothing to implement
+		
 	}
 
 }

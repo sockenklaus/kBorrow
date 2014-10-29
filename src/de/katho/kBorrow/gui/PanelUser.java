@@ -1,9 +1,13 @@
 package de.katho.kBorrow.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,8 +21,9 @@ import javax.swing.border.TitledBorder;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.UserDeleteTableButton;
 import de.katho.kBorrow.listener.UserEditTableButton;
+import de.katho.kBorrow.models.UserTableModel;
 
-public class UserTab extends JPanel implements ActionListener {
+public class PanelUser extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = -319340262589243978L;
 	private JLabel lblUserStatus;
@@ -30,7 +35,7 @@ public class UserTab extends JPanel implements ActionListener {
 	private int userEditId;
 	private UserTableModel userTableModel;
 
-	public UserTab(final DbConnector dbCon) throws IOException{
+	public PanelUser(final DbConnector dbCon) throws IOException{
 		super();
 		this.setLayout(null);
 		
@@ -74,6 +79,8 @@ public class UserTab extends JPanel implements ActionListener {
 		textFieldUserName.setColumns(10);
 		textFieldUserSurname.setBounds(90, 61, 121, 20);
 		textFieldUserSurname.setColumns(10);
+		textFieldUserName.addKeyListener(this);
+		textFieldUserSurname.addKeyListener(this);
 		
 		// Edit: Buttons
 		btnUserSave = new JButton("Speichern");
@@ -82,6 +89,14 @@ public class UserTab extends JPanel implements ActionListener {
 		btnUserSave.setBounds(479, 61, 100, 20);
 		btnUserCancel.setBounds(479, 30, 100, 20);
 		btnUserCancel.addActionListener(this);
+		
+		//Traversal-Policy
+		Vector<Component> order = new Vector<Component>();
+		order.add(this.textFieldUserName);
+		order.add(this.textFieldUserSurname);
+		order.add(this.btnUserCancel);
+		order.add(this.btnUserSave);
+		MyFocusTraversalPolicy focusPolicy = new MyFocusTraversalPolicy(order);
 		
 		// User-Edit-Pane
 		JPanel panelUserEdit = new JPanel();
@@ -96,6 +111,8 @@ public class UserTab extends JPanel implements ActionListener {
 		panelUserEdit.add(this.btnUserSave);
 		panelUserEdit.add(this.lblUserStatus);		
 		panelUserEdit.add(this.btnUserCancel);
+		panelUserEdit.setFocusTraversalPolicy(focusPolicy);
+		panelUserEdit.setFocusCycleRoot(true);
 		
 		this.add(panelUserList);
 		this.add(panelUserEdit);
@@ -130,25 +147,7 @@ public class UserTab extends JPanel implements ActionListener {
 				this.userEditId = -1;
 			}
 			else {
-				int re = this.userTableModel.createUser(this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
-				
-				switch (re){
-				case 0:
-					this.lblUserStatus.setText("Benutzer \""+this.textFieldUserName.getText()+" "+this.textFieldUserSurname.getText()+"\" erfolgreich hinzugefügt.");
-					this.textFieldUserName.setText("");
-					this.textFieldUserSurname.setText("");
-					break;
-				
-				case 1:
-					this.lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht erstellt werden.");
-					this.textFieldUserName.setText("");
-					this.textFieldUserSurname.setText("");
-					break;
-				
-				case 2:
-					this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
-					break;
-				}
+				saveButtonPressed();
 			}
 		}
 		
@@ -168,5 +167,44 @@ public class UserTab extends JPanel implements ActionListener {
 		this.userEditId = pId;
 		this.textFieldUserName.setText(pName);
 		this.textFieldUserSurname.setText(pSurname);		
+	}
+	
+	private void saveButtonPressed(){
+		int re = this.userTableModel.createUser(this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
+		
+		switch (re){
+		case 0:
+			this.lblUserStatus.setText("Benutzer \""+this.textFieldUserName.getText()+" "+this.textFieldUserSurname.getText()+"\" erfolgreich hinzugefügt.");
+			this.textFieldUserName.setText("");
+			this.textFieldUserSurname.setText("");
+			break;
+		
+		case 1:
+			this.lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht erstellt werden.");
+			this.textFieldUserName.setText("");
+			this.textFieldUserSurname.setText("");
+			break;
+		
+		case 2:
+			this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
+			break;
+		}
+	}
+
+	@Override
+	public void keyPressed(KeyEvent pKeyPress) {
+		if(pKeyPress.getKeyCode() == KeyEvent.VK_ENTER) saveButtonPressed();		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// Nothing to implement
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// Nothing to implement
+		
 	}
 }

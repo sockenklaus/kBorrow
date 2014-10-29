@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 import de.katho.kBorrow.db.DbConnector;
 
-public class ManageLendingTab extends JPanel {
+public class PanelManageLendings extends JPanel {
 
 	/**
 	 * 
@@ -15,7 +15,7 @@ public class ManageLendingTab extends JPanel {
 	 * Create the panel.
 	 * @param dbCon 
 	 */
-	public ManageLendingTab(DbConnector dbCon) {
+	public PanelManageLendings(DbConnector dbCon) {
 
 	}
 
