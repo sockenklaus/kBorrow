@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import de.katho.kBorrow.data.KUser;
 import de.katho.kBorrow.db.DbConnector;
 
-public class UserTableModel extends AbstractTableModel {
+public class UserModel extends AbstractTableModel {
 
 	/**
 	 * 
@@ -17,7 +17,7 @@ public class UserTableModel extends AbstractTableModel {
 	private String[] header = {"ID", "Vorname", "Nachname", "", ""};
 	private ArrayList<KUser> data = new ArrayList<KUser>();
 	
-	public UserTableModel(DbConnector pDbCon){
+	public UserModel(DbConnector pDbCon){
 		this.dbCon = pDbCon;
 		this.updateTable();
 	}
@@ -76,49 +76,32 @@ public class UserTableModel extends AbstractTableModel {
 		return this.data.get(row).getSurname();
 	}
 	
-	public boolean deleteUser(int id){
-		if(dbCon.deleteUser(id)){
-			int row = this.getRowFromId(id);
-			this.data.remove(row);
-			this.fireTableRowsDeleted(row, row);
-			
-			return true;
-		}
-		return false;
-	}
-	
-	public int createUser(String pName, String pSurname){
-		int status = this.dbCon.createUser(pName, pSurname);
-		
-		updateTable();
-		
-		return status;
-	}
-
-	public int editUser(int pId, String pName, String pSurname) {
-		int status = this.dbCon.editUser(pId, pName, pSurname);
-		
-		if(status == 0){
-			int row = this.getRowFromId(pId);
-			
-			this.data.get(row).setName(pName);
-			this.data.get(row).setSurname(pSurname);
-			this.fireTableRowsUpdated(row, row);
-		}
-		
-		return status;
-	}
-	
 	/**
 	 * 
 	 * @param pId
 	 * @return Returns -1 if there is no row for the given id.
 	 */
-	private int getRowFromId(int pId){
+	public int getRowFromId(int pId){
 		for(KUser elem : this.data){
 			if(elem.getId() == pId) return data.indexOf(elem);
 		}
 		return -1;
+	}
+	
+	public KUser getUserByRow(int pRow){
+		return this.data.get(pRow);
+	}
+	
+	public KUser getUserById(int pId){
+		for(KUser elem : this.data){
+			if(elem.getId() == pId) return elem;
+		}
+		return null;
+	}
+	
+	public void removeRow(int pRow){
+		data.remove(pRow);
+		fireTableRowsDeleted(pRow, pRow);
 	}
 
 	

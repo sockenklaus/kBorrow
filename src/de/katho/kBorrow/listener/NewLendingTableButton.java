@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
 import de.katho.kBorrow.gui.PanelNewLending;
-import de.katho.kBorrow.models.FreeArticleTableModel;
+import de.katho.kBorrow.models.FreeArticleModel;
 
 public class NewLendingTableButton extends TableButton {
 
@@ -30,7 +30,7 @@ public class NewLendingTableButton extends TableButton {
 			public void actionPerformed(ActionEvent e){
 				fireEditingStopped();
 				
-				FreeArticleTableModel model = (FreeArticleTableModel) pTable.getModel();
+				FreeArticleModel model = (FreeArticleModel) pTable.getModel();
 				int row = pTable.getSelectedRow();
 				
 				pPanel.setModeNewLending(model.getArticleId(row), model.getArticleName(row), model.getArticleDescription(row));

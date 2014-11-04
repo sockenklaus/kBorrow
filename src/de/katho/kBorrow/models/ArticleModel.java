@@ -7,17 +7,18 @@ import javax.swing.table.AbstractTableModel;
 import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.db.DbConnector;
 
-public class ArticleTableModel extends AbstractTableModel {
+public class ArticleModel extends AbstractTableModel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1860949772989116745L;
-	private DbConnector dbCon;
-	private String[] header = {"ID", "Artikelname", "Artikelbeschreibung", "", ""};
-	private ArrayList<KArticle> data = new ArrayList<KArticle>();
+	protected String[] header;
+	protected DbConnector dbCon;
+	protected ArrayList<KArticle> data = new ArrayList<KArticle>();
 
-	public ArticleTableModel(DbConnector pDbCon){
+	public ArticleModel(DbConnector pDbCon){
+		header = new String [] {"ID", "Artikelname", "Artikelbeschreibung", "", ""};
 		this.dbCon = pDbCon;
 		this.updateTable();
 	}
@@ -26,20 +27,19 @@ public class ArticleTableModel extends AbstractTableModel {
 		return header[index];
 	}
 	
-	private void updateTable() {
+	public void updateTable() {
 		this.data = this.dbCon.getArticleList();
 		this.fireTableDataChanged();
 		
 	}
 
-	@Override
 	public int getColumnCount() {
-		return this.header.length;
+		return header.length;
 	}
 
 	
 	public int getRowCount() {
-		return this.data.size();
+		return data.size();
 	}
 
 	
@@ -94,75 +94,51 @@ public class ArticleTableModel extends AbstractTableModel {
 		return this.data.get(pRow).getDescription();
 	}
 
-	/**
-	 * Löscht den Artikel mit der gegebenen ID in der Datenbank und aktualisiert die Tabelle.
-	 * 
-	 * @param id	ID des Artikels, der gelöscht werden soll.
-	 * @return		true, wenn der Artikel erfolgreich gelöscht wurde. false, wenn ein Fehler aufgetreten ist.
-	 */
-	public boolean deleteArticle(int id) {
-		if(this.dbCon.deleteArticle(id)){
-			int row = this.getRowFromId(id);
-			this.data.remove(row);
-			this.fireTableRowsDeleted(row, row);
-			
-			return true;
-		}
-		
-		return false;
-	}
+	
 	/**
 	 * Gibt die entsprechende Zeile in der Tabelle für ein Objekt mit der gegebenen ID zurück.
 	 * 
 	 * @param id	ID, für die die Tabellenzeile herausgesucht werden soll
 	 * @return		Zeile in der Tabelle. -1, wenn die ID nicht vorhanden ist.
 	 */
-	private int getRowFromId(int id) {
+	public int getRowFromId(int id) {
 		for (KArticle elem : this.data){
 			if(elem.getId() == id) return data.indexOf(elem);
 		}
 		return -1;
 	}
-
+	
 	/**
-	 * Erzeugt einen neuen Artikel in der Datenbank und aktualisiert die Tabelle
+	 * Entfernt die gegebene Zeile aus der ArrayList
 	 * 
-	 * @param pName Name des Artikels
-	 * @param pDesc Beschreibung des Artikels
-	 * @return  0: Artikel erfolgreich erzeugt
-	 * 			1: SQL-Fehler beim Erzeugen
-	 * 			2: Feld "Name" leer
+	 * @param pRow	Zeile, die gelöscht wird.
 	 */
-	public int createArticle(String pName, String pDesc) {
-		int status = this.dbCon.createArticle(pName, pDesc);
-		
-		updateTable();
-		
-		return status;
+	public void removeRow(int pRow){
+		data.remove(pRow);
+		fireTableRowsDeleted(pRow, pRow);
 	}
-
+	
 	/**
-	 * Ändert einen Artikel in der Datenbank und aktualisiert die Tabelle
+	 * Gibt das Article-Objekt der übergebenen Zeile zurück.
 	 * 
-	 * @param pId	Id des Artikels, der geändert werden soll 
-	 * @param pName	(Neuer) Name des Artikels
-	 * @param pDesc	(Neue) Beschreibung des Artikels
-	 * @return	0: Artikel erfolgreich geändert
-	 * 			1: SQL-Fehler beim Erzeugen
-	 * 			2: Artikelname ist leer
+	 * @param pRow	Zeile, deren Article-Objekt zurückgegeben werden soll.
+	 * @return	KArticle-Objekt
 	 */
-	public int editArticle(int pId, String pName, String pDesc) {
-		int status = this.dbCon.editArticle(pId, pName, pDesc);
-		
-		if(status == 0){
-			int row = this.getRowFromId(pId);
-			
-			this.data.get(row).setName(pName);
-			this.data.get(row).setDescription(pDesc);
-			this.fireTableRowsUpdated(row, row);
+	public KArticle getArticleByRow(int pRow){
+		return this.data.get(pRow);
+	}
+	
+	/**
+	 * Gibt das Article-Objekt mit der entsprechendne ID zurück.
+	 * 
+	 * @param pId	Id, deren Objekt zurückgegeben werden soll.
+	 * @return		KArticle-Objekt
+	 */
+	public KArticle getArticleById(int pId){
+		for(KArticle elem : data){
+			if(elem.getId() == pId) return elem;
 		}
-		
-		return status;
+		return null;
 	}
 
 }

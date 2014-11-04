@@ -15,5 +15,6 @@ public interface DbConnector {
 	public int createArticle(String pName, String pDesc);
 	public boolean deleteArticle(int id);
 	public int editArticle(int pId, String pName, String pDesc);
+	public ArrayList<KArticle> getFreeArticleList();
 	
 }

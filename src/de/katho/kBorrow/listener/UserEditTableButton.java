@@ -9,8 +9,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
-import de.katho.kBorrow.gui.PanelUser;
-import de.katho.kBorrow.models.UserTableModel;
+import de.katho.kBorrow.gui.UserPanel;
+import de.katho.kBorrow.models.UserModel;
 
 public class UserEditTableButton extends TableButton {
 
@@ -19,7 +19,7 @@ public class UserEditTableButton extends TableButton {
 	 */
 	private static final long serialVersionUID = -886584066497429394L;
 	
-	public UserEditTableButton(String pLabel, final JTable pTable, final PanelUser pPanel) throws IOException{
+	public UserEditTableButton(String pLabel, final JTable pTable, final UserPanel pPanel) throws IOException{
 		super(pLabel);
 		ImageIcon icon = new ImageIcon(ImageIO.read(new File("assets/icons/accessories-text-editor.png")));
 		
@@ -30,7 +30,7 @@ public class UserEditTableButton extends TableButton {
 			public void actionPerformed(ActionEvent e){
 				fireEditingStopped();
 				
-				UserTableModel model = (UserTableModel) pTable.getModel();
+				UserModel model = (UserModel) pTable.getModel();
 				int row = pTable.getSelectedRow();
 				
 				pPanel.setModeEditUser(model.getUserId(row), model.getUserName(row), model.getUserSurname(row));	

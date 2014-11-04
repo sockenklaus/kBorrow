@@ -9,8 +9,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
-import de.katho.kBorrow.gui.PanelArticle;
-import de.katho.kBorrow.models.ArticleTableModel;
+import de.katho.kBorrow.gui.ArticlePanel;
+import de.katho.kBorrow.models.ArticleModel;
 
 public class ArticleEditTableButton extends TableButton {
 
@@ -19,7 +19,7 @@ public class ArticleEditTableButton extends TableButton {
 	 */
 	private static final long serialVersionUID = -5902626427691636902L;
 
-	public ArticleEditTableButton(String pLabel, final JTable pTable, final PanelArticle articleTab) throws IOException {
+	public ArticleEditTableButton(String pLabel, final JTable pTable, final ArticlePanel articleTab) throws IOException {
 		super(pLabel);
 		ImageIcon icon = new ImageIcon(ImageIO.read(new File("assets/icons/accessories-text-editor.png")));
 				
@@ -30,7 +30,7 @@ public class ArticleEditTableButton extends TableButton {
 			public void actionPerformed(ActionEvent e){
 				fireEditingStopped();
 				
-				ArticleTableModel model = (ArticleTableModel) pTable.getModel();
+				ArticleModel model = (ArticleModel) pTable.getModel();
 				int row = pTable.getSelectedRow();
 				
 				articleTab.setModeEditArticle(model.getArticleId(row), model.getArticleName(row), model.getArticleDescription(row));

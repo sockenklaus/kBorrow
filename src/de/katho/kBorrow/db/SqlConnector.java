@@ -59,5 +59,11 @@ public class SqlConnector implements DbConnector{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public ArrayList<KArticle> getFreeArticleList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

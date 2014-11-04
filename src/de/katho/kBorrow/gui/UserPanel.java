@@ -18,12 +18,13 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import de.katho.kBorrow.controller.UserController;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.UserDeleteTableButton;
 import de.katho.kBorrow.listener.UserEditTableButton;
-import de.katho.kBorrow.models.UserTableModel;
+import de.katho.kBorrow.models.UserModel;
 
-public class PanelUser extends JPanel implements ActionListener, KeyListener {
+public class UserPanel extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = -319340262589243978L;
 	private JLabel lblUserStatus;
@@ -33,17 +34,19 @@ public class PanelUser extends JPanel implements ActionListener, KeyListener {
 	private JButton btnUserCancel;
 	private boolean userModeEdit;
 	private int userEditId;
-	private UserTableModel userTableModel;
+	private UserModel userModel;
+	private UserController userController;
 
-	public PanelUser(final DbConnector dbCon) throws IOException{
+	public UserPanel(final DbConnector dbCon) throws IOException{
 		super();
 		this.setLayout(null);
+		this.userModel = new UserModel(dbCon);
+		this.userController = new UserController(dbCon, this.userModel);
 		
 		//Tabelle und drumherum
-		this.userTableModel = new UserTableModel(dbCon);
-		JTable userTable = new JTable(userTableModel);
+		JTable userTable = new JTable(userModel);
 		userTable.setRowHeight(30);
-		UserDeleteTableButton userDeleteTableButton = new UserDeleteTableButton("Löschen", userTable);
+		UserDeleteTableButton userDeleteTableButton = new UserDeleteTableButton("Löschen", userTable, this, userController);
 		UserEditTableButton userEditTableButton = new UserEditTableButton("Bearbeiten", userTable, this);
 		
 		for (int i = 3; i <= 4; i++){
@@ -54,6 +57,9 @@ public class PanelUser extends JPanel implements ActionListener, KeyListener {
 			userTable.getColumnModel().getColumn(i).setMaxWidth(30);
 			userTable.getColumnModel().getColumn(i).setPreferredWidth(30);
 		}
+		userTable.getColumnModel().getColumn(0).setMinWidth(30);
+		userTable.getColumnModel().getColumn(0).setMaxWidth(30);
+		userTable.getColumnModel().getColumn(0).setPreferredWidth(30);
 		
 		userTable.setFillsViewportHeight(true);
 		
@@ -121,45 +127,22 @@ public class PanelUser extends JPanel implements ActionListener, KeyListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == this.btnUserSave){
-			if(this.userModeEdit){
-				int re = this.userTableModel.editUser(this.userEditId, this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
-				
-				switch(re){
-				case 0:
-					this.lblUserStatus.setText("Benutzer-ID \""+this.userEditId+"\" erfolgreich bearbeitet.");
-					this.textFieldUserName.setText("");
-					this.textFieldUserSurname.setText("");
-					break;
-					
-				case 1:
-					this.lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht bearbeitet werden.");
-					this.textFieldUserName.setText("");
-					this.textFieldUserSurname.setText("");
-					break;
-					
-				case 2:
-					this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
-					break;
-					
-				}
-				
-				this.userModeEdit = false;
-				this.userEditId = -1;
-			}
-			else {
-				saveButtonPressed();
-			}
+			saveButtonPressed();
 		}
 		
 		/**
 		 * Aktionen für den Button "Benutzer abbrechen"
 		 */
 		if(e.getSource() == this.btnUserCancel){
-			this.userModeEdit = false;
-			this.textFieldUserName.setText("");
-			this.textFieldUserSurname.setText("");
+			this.resetModeEditUser();
 		}
 		
+	}
+
+	public void resetModeEditUser() {
+		this.userModeEdit = false;
+		this.textFieldUserName.setText("");
+		this.textFieldUserSurname.setText("");
 	}
 
 	public void setModeEditUser(int pId, String pName, String pSurname){
@@ -170,24 +153,51 @@ public class PanelUser extends JPanel implements ActionListener, KeyListener {
 	}
 	
 	private void saveButtonPressed(){
-		int re = this.userTableModel.createUser(this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
+		if(this.userModeEdit){
+			int re = this.userController.editUser(this.userEditId, this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
+			
+			switch(re){
+			case 0:
+				this.lblUserStatus.setText("Benutzer-ID \""+this.userEditId+"\" erfolgreich bearbeitet.");
+				this.textFieldUserName.setText("");
+				this.textFieldUserSurname.setText("");
+				break;
+				
+			case 1:
+				this.lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht bearbeitet werden.");
+				this.textFieldUserName.setText("");
+				this.textFieldUserSurname.setText("");
+				break;
+				
+			case 2:
+				this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
+				break;
+				
+			}
+			
+			this.userModeEdit = false;
+			this.userEditId = -1;
+		}
+		else {					
+			int re = userController.createUser(this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
 		
-		switch (re){
-		case 0:
-			this.lblUserStatus.setText("Benutzer \""+this.textFieldUserName.getText()+" "+this.textFieldUserSurname.getText()+"\" erfolgreich hinzugefügt.");
-			this.textFieldUserName.setText("");
-			this.textFieldUserSurname.setText("");
-			break;
-		
-		case 1:
-			this.lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht erstellt werden.");
-			this.textFieldUserName.setText("");
-			this.textFieldUserSurname.setText("");
-			break;
-		
-		case 2:
-			this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
-			break;
+			switch (re){
+			case 0:
+				this.lblUserStatus.setText("Benutzer \""+this.textFieldUserName.getText()+" "+this.textFieldUserSurname.getText()+"\" erfolgreich hinzugefügt.");
+				this.textFieldUserName.setText("");
+				this.textFieldUserSurname.setText("");
+				break;
+			
+			case 1:
+				this.lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht erstellt werden.");
+				this.textFieldUserName.setText("");
+				this.textFieldUserSurname.setText("");
+				break;
+			
+			case 2:
+				this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
+				break;
+			}
 		}
 	}
 

@@ -22,15 +22,17 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
+import de.katho.kBorrow.controller.ArticleController;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.ArticleDeleteTableButton;
 import de.katho.kBorrow.listener.ArticleEditTableButton;
-import de.katho.kBorrow.models.ArticleTableModel;
+import de.katho.kBorrow.models.ArticleModel;
 
-public class PanelArticle extends JPanel implements ActionListener, KeyListener {
+public class ArticlePanel extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = -8511924597640457608L;
-	private ArticleTableModel articleTableModel;
+	private ArticleModel articleModel;
+	private ArticleController articleController;
 	private JTextArea textAreaArticleDescription;
 	private JTextField textFieldArticleName;
 	private JButton btnArticleSave;
@@ -43,17 +45,19 @@ public class PanelArticle extends JPanel implements ActionListener, KeyListener 
 	 * Create the panel.
 	 * @throws IOException 
 	 */
-	public PanelArticle(final DbConnector dbCon) throws IOException {	
+	public ArticlePanel(final DbConnector dbCon) throws IOException {	
 		super();
-		this.setLayout(null);		
+		this.setLayout(null);
+		articleModel = new ArticleModel(dbCon);
+		articleController = new ArticleController(dbCon, articleModel);
 		
 		/*
 		 * Tabelle und drumherum
 		 */
-		this.articleTableModel = new ArticleTableModel(dbCon);
-		JTable articleTable = new JTable(articleTableModel);
+		
+		JTable articleTable = new JTable(articleModel);
 		articleTable.setRowHeight(30);
-		ArticleDeleteTableButton articleDeleteTableButton = new ArticleDeleteTableButton("Löschen", articleTable);
+		ArticleDeleteTableButton articleDeleteTableButton = new ArticleDeleteTableButton("Löschen", articleTable, this, articleController);
 		ArticleEditTableButton articleEditTableButton = new ArticleEditTableButton("Bearbeiten", articleTable, this);
 		
 		for (int i = 3; i <= 4; i++){
@@ -64,6 +68,9 @@ public class PanelArticle extends JPanel implements ActionListener, KeyListener 
 			articleTable.getColumnModel().getColumn(i).setMaxWidth(30);
 			articleTable.getColumnModel().getColumn(i).setPreferredWidth(30);
 		}
+		articleTable.getColumnModel().getColumn(0).setMinWidth(30);
+		articleTable.getColumnModel().getColumn(0).setMaxWidth(30);
+		articleTable.getColumnModel().getColumn(0).setPreferredWidth(30);
 		
 		articleTable.setFillsViewportHeight(true);
 		
@@ -122,7 +129,7 @@ public class PanelArticle extends JPanel implements ActionListener, KeyListener 
 		 * PanelArticleEdit
 		 */		
 		JPanel panelArticleEdit = new JPanel();
-		panelArticleEdit.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Artikel hinzuf\u00FCgen / bearbeiten", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panelArticleEdit.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Artikel hinzufügen / bearbeiten", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		panelArticleEdit.setBounds(0, 273, 589, 170);
 		panelArticleEdit.setLayout(null);
 		panelArticleEdit.add(lblName);
@@ -145,45 +152,21 @@ public class PanelArticle extends JPanel implements ActionListener, KeyListener 
 		 * Aktionen für den Button "Artikel speichern"
 		 */
 		if(e.getSource() == this.btnArticleSave){
-			if(this.articleModeEdit){
-				int re = this.articleTableModel.editArticle(this.articleEditId, this.textFieldArticleName.getText(), this.textAreaArticleDescription.getText());
-				
-				switch(re){
-				case 0:
-					this.lblArticleStatus.setText("Artikel-ID \""+this.articleEditId+"\" erfolgreich bearbeitet.");
-					this.textFieldArticleName.setText("");
-					this.textAreaArticleDescription.setText("");
-					break;
-					
-				case 1:
-					this.lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht bearbeitet werden.");
-					this.textFieldArticleName.setText("");
-					this.textAreaArticleDescription.setText("");
-					break;
-					
-				case 2:
-					this.lblArticleStatus.setText("Artikelname muss ausgefüllt sein.");
-					break;
-					
-				}
-				
-				this.articleModeEdit = false;
-				this.articleEditId = -1;
-			}
-			
-			else {
-				saveButtonPressed();
-			}
+			saveButtonPressed();
 		}
 				
 		/**
 		 * Aktionen für den Button "Artikel abbrechen"
 		 */
 		if(e.getSource() == this.btnArticleCancel){
-			this.articleModeEdit = false;
-			this.textFieldArticleName.setText("");
-			this.textAreaArticleDescription.setText("");
+			this.resetModeEditArticle();
 		}
+	}
+
+	public void resetModeEditArticle() {
+		this.articleModeEdit = false;
+		this.textFieldArticleName.setText("");
+		this.textAreaArticleDescription.setText("");
 	}
 
 	public void setModeEditArticle(int articleId, String articleName, String articleDescription) {
@@ -194,25 +177,53 @@ public class PanelArticle extends JPanel implements ActionListener, KeyListener 
 	}
 
 	private void saveButtonPressed(){
-		int re = this.articleTableModel.createArticle(this.textFieldArticleName.getText(), this.textAreaArticleDescription.getText());
-		
-		switch(re){
-		case 0:
-			this.lblArticleStatus.setText("Artikel \""+this.textFieldArticleName.getText()+"\" erfolgreich hinzugefügt.");
-			this.textFieldArticleName.setText("");
-			this.textAreaArticleDescription.setText("");
-			break;
+		if(this.articleModeEdit){
+			int re = articleController.editArticle(this.articleEditId, this.textFieldArticleName.getText(), this.textAreaArticleDescription.getText());
 			
-		case 1:
-			this.lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht erstellt werden.");
-			this.textFieldArticleName.setText("");
-			this.textAreaArticleDescription.setText("");
-			break;
-		
-		case 2:
-			this.lblArticleStatus.setText("Es muss ein Artikelname vergeben werden");
-			break;
+			switch(re){
+			case 0:
+				this.lblArticleStatus.setText("Artikel-ID \""+this.articleEditId+"\" erfolgreich bearbeitet.");
+				this.textFieldArticleName.setText("");
+				this.textAreaArticleDescription.setText("");
+				break;
+				
+			case 1:
+				this.lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht bearbeitet werden.");
+				this.textFieldArticleName.setText("");
+				this.textAreaArticleDescription.setText("");
+				break;
+				
+			case 2:
+				this.lblArticleStatus.setText("Artikelname muss ausgefüllt sein.");
+				break;
+				
+			}
+			
+			this.articleModeEdit = false;
+			this.articleEditId = -1;
 		}
+		
+		else {
+			int re = articleController.createArticle(this.textFieldArticleName.getText(), this.textAreaArticleDescription.getText());
+			
+			switch(re){
+			case 0:
+				this.lblArticleStatus.setText("Artikel \""+this.textFieldArticleName.getText()+"\" erfolgreich hinzugefügt.");
+				this.textFieldArticleName.setText("");
+				this.textAreaArticleDescription.setText("");
+				break;
+				
+			case 1:
+				this.lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht erstellt werden.");
+				this.textFieldArticleName.setText("");
+				this.textAreaArticleDescription.setText("");
+				break;
+			
+			case 2:
+				this.lblArticleStatus.setText("Es muss ein Artikelname vergeben werden");
+				break;
+			}
+		}		
 	}
 	
 	@Override

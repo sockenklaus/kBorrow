@@ -55,8 +55,8 @@ public class MainWindow {
 			this.frame.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);
 			this.tabbedPane.addTab("Neue Ausleihe", new PanelNewLending(this.dbCon));
 			this.tabbedPane.addTab("Ausleihen verwalten", new PanelManageLendings(this.dbCon));
-			this.tabbedPane.addTab("Artikel verwalten", new PanelArticle(this.dbCon));
-			this.tabbedPane.addTab("Benutzer verwalten", new PanelUser(this.dbCon));
+			this.tabbedPane.addTab("Artikel verwalten", new ArticlePanel(this.dbCon));
+			this.tabbedPane.addTab("Benutzer verwalten", new UserPanel(this.dbCon));
 			
 		}
 		catch(ClassNotFoundException | InstantiationException | IllegalAccessException | IOException | UnsupportedLookAndFeelException | SQLException e) {

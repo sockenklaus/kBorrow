@@ -182,44 +182,6 @@ public class SqliteConnector implements DbConnector {
 
 		return text.toString();
 	}
-	/**
-	 * 
-	 * @return  0: Benutzer erfolgreich erzeugt
-	 * 			1: SQL-Fehler beim Erzeugen
-	 * 			2: Benutzername ist leer
-	 */
-	public int createUser(String pName, String pSurname){
-		if (pName.isEmpty() && pSurname.isEmpty()) return 2;
-		try {
-			Statement st = this.connection.createStatement();
-			String query = "INSERT INTO user (name, surname) VALUES ('"+pName+"', '"+pSurname+"')";
-			
-			st.executeUpdate(query);
-			
-			return 0;
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return 1;
-		}
-	}
-	
-	public boolean deleteUser(int id){
-		// @TODO: Ausleihen auf einen anderen User umschreiben!
-		try {
-			Statement st = this.connection.createStatement();
-			String query = "DELETE FROM user WHERE id = '"+id+"'";
-			
-			st.executeUpdate(query);
-			
-			return true;
-		}
-		catch (SQLException e){
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
 	public ArrayList<KUser> getUserList(){
 		ArrayList<KUser> userArr = new ArrayList<KUser>();
 		
@@ -260,6 +222,48 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
+	public ArrayList<KArticle> getFreeArticleList() {
+		ArrayList<KArticle> artArr = new ArrayList<KArticle>();
+		
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "SELECT article.id, name, description FROM article LEFT OUTER JOIN lending ON article.id = lending.article_id WHERE lending.start_date IS NULL OR (lending.start_date IS NOT NULL AND lending.end_date IS NOT NULL);";
+			ResultSet rs = st.executeQuery(query);
+			
+			while (rs.next()){
+				artArr.add(new KArticle(rs.getInt("id"), rs.getString("name"), rs.getString("description")));
+			}
+			
+			return artArr;
+		}
+		catch(SQLException ex){
+			ex.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * 
+	 * @return  0: Benutzer erfolgreich erzeugt
+	 * 			1: SQL-Fehler beim Erzeugen
+	 * 			2: Benutzername ist leer
+	 */
+	public int createUser(String pName, String pSurname){
+		if (pName.isEmpty() && pSurname.isEmpty()) return 2;
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "INSERT INTO user (name, surname) VALUES ('"+pName+"', '"+pSurname+"')";
+			
+			st.executeUpdate(query);
+			
+			return 0;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 1;
+		}
+	}
+
 	public int editUser(int pId, String pName, String pSurname) {
 		if(pName.isEmpty() && pSurname.isEmpty()) return 2;
 		try {
@@ -273,6 +277,22 @@ public class SqliteConnector implements DbConnector {
 		catch(SQLException e){
 			e.printStackTrace();
 			return 1;
+		}
+	}
+
+	public boolean deleteUser(int id){
+		// @TODO: Ausleihen auf einen anderen User umschreiben!
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "DELETE FROM user WHERE id = '"+id+"'";
+			
+			st.executeUpdate(query);
+			
+			return true;
+		}
+		catch (SQLException e){
+			e.printStackTrace();
+			return false;
 		}
 	}
 
