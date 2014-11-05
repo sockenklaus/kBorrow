@@ -14,10 +14,10 @@ public class FreeArticleModel extends ArticleModel {
 		super(pDbCon);
 		this.header = new String[] {"ID", "Artikelname", "Artikelbeschreibung", ""};
 		
-		updateTable();
+		updateModel();
 	}
 	
-	public void updateTable(){
+	public void updateModel(){
 		data = dbCon.getFreeArticleList();
 		fireTableDataChanged();
 	}

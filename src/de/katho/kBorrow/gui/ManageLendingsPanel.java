@@ -1,10 +1,12 @@
 package de.katho.kBorrow.gui;
 
+import java.util.HashMap;
+
 import javax.swing.JPanel;
 
 import de.katho.kBorrow.db.DbConnector;
 
-public class PanelManageLendings extends JPanel {
+public class ManageLendingsPanel extends JPanel {
 
 	/**
 	 * 
@@ -15,7 +17,7 @@ public class PanelManageLendings extends JPanel {
 	 * Create the panel.
 	 * @param dbCon 
 	 */
-	public PanelManageLendings(DbConnector dbCon) {
+	public ManageLendingsPanel(DbConnector dbCon, HashMap<String, Object> pModels) {
 
 	}
 

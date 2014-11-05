@@ -20,17 +20,16 @@ public class ArticleModel extends AbstractTableModel {
 	public ArticleModel(DbConnector pDbCon){
 		header = new String [] {"ID", "Artikelname", "Artikelbeschreibung", "", ""};
 		this.dbCon = pDbCon;
-		this.updateTable();
+		this.updateModel();
 	}
 	
 	public String getColumnName(int index){
 		return header[index];
 	}
 	
-	public void updateTable() {
+	public void updateModel() {
 		this.data = this.dbCon.getArticleList();
-		this.fireTableDataChanged();
-		
+		this.fireTableDataChanged();		
 	}
 
 	public int getColumnCount() {
@@ -46,17 +45,17 @@ public class ArticleModel extends AbstractTableModel {
 	public Object getValueAt(int pRow, int pCol) {
 		switch(pCol){
 		case 0:
-			return String.valueOf(this.data.get(pRow).getId());
+			return String.valueOf(data.get(pRow).getId());
 			
 		case 1:
-			return this.data.get(pRow).getName();
+			return data.get(pRow).getName();
 			
 		case 2:
-			return this.data.get(pRow).getDescription();
+			return data.get(pRow).getDescription();
 			
 		default:
 			return null;
-		}
+		}	
 	}
 	
 	public boolean isCellEditable(int pRow, int pCol){
@@ -107,17 +106,7 @@ public class ArticleModel extends AbstractTableModel {
 		}
 		return -1;
 	}
-	
-	/**
-	 * Entfernt die gegebene Zeile aus der ArrayList
-	 * 
-	 * @param pRow	Zeile, die gelöscht wird.
-	 */
-	public void removeRow(int pRow){
-		data.remove(pRow);
-		fireTableRowsDeleted(pRow, pRow);
-	}
-	
+		
 	/**
 	 * Gibt das Article-Objekt der übergebenen Zeile zurück.
 	 * 

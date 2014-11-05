@@ -9,11 +9,16 @@ import javax.swing.UnsupportedLookAndFeelException;
 import java.awt.BorderLayout;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import de.katho.kBorrow.Settings;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.db.SqlConnector;
 import de.katho.kBorrow.db.SqliteConnector;
+import de.katho.kBorrow.models.ArticleModel;
+import de.katho.kBorrow.models.FreeArticleModel;
+import de.katho.kBorrow.models.UserModel;
+import de.katho.kBorrow.models.UserListModel;
 
 
 public class MainWindow {
@@ -26,6 +31,7 @@ public class MainWindow {
 
 
 	private Settings set;
+	private HashMap<String, Object> models;
 
 	/**
 	 * Create the application.
@@ -51,12 +57,18 @@ public class MainWindow {
 			}
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
+			models = new HashMap<String, Object>();
+			models.put("usermodel", new UserModel(dbCon));
+			models.put("userlistmodel", new UserListModel(dbCon));
+			models.put("articlemodel", new ArticleModel(dbCon));
+			models.put("freearticlemodel", new FreeArticleModel(dbCon));
+			
 			this.tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 			this.frame.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);
-			this.tabbedPane.addTab("Neue Ausleihe", new PanelNewLending(this.dbCon));
-			this.tabbedPane.addTab("Ausleihen verwalten", new PanelManageLendings(this.dbCon));
-			this.tabbedPane.addTab("Artikel verwalten", new ArticlePanel(this.dbCon));
-			this.tabbedPane.addTab("Benutzer verwalten", new UserPanel(this.dbCon));
+			this.tabbedPane.addTab("Neue Ausleihe", new NewLendingPanel(this.dbCon, models));
+			this.tabbedPane.addTab("Ausleihen verwalten", new ManageLendingsPanel(this.dbCon, models));
+			this.tabbedPane.addTab("Artikel verwalten", new ArticlePanel(this.dbCon, models));
+			this.tabbedPane.addTab("Benutzer verwalten", new UserPanel(this.dbCon, models));
 			
 		}
 		catch(ClassNotFoundException | InstantiationException | IllegalAccessException | IOException | UnsupportedLookAndFeelException | SQLException e) {

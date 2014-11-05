@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
@@ -31,7 +32,6 @@ import de.katho.kBorrow.models.ArticleModel;
 public class ArticlePanel extends JPanel implements ActionListener, KeyListener {
 
 	private static final long serialVersionUID = -8511924597640457608L;
-	private ArticleModel articleModel;
 	private ArticleController articleController;
 	private JTextArea textAreaArticleDescription;
 	private JTextField textFieldArticleName;
@@ -40,16 +40,18 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 	private JLabel lblArticleStatus;
 	private boolean articleModeEdit;
 	private int articleEditId;
+	private ArticleModel articleModel;
 
 	/**
 	 * Create the panel.
 	 * @throws IOException 
 	 */
-	public ArticlePanel(final DbConnector dbCon) throws IOException {	
+	public ArticlePanel(final DbConnector dbCon, HashMap<String, Object> pModels) throws IOException {	
 		super();
 		this.setLayout(null);
-		articleModel = new ArticleModel(dbCon);
-		articleController = new ArticleController(dbCon, articleModel);
+		articleModel = (ArticleModel)pModels.get("articlemodel");
+		
+		articleController = new ArticleController(dbCon, pModels);
 		
 		/*
 		 * Tabelle und drumherum

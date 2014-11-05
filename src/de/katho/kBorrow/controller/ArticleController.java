@@ -1,15 +1,20 @@
 package de.katho.kBorrow.controller;
 
+import java.util.HashMap;
+
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.models.ArticleModel;
+import de.katho.kBorrow.models.FreeArticleModel;
 
 public class ArticleController {
 	private DbConnector dbCon;
 	private ArticleModel articleModel;
+	private FreeArticleModel freeArticleModel;
 	
-	public ArticleController(DbConnector pDbCon, ArticleModel pModel){
+	public ArticleController(DbConnector pDbCon, HashMap<String, Object> pModels){
 		dbCon = pDbCon;
-		articleModel = pModel;
+		articleModel = (ArticleModel)pModels.get("articlemodel");
+		freeArticleModel = (FreeArticleModel)pModels.get("freearticlemodel");
 	}
 	
 	/**
@@ -24,7 +29,8 @@ public class ArticleController {
 	public int createArticle(String pName, String pDesc) {
 		int status = dbCon.createArticle(pName, pDesc);
 		
-		articleModel.updateTable();
+		articleModel.updateModel();
+		freeArticleModel.updateModel();
 		
 		return status;
 	}
@@ -43,11 +49,8 @@ public class ArticleController {
 		int status = this.dbCon.editArticle(pId, pName, pDesc);
 		
 		if(status == 0){
-			int row = articleModel.getRowFromId(pId);
-			
-			articleModel.getArticleByRow(row).setName(pName);
-			articleModel.getArticleByRow(row).setDescription(pDesc);
-			articleModel.fireTableRowsUpdated(row, row);
+			articleModel.updateModel();
+			freeArticleModel.updateModel();
 		}
 		
 		return status;
@@ -61,8 +64,8 @@ public class ArticleController {
 	 */
 	public boolean deleteArticle(int id) {
 		if(this.dbCon.deleteArticle(id)){
-			int row = articleModel.getRowFromId(id);
-			articleModel.removeRow(row);
+			articleModel.updateModel();
+			freeArticleModel.updateModel();
 			
 			return true;
 		}

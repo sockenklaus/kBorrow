@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.NewLendingTableButton;
 import de.katho.kBorrow.models.FreeArticleModel;
+import de.katho.kBorrow.models.UserListModel;
 
 import javax.swing.border.TitledBorder;
 import javax.swing.JScrollPane;
@@ -12,6 +13,7 @@ import javax.swing.JTable;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
@@ -22,7 +24,7 @@ import javax.swing.UIManager;
 
 import java.awt.Color;
 
-public class PanelNewLending extends JPanel {
+public class NewLendingPanel extends JPanel {
 
 	/**
 	 * 
@@ -32,17 +34,20 @@ public class PanelNewLending extends JPanel {
 	private JTextField tfName;
 	private JTextField tfSurname;
 	private JTextField tfStudentNumber;
+	private UserListModel userListModel;
 	
 	/**
 	 * Create the panel.
 	 * @param dbCon 
 	 * @throws IOException 
 	 */
-	public PanelNewLending(final DbConnector dbCon) throws IOException {
-		this.setLayout(null);
+	public NewLendingPanel(final DbConnector dbCon, HashMap<String, Object> pModel) throws IOException {
+		setLayout(null);
 		
 		// FreeArticleTable
-		this.freeArticleModel = new FreeArticleModel(dbCon);
+		freeArticleModel = (FreeArticleModel)pModel.get("freearticlemodel");
+		userListModel = (UserListModel)pModel.get("userlistmodel");
+		
 		JTable freeArticleTable = new JTable(freeArticleModel);
 		freeArticleTable.setRowHeight(30);
 		
@@ -101,7 +106,7 @@ public class PanelNewLending extends JPanel {
 		lblBenutzer.setBounds(350, 20, 70, 20);
 		panelNewLending.add(lblBenutzer);
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<String>(userListModel);
 		comboBox.setBounds(430, 20, 130, 20);
 		panelNewLending.add(comboBox);
 		

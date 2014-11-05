@@ -1,22 +1,28 @@
 package de.katho.kBorrow.controller;
 
+import java.util.HashMap;
+
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.models.UserModel;
+import de.katho.kBorrow.models.UserListModel;
 
 public class UserController {
 
 	private DbConnector dbCon;
 	private UserModel userModel;
+	private UserListModel userListModel;
 	
-	public UserController(DbConnector pDbCon, UserModel pModel) {
+	public UserController(DbConnector pDbCon, HashMap<String, Object> pModels) {
 		dbCon = pDbCon;
-		userModel = pModel;
+		userModel = (UserModel)pModels.get("usermodel");
+		userListModel = (UserListModel)pModels.get("userlistmodel");
 	}
 
 	public int createUser(String pName, String pSurname){
 		int status = dbCon.createUser(pName, pSurname);
 		
-		userModel.updateTable();
+		userModel.updateModel();
+		userListModel.updateModel();
 		
 		return status;
 	}
@@ -25,11 +31,8 @@ public class UserController {
 		int status = dbCon.editUser(pId, pName, pSurname);
 		
 		if(status == 0){
-			int row = userModel.getRowFromId(pId);
-			
-			userModel.getUserByRow(row).setName(pName);
-			userModel.getUserByRow(row).setSurname(pSurname);
-			userModel.fireTableRowsUpdated(row, row);
+			userModel.updateModel();
+			userListModel.updateModel();
 		}
 		
 		return status;
@@ -37,9 +40,8 @@ public class UserController {
 	
 	public boolean deleteUser(int id){
 		if(dbCon.deleteUser(id)){
-			int row = userModel.getRowFromId(id);
-			
-			userModel.removeRow(row);
+			userModel.updateModel();
+			userListModel.updateModel();
 			
 			return true;
 		}

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -37,11 +38,11 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 	private UserModel userModel;
 	private UserController userController;
 
-	public UserPanel(final DbConnector dbCon) throws IOException{
+	public UserPanel(final DbConnector dbCon, HashMap<String, Object> pModels) throws IOException{
 		super();
-		this.setLayout(null);
-		this.userModel = new UserModel(dbCon);
-		this.userController = new UserController(dbCon, this.userModel);
+		setLayout(null);
+		userModel = (UserModel)pModels.get("usermodel");
+		userController = new UserController(dbCon, pModels);
 		
 		//Tabelle und drumherum
 		JTable userTable = new JTable(userModel);

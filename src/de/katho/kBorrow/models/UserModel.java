@@ -18,8 +18,8 @@ public class UserModel extends AbstractTableModel {
 	private ArrayList<KUser> data = new ArrayList<KUser>();
 	
 	public UserModel(DbConnector pDbCon){
-		this.dbCon = pDbCon;
-		this.updateTable();
+		dbCon = pDbCon;
+		updateModel();
 	}
 	
 	@Override
@@ -53,9 +53,9 @@ public class UserModel extends AbstractTableModel {
 		return header[index];
 	}
 	
-	public void updateTable(){
-		this.data = this.dbCon.getUserList();
-		this.fireTableDataChanged();
+	public void updateModel(){
+		data = dbCon.getUserList();
+		fireTableDataChanged();
 	}
 	
 	// Die Funktion muss differenzierter werden
@@ -97,12 +97,5 @@ public class UserModel extends AbstractTableModel {
 			if(elem.getId() == pId) return elem;
 		}
 		return null;
-	}
-	
-	public void removeRow(int pRow){
-		data.remove(pRow);
-		fireTableRowsDeleted(pRow, pRow);
-	}
-
-	
+	}	
 }
