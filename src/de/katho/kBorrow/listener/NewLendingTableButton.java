@@ -33,7 +33,7 @@ public class NewLendingTableButton extends TableButton {
 				FreeArticleModel model = (FreeArticleModel) pTable.getModel();
 				int row = pTable.getSelectedRow();
 				
-				pPanel.setModeNewLending(model.getArticleId(row), model.getArticleName(row), model.getArticleDescription(row));
+				pPanel.setModeNewLending(model.getArticleId(row), model.getArticleName(row));
 			}
 		});
 	}

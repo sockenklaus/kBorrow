@@ -2,10 +2,13 @@ package de.katho.kBorrow.gui;
 
 import javax.swing.JPanel;
 
+import de.katho.kBorrow.Util;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.NewLendingTableButton;
 import de.katho.kBorrow.models.FreeArticleModel;
 import de.katho.kBorrow.models.UserListModel;
+
+import org.jdatepicker.*;
 
 import javax.swing.border.TitledBorder;
 import javax.swing.JScrollPane;
@@ -15,6 +18,7 @@ import java.awt.BorderLayout;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JSeparator;
@@ -35,6 +39,9 @@ public class NewLendingPanel extends JPanel {
 	private JTextField tfSurname;
 	private JTextField tfStudentNumber;
 	private UserListModel userListModel;
+	private JLabel lblStartDate;
+	private JLabel lblArticleName;
+	private int articleId = -1;
 	
 	/**
 	 * Create the panel.
@@ -86,21 +93,29 @@ public class NewLendingPanel extends JPanel {
 		lblArtikelname.setBounds(10, 20, 90, 20);
 		panelNewLending.add(lblArtikelname);
 		
-		JLabel lblArticleName = new JLabel("");
-		lblArticleName.setBounds(110, 20, 100, 20);
+		lblArticleName = new JLabel("");
+		lblArticleName.setBounds(110, 20, 205, 20);
 		panelNewLending.add(lblArticleName);
 		
 		JLabel lblAusgeliehenAm = new JLabel("Ausgeliehen am:");
 		lblAusgeliehenAm.setBounds(10, 40, 90, 20);
 		panelNewLending.add(lblAusgeliehenAm);
 		
-		JLabel lblStartDate = new JLabel("");
-		lblStartDate.setBounds(110, 40, 100, 20);
+		lblStartDate = new JLabel("");
+		lblStartDate.setBounds(110, 40, 205, 20);
 		panelNewLending.add(lblStartDate);
 		
 		JLabel lblNewLabel = new JLabel("Vor. Rückgabe:");
 		lblNewLabel.setBounds(10, 60, 90, 20);
 		panelNewLending.add(lblNewLabel);
+		
+		JDatePicker picker = new JDateComponentFactory().createJDatePicker();
+		picker.setTextEditable(true);
+		JPanel pickerPanel = new JPanel();
+		pickerPanel.setBounds(106, 60, 205, 28);
+		pickerPanel.add((JComponent)picker);
+		panelNewLending.add(pickerPanel);	
+		
 		
 		JLabel lblBenutzer = new JLabel("Benutzer:");
 		lblBenutzer.setBounds(350, 20, 70, 20);
@@ -151,9 +166,11 @@ public class NewLendingPanel extends JPanel {
 
 	}
 
-	public void setModeNewLending(int articleId, String articleName,
-			String articleDescription) {
-		// TODO Auto-generated method stub
+	public void setModeNewLending(int pArticleId, String articleName) {
+		
+		lblStartDate.setText(Util.getCurrentDate());
+		lblArticleName.setText(articleName);
+		articleId = pArticleId;
 		
 	}
 }
