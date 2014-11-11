@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.db.DbConnector;
 
-public class ArticleModel extends AbstractTableModel {
+public class ArticleTableModel extends AbstractTableModel {
 
 	/**
 	 * 
@@ -17,7 +17,7 @@ public class ArticleModel extends AbstractTableModel {
 	protected DbConnector dbCon;
 	protected ArrayList<KArticle> data = new ArrayList<KArticle>();
 
-	public ArticleModel(DbConnector pDbCon){
+	public ArticleTableModel(DbConnector pDbCon){
 		header = new String [] {"ID", "Artikelname", "Artikelbeschreibung", "", ""};
 		this.dbCon = pDbCon;
 		this.updateModel();

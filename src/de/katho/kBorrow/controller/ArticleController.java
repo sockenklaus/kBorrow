@@ -3,18 +3,18 @@ package de.katho.kBorrow.controller;
 import java.util.HashMap;
 
 import de.katho.kBorrow.db.DbConnector;
-import de.katho.kBorrow.models.ArticleModel;
-import de.katho.kBorrow.models.FreeArticleModel;
+import de.katho.kBorrow.models.ArticleTableModel;
+import de.katho.kBorrow.models.FreeArticleTableModel;
 
 public class ArticleController {
 	private DbConnector dbCon;
-	private ArticleModel articleModel;
-	private FreeArticleModel freeArticleModel;
+	private ArticleTableModel articleTableModel;
+	private FreeArticleTableModel freeArticleTableModel;
 	
 	public ArticleController(DbConnector pDbCon, HashMap<String, Object> pModels){
 		dbCon = pDbCon;
-		articleModel = (ArticleModel)pModels.get("articlemodel");
-		freeArticleModel = (FreeArticleModel)pModels.get("freearticlemodel");
+		articleTableModel = (ArticleTableModel)pModels.get("articlemodel");
+		freeArticleTableModel = (FreeArticleTableModel)pModels.get("freearticlemodel");
 	}
 	
 	/**
@@ -29,8 +29,8 @@ public class ArticleController {
 	public int createArticle(String pName, String pDesc) {
 		int status = dbCon.createArticle(pName, pDesc);
 		
-		articleModel.updateModel();
-		freeArticleModel.updateModel();
+		articleTableModel.updateModel();
+		freeArticleTableModel.updateModel();
 		
 		return status;
 	}
@@ -49,8 +49,8 @@ public class ArticleController {
 		int status = this.dbCon.editArticle(pId, pName, pDesc);
 		
 		if(status == 0){
-			articleModel.updateModel();
-			freeArticleModel.updateModel();
+			articleTableModel.updateModel();
+			freeArticleTableModel.updateModel();
 		}
 		
 		return status;
@@ -64,8 +64,8 @@ public class ArticleController {
 	 */
 	public boolean deleteArticle(int id) {
 		if(this.dbCon.deleteArticle(id)){
-			articleModel.updateModel();
-			freeArticleModel.updateModel();
+			articleTableModel.updateModel();
+			freeArticleTableModel.updateModel();
 			
 			return true;
 		}

@@ -23,7 +23,7 @@ import de.katho.kBorrow.controller.UserController;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.UserDeleteTableButton;
 import de.katho.kBorrow.listener.UserEditTableButton;
-import de.katho.kBorrow.models.UserModel;
+import de.katho.kBorrow.models.UserTableModel;
 
 public class UserPanel extends JPanel implements ActionListener, KeyListener {
 
@@ -35,17 +35,17 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 	private JButton btnUserCancel;
 	private boolean userModeEdit;
 	private int userEditId;
-	private UserModel userModel;
+	private UserTableModel userTableModel;
 	private UserController userController;
 
 	public UserPanel(final DbConnector dbCon, HashMap<String, Object> pModels) throws IOException{
 		super();
 		setLayout(null);
-		userModel = (UserModel)pModels.get("usermodel");
+		userTableModel = (UserTableModel)pModels.get("usermodel");
 		userController = new UserController(dbCon, pModels);
 		
 		//Tabelle und drumherum
-		JTable userTable = new JTable(userModel);
+		JTable userTable = new JTable(userTableModel);
 		userTable.setRowHeight(30);
 		UserDeleteTableButton userDeleteTableButton = new UserDeleteTableButton("Löschen", userTable, this, userController);
 		UserEditTableButton userEditTableButton = new UserEditTableButton("Bearbeiten", userTable, this);

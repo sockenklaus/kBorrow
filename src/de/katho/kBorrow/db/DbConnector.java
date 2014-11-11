@@ -3,6 +3,7 @@ package de.katho.kBorrow.db;
 import java.util.ArrayList;
 
 import de.katho.kBorrow.data.KArticle;
+import de.katho.kBorrow.data.KLender;
 import de.katho.kBorrow.data.KUser;
 
 public interface DbConnector {
@@ -16,5 +17,6 @@ public interface DbConnector {
 	public boolean deleteArticle(int id);
 	public int editArticle(int pId, String pName, String pDesc);
 	public ArrayList<KArticle> getFreeArticleList();
+	public ArrayList<KLender> getLenderList();
 	
 }

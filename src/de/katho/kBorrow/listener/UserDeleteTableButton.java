@@ -11,7 +11,7 @@ import javax.swing.JTable;
 
 import de.katho.kBorrow.controller.UserController;
 import de.katho.kBorrow.gui.UserPanel;
-import de.katho.kBorrow.models.UserModel;
+import de.katho.kBorrow.models.UserTableModel;
 
 public class UserDeleteTableButton extends TableButton {
 
@@ -28,7 +28,7 @@ public class UserDeleteTableButton extends TableButton {
 			public void actionPerformed(ActionEvent e){
 				fireEditingStopped();
 				
-				UserModel model = (UserModel) pTable.getModel();
+				UserTableModel model = (UserTableModel) pTable.getModel();
 				
 				int row = pTable.getSelectedRow();
 				int id = model.getUserId(row);

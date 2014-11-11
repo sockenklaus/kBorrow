@@ -1,32 +1,29 @@
 package de.katho.kBorrow.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
+
+import org.jdesktop.swingx.JXDatePicker;
 
 import de.katho.kBorrow.Util;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.NewLendingTableButton;
-import de.katho.kBorrow.models.FreeArticleModel;
+import de.katho.kBorrow.models.FreeArticleTableModel;
 import de.katho.kBorrow.models.UserListModel;
-
-import org.jdatepicker.*;
-
-import javax.swing.border.TitledBorder;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
-import java.awt.BorderLayout;
-import java.io.IOException;
-import java.util.HashMap;
-
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JComboBox;
-import javax.swing.JSeparator;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-
-import java.awt.Color;
 
 public class NewLendingPanel extends JPanel {
 
@@ -34,7 +31,7 @@ public class NewLendingPanel extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = -7346953418572781322L;
-	private FreeArticleModel freeArticleModel;
+	private FreeArticleTableModel freeArticleTableModel;
 	private JTextField tfName;
 	private JTextField tfSurname;
 	private JTextField tfStudentNumber;
@@ -52,10 +49,10 @@ public class NewLendingPanel extends JPanel {
 		setLayout(null);
 		
 		// FreeArticleTable
-		freeArticleModel = (FreeArticleModel)pModel.get("freearticlemodel");
+		freeArticleTableModel = (FreeArticleTableModel)pModel.get("freearticlemodel");
 		userListModel = (UserListModel)pModel.get("userlistmodel");
 		
-		JTable freeArticleTable = new JTable(freeArticleModel);
+		JTable freeArticleTable = new JTable(freeArticleTableModel);
 		freeArticleTable.setRowHeight(30);
 		
 		NewLendingTableButton newLendingTableButton = new NewLendingTableButton("Artikel ausleihen", freeArticleTable, this);
@@ -109,13 +106,10 @@ public class NewLendingPanel extends JPanel {
 		lblNewLabel.setBounds(10, 60, 90, 20);
 		panelNewLending.add(lblNewLabel);
 		
-		JDatePicker picker = new JDateComponentFactory().createJDatePicker();
-		picker.setTextEditable(true);
-		JPanel pickerPanel = new JPanel();
-		pickerPanel.setBounds(106, 60, 205, 28);
-		pickerPanel.add((JComponent)picker);
-		panelNewLending.add(pickerPanel);	
-		
+		JXDatePicker xpicker = new JXDatePicker(new Date());
+		xpicker.setBounds(110, 60, 200, 20);
+		panelNewLending.add(xpicker);	
+				
 		
 		JLabel lblBenutzer = new JLabel("Benutzer:");
 		lblBenutzer.setBounds(350, 20, 70, 20);

@@ -15,9 +15,9 @@ import de.katho.kBorrow.Settings;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.db.SqlConnector;
 import de.katho.kBorrow.db.SqliteConnector;
-import de.katho.kBorrow.models.ArticleModel;
-import de.katho.kBorrow.models.FreeArticleModel;
-import de.katho.kBorrow.models.UserModel;
+import de.katho.kBorrow.models.ArticleTableModel;
+import de.katho.kBorrow.models.FreeArticleTableModel;
+import de.katho.kBorrow.models.UserTableModel;
 import de.katho.kBorrow.models.UserListModel;
 
 
@@ -58,10 +58,10 @@ public class MainWindow {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
 			models = new HashMap<String, Object>();
-			models.put("usermodel", new UserModel(dbCon));
+			models.put("usermodel", new UserTableModel(dbCon));
 			models.put("userlistmodel", new UserListModel(dbCon));
-			models.put("articlemodel", new ArticleModel(dbCon));
-			models.put("freearticlemodel", new FreeArticleModel(dbCon));
+			models.put("articlemodel", new ArticleTableModel(dbCon));
+			models.put("freearticlemodel", new FreeArticleTableModel(dbCon));
 			
 			this.tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 			this.frame.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);

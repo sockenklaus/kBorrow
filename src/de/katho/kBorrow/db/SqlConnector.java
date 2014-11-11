@@ -3,6 +3,7 @@ package de.katho.kBorrow.db;
 import java.util.ArrayList;
 
 import de.katho.kBorrow.data.KArticle;
+import de.katho.kBorrow.data.KLender;
 import de.katho.kBorrow.data.KUser;
 
 public class SqlConnector implements DbConnector{
@@ -62,6 +63,12 @@ public class SqlConnector implements DbConnector{
 
 	@Override
 	public ArrayList<KArticle> getFreeArticleList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ArrayList<KLender> getLenderList() {
 		// TODO Auto-generated method stub
 		return null;
 	}

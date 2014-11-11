@@ -27,7 +27,7 @@ import de.katho.kBorrow.controller.ArticleController;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.ArticleDeleteTableButton;
 import de.katho.kBorrow.listener.ArticleEditTableButton;
-import de.katho.kBorrow.models.ArticleModel;
+import de.katho.kBorrow.models.ArticleTableModel;
 
 public class ArticlePanel extends JPanel implements ActionListener, KeyListener {
 
@@ -40,7 +40,7 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 	private JLabel lblArticleStatus;
 	private boolean articleModeEdit;
 	private int articleEditId;
-	private ArticleModel articleModel;
+	private ArticleTableModel articleTableModel;
 
 	/**
 	 * Create the panel.
@@ -49,7 +49,7 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 	public ArticlePanel(final DbConnector dbCon, HashMap<String, Object> pModels) throws IOException {	
 		super();
 		this.setLayout(null);
-		articleModel = (ArticleModel)pModels.get("articlemodel");
+		articleTableModel = (ArticleTableModel)pModels.get("articlemodel");
 		
 		articleController = new ArticleController(dbCon, pModels);
 		
@@ -57,7 +57,7 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 		 * Tabelle und drumherum
 		 */
 		
-		JTable articleTable = new JTable(articleModel);
+		JTable articleTable = new JTable(articleTableModel);
 		articleTable.setRowHeight(30);
 		ArticleDeleteTableButton articleDeleteTableButton = new ArticleDeleteTableButton("Löschen", articleTable, this, articleController);
 		ArticleEditTableButton articleEditTableButton = new ArticleEditTableButton("Bearbeiten", articleTable, this);

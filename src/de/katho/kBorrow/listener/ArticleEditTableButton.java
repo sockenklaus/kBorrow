@@ -10,7 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
 import de.katho.kBorrow.gui.ArticlePanel;
-import de.katho.kBorrow.models.ArticleModel;
+import de.katho.kBorrow.models.ArticleTableModel;
 
 public class ArticleEditTableButton extends TableButton {
 
@@ -30,7 +30,7 @@ public class ArticleEditTableButton extends TableButton {
 			public void actionPerformed(ActionEvent e){
 				fireEditingStopped();
 				
-				ArticleModel model = (ArticleModel) pTable.getModel();
+				ArticleTableModel model = (ArticleTableModel) pTable.getModel();
 				int row = pTable.getSelectedRow();
 				
 				articleTab.setModeEditArticle(model.getArticleId(row), model.getArticleName(row), model.getArticleDescription(row));

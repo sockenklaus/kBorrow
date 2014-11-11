@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 import de.katho.kBorrow.data.KUser;
 import de.katho.kBorrow.db.DbConnector;
 
-public class UserModel extends AbstractTableModel {
+public class UserTableModel extends AbstractTableModel {
 
 	/**
 	 * 
@@ -17,7 +17,7 @@ public class UserModel extends AbstractTableModel {
 	private String[] header = {"ID", "Vorname", "Nachname", "", ""};
 	private ArrayList<KUser> data = new ArrayList<KUser>();
 	
-	public UserModel(DbConnector pDbCon){
+	public UserTableModel(DbConnector pDbCon){
 		dbCon = pDbCon;
 		updateModel();
 	}
