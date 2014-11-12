@@ -2,9 +2,14 @@ package de.katho.kBorrow.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusListener;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,14 +23,22 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import org.jdesktop.swingx.JXDatePicker;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 import de.katho.kBorrow.Util;
+import de.katho.kBorrow.converter.LenderNameConverter;
+import de.katho.kBorrow.converter.LenderStudentnumberConverter;
+import de.katho.kBorrow.converter.LenderSurnameConverter;
+import de.katho.kBorrow.data.KLender;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.NewLendingTableButton;
 import de.katho.kBorrow.models.FreeArticleTableModel;
+import de.katho.kBorrow.models.LenderModel;
 import de.katho.kBorrow.models.UserListModel;
 
-public class NewLendingPanel extends JPanel {
+import java.awt.event.FocusEvent;
+
+public class NewLendingPanel extends JPanel implements ActionListener, FocusListener{
 
 	/**
 	 * 
@@ -38,7 +51,11 @@ public class NewLendingPanel extends JPanel {
 	private UserListModel userListModel;
 	private JLabel lblStartDate;
 	private JLabel lblArticleName;
-	private int articleId = -1;
+	private int articleId;
+	private LenderModel lenderModel;
+	private JButton btnCancel;
+	private JButton btnSave;
+	private Object lastFocussedComponent;
 	
 	/**
 	 * Create the panel.
@@ -47,10 +64,13 @@ public class NewLendingPanel extends JPanel {
 	 */
 	public NewLendingPanel(final DbConnector dbCon, HashMap<String, Object> pModel) throws IOException {
 		setLayout(null);
+		articleId = -1;
+		lastFocussedComponent = null;
 		
 		// FreeArticleTable
 		freeArticleTableModel = (FreeArticleTableModel)pModel.get("freearticlemodel");
 		userListModel = (UserListModel)pModel.get("userlistmodel");
+		lenderModel = (LenderModel)pModel.get("lendermodel");
 		
 		JTable freeArticleTable = new JTable(freeArticleTableModel);
 		freeArticleTable.setRowHeight(30);
@@ -121,43 +141,62 @@ public class NewLendingPanel extends JPanel {
 		
 		JSeparator separator = new JSeparator();
 		separator.setBounds(10, 90, 569, 2);
-		panelNewLending.add(separator);
 		
-		JButton btnAbbrechen = new JButton("Abbrechen");
-		btnAbbrechen.setBounds(471, 130, 89, 23);
-		panelNewLending.add(btnAbbrechen);
 		
-		JButton btnSpeichern = new JButton("Speichern");
-		btnSpeichern.setBounds(471, 160, 89, 23);
-		panelNewLending.add(btnSpeichern);
 		
-		JLabel lblNewLabel_1 = new JLabel("Name:");
-		lblNewLabel_1.setBounds(10, 100, 90, 20);
-		panelNewLending.add(lblNewLabel_1);
+		// Lender Labels
+		JLabel lblLenderName = new JLabel("Name:");
+		JLabel lblLenderSurname = new JLabel("Nachname:");
+		JLabel lblLenderStudentnumber = new JLabel("Matrikelnummer:");
+		lblLenderName.setBounds(10, 100, 90, 20);
+		lblLenderSurname.setBounds(10, 130, 90, 20);
+		lblLenderStudentnumber.setBounds(10, 160, 90, 20);
 		
-		JLabel lblNewLabel_2 = new JLabel("Nachname:");
-		lblNewLabel_2.setBounds(10, 130, 90, 20);
-		panelNewLending.add(lblNewLabel_2);
-		
-		JLabel lblNewLabel_3 = new JLabel("Matrikelnummer:");
-		lblNewLabel_3.setBounds(10, 160, 90, 20);
-		panelNewLending.add(lblNewLabel_3);
-		
+		// Lender Textfields
 		tfName = new JTextField();
-		tfName.setBounds(110, 100, 90, 20);
-		panelNewLending.add(tfName);
-		tfName.setColumns(10);
-		
 		tfSurname = new JTextField();
-		tfSurname.setBounds(110, 130, 90, 20);
-		panelNewLending.add(tfSurname);
-		tfSurname.setColumns(10);
-		
 		tfStudentNumber = new JTextField();
-		tfStudentNumber.setBounds(110, 160, 90, 20);
-		panelNewLending.add(tfStudentNumber);
+		tfName.addFocusListener(this);
+		tfSurname.addFocusListener(this);
+		tfStudentNumber.addFocusListener(this);
+		tfName.setColumns(10);
+		tfSurname.setColumns(10);
 		tfStudentNumber.setColumns(10);
-
+		tfName.setBounds(110, 100, 90, 20);
+		tfSurname.setBounds(110, 130, 90, 20);
+		tfStudentNumber.setBounds(110, 160, 90, 20);
+		AutoCompleteDecorator.decorate(tfName, lenderModel.getList(), false, new LenderNameConverter() );
+		AutoCompleteDecorator.decorate(tfSurname, lenderModel.getList(), false, new LenderSurnameConverter());
+		AutoCompleteDecorator.decorate(tfStudentNumber, lenderModel.getList(), false, new LenderStudentnumberConverter());
+		
+		// Buttons
+		btnCancel = new JButton("Abbrechen");
+		btnSave = new JButton("Speichern");
+		btnCancel.setBounds(471, 130, 89, 23);
+		btnSave.setBounds(471, 160, 89, 23);
+		btnCancel.addActionListener(this);
+		
+		// Tab Traversal Policy
+		Vector<Component> order = new Vector<Component>();
+		order.add(tfName);
+		order.add(tfSurname);
+		order.add(tfStudentNumber);
+		order.add(btnCancel);
+		order.add(btnSave);
+		MyFocusTraversalPolicy focusPolicy = new MyFocusTraversalPolicy(order);
+		
+		// New Lending Pane
+		panelNewLending.add(lblLenderStudentnumber);
+		panelNewLending.add(lblLenderSurname);
+		panelNewLending.add(lblLenderName);
+		panelNewLending.add(separator);
+		panelNewLending.add(btnSave);
+		panelNewLending.add(btnCancel);
+		panelNewLending.add(tfName);
+		panelNewLending.add(tfSurname);
+		panelNewLending.add(tfStudentNumber);
+		panelNewLending.setFocusTraversalPolicy(focusPolicy);
+		panelNewLending.setFocusCycleRoot(true);
 	}
 
 	public void setModeNewLending(int pArticleId, String articleName) {
@@ -166,5 +205,36 @@ public class NewLendingPanel extends JPanel {
 		lblArticleName.setText(articleName);
 		articleId = pArticleId;
 		
+	}
+
+	public void actionPerformed(ActionEvent pEvent) {
+		if(pEvent.getSource() == btnCancel){
+			lblStartDate.setText("");
+			lblArticleName.setText("");
+			articleId = -1;
+			tfName.setText("");
+			tfSurname.setText("");
+			tfStudentNumber.setText("");
+		}
+		
+	}
+
+	@Override
+	public void focusGained(FocusEvent pEvent) {
+		if(pEvent.getSource() == tfName) System.out.println("tfName got focus");
+		if(pEvent.getSource() == tfSurname) System.out.println("tfSurname got focus");
+		if(pEvent.getSource() == tfStudentNumber) System.out.println("tfStudentNumber got focus");
+		
+		
+	}
+
+	public void focusLost(FocusEvent pEvent) {
+		KLender result = lenderModel.getLender(tfName.getText(), tfSurname.getText(), tfStudentNumber.getText());
+		
+		if(result != null){
+			tfName.setText(result.getName());
+			tfSurname.setText(result.getSurname());
+			tfStudentNumber.setText(String.valueOf(result.getStudentnumber()));
+		}
 	}
 }

@@ -248,11 +248,11 @@ public class SqliteConnector implements DbConnector {
 		
 		try{
 			Statement st = connection.createStatement();
-			String query = "SELECT id, name, surname, studentnumber FROM lender";
+			String query = "SELECT id, name, surname, student_number FROM lender";
 			ResultSet rs = st.executeQuery(query);
 			
 			while (rs.next()){
-				lendArr.add(new KLender(rs.getInt("id"), rs.getString("name"), rs.getString("surname"), rs.getInt("studentnumber")));
+				lendArr.add(new KLender(rs.getInt("id"), rs.getString("name"), rs.getString("surname"), rs.getInt("student_number")));
 			}
 			
 			return lendArr;

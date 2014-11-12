@@ -34,7 +34,6 @@ public class UserListModel extends AbstractListModel<String> implements ComboBox
 	}
 	
 	public void setSelectedItem(Object object) {
-		System.out.println(object);
 		if(selectedItem == null && object == null) return;
 		if(selectedItem != null && selectedItem.equals(object)) return;
 		if(object!= null && !dataContains((String)object)) return;

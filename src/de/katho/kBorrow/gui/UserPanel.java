@@ -99,10 +99,10 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 		
 		//Traversal-Policy
 		Vector<Component> order = new Vector<Component>();
-		order.add(this.textFieldUserName);
-		order.add(this.textFieldUserSurname);
-		order.add(this.btnUserCancel);
-		order.add(this.btnUserSave);
+		order.add(textFieldUserName);
+		order.add(textFieldUserSurname);
+		order.add(btnUserCancel);
+		order.add(btnUserSave);
 		MyFocusTraversalPolicy focusPolicy = new MyFocusTraversalPolicy(order);
 		
 		// User-Edit-Pane

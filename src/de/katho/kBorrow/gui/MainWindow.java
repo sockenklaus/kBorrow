@@ -17,6 +17,7 @@ import de.katho.kBorrow.db.SqlConnector;
 import de.katho.kBorrow.db.SqliteConnector;
 import de.katho.kBorrow.models.ArticleTableModel;
 import de.katho.kBorrow.models.FreeArticleTableModel;
+import de.katho.kBorrow.models.LenderModel;
 import de.katho.kBorrow.models.UserTableModel;
 import de.katho.kBorrow.models.UserListModel;
 
@@ -62,6 +63,7 @@ public class MainWindow {
 			models.put("userlistmodel", new UserListModel(dbCon));
 			models.put("articlemodel", new ArticleTableModel(dbCon));
 			models.put("freearticlemodel", new FreeArticleTableModel(dbCon));
+			models.put("lendermodel", new LenderModel(dbCon));
 			
 			this.tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 			this.frame.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);
