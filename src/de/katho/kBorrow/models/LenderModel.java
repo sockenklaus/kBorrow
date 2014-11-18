@@ -1,6 +1,7 @@
 package de.katho.kBorrow.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.katho.kBorrow.data.KLender;
 import de.katho.kBorrow.db.DbConnector;
@@ -22,11 +23,13 @@ public class LenderModel {
 		return data;
 	}
 	
-	public KLender getLender(String pName, String pSurname, String pSN){
+	public ArrayList<KLender> getLenders(String pName, String pSurname, String pSN){
 		boolean nameEmpty = pName.isEmpty();
 		boolean surnameEmpty = pSurname.isEmpty();
 		boolean snEmpty = pSN.isEmpty();
+		ArrayList<KLender> elems = new ArrayList<KLender>();
 		int sn;
+		
 		if(pSN.matches("[0-9]+")){
 			sn = Integer.parseInt(pSN);
 		}
@@ -40,31 +43,35 @@ public class LenderModel {
 					// Alles gegeben
 					for(KLender e : data){
 						if(e.getName().equals(pName) && e.getSurname().equals(pSurname) && e.getStudentnumber() == sn){
-							return e;
+							elems.add(e);
 						}
 					}
+					return elems;
 				}
 				//Name und Surname gegeben
 				for(KLender e : data){
 					if(e.getName().equals(pName) && e.getSurname().equals(pSurname)){
-						return e;
+						elems.add(e);
 					}
 				}
+				return elems;
 			}
 			if(!snEmpty){
 				// Name und SN gegeben
 				for (KLender e : data){
 					if(e.getName().equals(pName) && e.getStudentnumber() == sn){
-						return e;
+						elems.add(e);
 					}
 				}
+				return elems;
 			}
 			// Nur Name gegeben
 			for (KLender e : data){
 				if(e.getName().equals(pName)){
-					return e;
+					elems.add(e);
 				}
 			}
+			return elems;
 		}
 		
 		if(!surnameEmpty){
@@ -72,27 +79,42 @@ public class LenderModel {
 				// Surname und SN gegeben
 				for (KLender e : data){
 					if(e.getSurname().equals(pSurname) && e.getStudentnumber() == sn){
-						return e;
+						elems.add(e);
 					}
 				}
+				return elems;
 			}
 			// Nur Surname gegeben
 			for (KLender e : data){
 				if(e.getSurname().equals(pSurname)){
-					return e;
+					elems.add(e);
 				}
 			}
+			return elems;
 		}
 		
 		if(!snEmpty){
 			// Nur SN gegeben
 			for (KLender e : data){
 				if(e.getStudentnumber() == sn){
-					return e;
+					elems.add(e);
 				}
 			}
+			return elems;
 		}
 		
-		return null;
+		return elems;
+	}
+	
+	public boolean exists(String pName, String pSurname, String pSN){
+		ArrayList<KLender> elems = getLenders(pName, pSurname, pSN);
+		
+		return elems.size() > 0 ? true : false;
+	}
+	
+	public boolean isUnique(String pName, String pSurname, String pSN){
+		ArrayList<KLender> elems = getLenders(pName, pSurname, pSN);
+		
+		return elems.size() == 1 ? true : false;
 	}
 }

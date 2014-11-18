@@ -64,5 +64,7 @@ public class UserListModel extends AbstractListModel<String> implements ComboBox
 		}
 		return false;
 	}
+	
+	
 }
 

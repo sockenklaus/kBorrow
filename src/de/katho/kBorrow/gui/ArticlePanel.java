@@ -50,7 +50,6 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 		super();
 		this.setLayout(null);
 		articleTableModel = (ArticleTableModel)pModels.get("articlemodel");
-		
 		articleController = new ArticleController(dbCon, pModels);
 		
 		/*
