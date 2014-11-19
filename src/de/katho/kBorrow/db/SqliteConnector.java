@@ -118,6 +118,7 @@ public class SqliteConnector implements DbConnector {
 				"CREATE TABLE article ("
 					+ "id INTEGER PRIMARY KEY NOT NULL,"
 					+ "name TEXT NOT NULL,"
+					+ "is_free INTEGER DEFAULT 1,"
 					+ "description TEXT"
 				+ ")");
 		
@@ -143,9 +144,9 @@ public class SqliteConnector implements DbConnector {
 					+ "article_id INTEGER,"
 					+ "user_id INTEGER,"
 					+ "lender_id INTEGER,"
-					+ "start_date INTEGER DEFAULT CURRENT_DATE,"
-					+ "expected_end_date INTEGER,"
-					+ "end_date INTEGER,"
+					+ "start_date TEXT DEFAULT CURRENT_DATE,"
+					+ "expected_end_date TEXT,"
+					+ "end_date TEXT,"
 					+ "comment TEXT"
 				+ ")");
 		
@@ -227,9 +228,8 @@ public class SqliteConnector implements DbConnector {
 		ArrayList<KArticle> artArr = new ArrayList<KArticle>();
 		
 		try {
-			//TODO Diese Funktion gibt auch ausgeliehene Artikel zurück, wenn es eine frühere, abgeschlossene Ausleihe gab! 
 			Statement st = this.connection.createStatement();
-			String query = "SELECT article.id, name, description FROM article LEFT OUTER JOIN lending ON article.id = lending.article_id WHERE lending.start_date IS NULL OR (lending.start_date IS NOT NULL AND lending.end_date IS NOT NULL);";
+			String query = "SELECT id, name, description FROM article WHERE is_free = 1;";
 			ResultSet rs = st.executeQuery(query);
 			
 			while (rs.next()){
@@ -375,7 +375,8 @@ public class SqliteConnector implements DbConnector {
 		try{
 			Statement st = connection.createStatement();
 			String query = "INSERT INTO lending (article_id, user_id, lender_id, start_date, expected_end_date ) "
-					+ "VALUES ("+pArtId+", "+pUId+", "+pLId+", '"+pStartDate+"', '"+pEstEndDate+"')";
+					+ "VALUES ("+pArtId+", "+pUId+", "+pLId+", '"+pStartDate+"', '"+pEstEndDate+"');"
+							+ "UPDATE article SET is_free = 0 WHERE id = "+pArtId+";";
 			
 			st.executeUpdate(query);
 			
