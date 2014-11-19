@@ -227,6 +227,7 @@ public class SqliteConnector implements DbConnector {
 		ArrayList<KArticle> artArr = new ArrayList<KArticle>();
 		
 		try {
+			//TODO Diese Funktion gibt auch ausgeliehene Artikel zurück, wenn es eine frühere, abgeschlossene Ausleihe gab! 
 			Statement st = this.connection.createStatement();
 			String query = "SELECT article.id, name, description FROM article LEFT OUTER JOIN lending ON article.id = lending.article_id WHERE lending.start_date IS NULL OR (lending.start_date IS NOT NULL AND lending.end_date IS NOT NULL);";
 			ResultSet rs = st.executeQuery(query);
@@ -353,6 +354,44 @@ public class SqliteConnector implements DbConnector {
 		try {
 			Statement st = this.connection.createStatement();
 			String query = "UPDATE article SET name = '"+pName+"', description = '"+pDesc+"' WHERE id = '"+pId+"'";
+			
+			st.executeUpdate(query);
+			
+			return 0;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return 1;
+		}
+	}
+
+	/**
+	 * 
+	 * @return	Status-Code:
+	 * 			0:		Erfolg
+	 * 			1:		SQL-Fehler
+	 */
+	public int createNewLending(int pArtId, int pUId, int pLId, String pStartDate, String pEstEndDate) {
+		try{
+			Statement st = connection.createStatement();
+			String query = "INSERT INTO lending (article_id, user_id, lender_id, start_date, expected_end_date ) "
+					+ "VALUES ("+pArtId+", "+pUId+", "+pLId+", '"+pStartDate+"', '"+pEstEndDate+"')";
+			
+			st.executeUpdate(query);
+			
+			return 0;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return 1;
+		}
+	}
+
+	public int createNewLender(String pLName, String pLSurname, String pLSN) {
+		try{
+			Statement st = connection.createStatement();
+			String query = "INSERT into lender (name, surname, student_number) "
+							+ "VALUES ('"+pLName+"', '"+pLSurname+"', '"+pLSN+"')";
 			
 			st.executeUpdate(query);
 			

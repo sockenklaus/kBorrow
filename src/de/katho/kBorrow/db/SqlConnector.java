@@ -72,5 +72,18 @@ public class SqlConnector implements DbConnector{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public int createNewLending(int pArtId, int pUId, int pLId,
+			String pStartDate, String pEstEndDate) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int createNewLender(String pLName, String pLSurname, String pLSN) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

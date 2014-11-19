@@ -65,6 +65,13 @@ public class UserListModel extends AbstractListModel<String> implements ComboBox
 		return false;
 	}
 	
+	public int getIdByFullname(String pName){
+		for (KUser elem : data){
+			if(pName.equals(elem.getName()+" "+elem.getSurname())) return elem.getId();
+		}
+		return -1;
+	}
+	
 	
 }
 

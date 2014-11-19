@@ -1,7 +1,6 @@
 package de.katho.kBorrow.models;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import de.katho.kBorrow.data.KLender;
 import de.katho.kBorrow.db.DbConnector;
@@ -104,17 +103,5 @@ public class LenderModel {
 		}
 		
 		return elems;
-	}
-	
-	public boolean exists(String pName, String pSurname, String pSN){
-		ArrayList<KLender> elems = getLenders(pName, pSurname, pSN);
-		
-		return elems.size() > 0 ? true : false;
-	}
-	
-	public boolean isUnique(String pName, String pSurname, String pSN){
-		ArrayList<KLender> elems = getLenders(pName, pSurname, pSN);
-		
-		return elems.size() == 1 ? true : false;
 	}
 }

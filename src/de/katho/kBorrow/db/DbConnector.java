@@ -18,5 +18,7 @@ public interface DbConnector {
 	public int editArticle(int pId, String pName, String pDesc);
 	public ArrayList<KArticle> getFreeArticleList();
 	public ArrayList<KLender> getLenderList();
+	public int createNewLending(int pArtId, int pUId, int pLId, String pStartDate, String pEstEndDate);
+	public int createNewLender(String pLName, String pLSurname, String pLSN);
 	
 }
