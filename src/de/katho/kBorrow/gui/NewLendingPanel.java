@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,7 +42,7 @@ import de.katho.kBorrow.models.UserListModel;
 
 import java.awt.event.FocusEvent;
 
-public class NewLendingPanel extends JPanel implements ActionListener, FocusListener{
+public class NewLendingPanel extends JPanel implements ActionListener, FocusListener, KeyListener {
 
 	/**
 	 * 
@@ -89,8 +91,6 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		freeArticleTable.getColumnModel().getColumn(0).setMinWidth(30);
 		freeArticleTable.getColumnModel().getColumn(0).setMaxWidth(30);
 		freeArticleTable.getColumnModel().getColumn(0).setPreferredWidth(30);
-		
-		
 		freeArticleTable.setFillsViewportHeight(true);
 		
 		
@@ -102,63 +102,41 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		panelFreeArticleList.add(new JScrollPane(freeArticleTable));
 		
 		
-		// Panel: NewLending
-		JPanel panelNewLending = new JPanel();
-		panelNewLending.setBorder(new TitledBorder(null, "Neue Ausleihe", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelNewLending.setBounds(0, 252, 589, 205);
-		
-		this.add(panelFreeArticleList);
-		this.add(panelNewLending);
-		panelNewLending.setLayout(null);
-		
-		JLabel lblArtikelname = new JLabel("Artikelname:");
-		lblArtikelname.setBounds(10, 20, 90, 20);
-		panelNewLending.add(lblArtikelname);
-		
-		lblArticleName = new JLabel("");
-		lblArticleName.setBounds(110, 20, 205, 20);
-		panelNewLending.add(lblArticleName);
-		
-		JLabel lblAusgeliehenAm = new JLabel("Ausgeliehen am:");
-		lblAusgeliehenAm.setBounds(10, 40, 90, 20);
-		panelNewLending.add(lblAusgeliehenAm);
-		
-		lblStartDate = new JLabel("");
-		lblStartDate.setBounds(110, 40, 205, 20);
-		panelNewLending.add(lblStartDate);
-		
-		JLabel lblNewLabel = new JLabel("Vor. Rückgabe:");
-		lblNewLabel.setBounds(10, 60, 90, 20);
-		panelNewLending.add(lblNewLabel);
-		
+		// Datepicker
 		dpEstEndDate = new JXDatePicker(new Date());
 		dpEstEndDate.setBounds(110, 60, 200, 20);
-		panelNewLending.add(dpEstEndDate);	
+			
 				
-		
-		JLabel lblBenutzer = new JLabel("Benutzer:");
-		lblBenutzer.setBounds(350, 20, 70, 20);
-		panelNewLending.add(lblBenutzer);
-		
+		// Userlist Combobox
 		cbUserName = new JComboBox<String>(userListModel);
 		cbUserName.setBounds(430, 20, 130, 20);
-		panelNewLending.add(cbUserName);
 		
+		// Separator
 		JSeparator separator = new JSeparator();
 		separator.setBounds(10, 90, 569, 2);
 		
-		
-		
 		// Lender Labels
+		lblArticleName = new JLabel("");
+		JLabel lblArtikelname = new JLabel("Artikelname:");
 		JLabel lblLenderName = new JLabel("Name:");
 		JLabel lblLenderSurname = new JLabel("Nachname:");
 		JLabel lblLenderStudentnumber = new JLabel("Matrikelnummer:");
+		JLabel lblAusgeliehenAm = new JLabel("Ausgeliehen am:");
+		JLabel lblNewLabel = new JLabel("Vor. Rückgabe:");
+		JLabel lblBenutzer = new JLabel("Benutzer:");
+		lblStartDate = new JLabel("");
 		lblStatus = new JLabel("");
 		
+		lblArticleName.setBounds(110, 20, 205, 20);
+		lblArtikelname.setBounds(10, 20, 90, 20);
+		lblAusgeliehenAm.setBounds(10, 40, 90, 20);
 		lblLenderName.setBounds(10, 100, 90, 20);
 		lblStatus.setBounds(210, 100, 400, 20);
 		lblLenderSurname.setBounds(10, 130, 90, 20);
 		lblLenderStudentnumber.setBounds(10, 160, 90, 20);
+		lblNewLabel.setBounds(10, 60, 90, 20);
+		lblBenutzer.setBounds(350, 20, 70, 20);
+		lblStartDate.setBounds(110, 40, 205, 20);
 		
 		// Lender Textfields
 		tfName = new JTextField();
@@ -173,6 +151,9 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		tfName.setBounds(110, 100, 90, 20);
 		tfSurname.setBounds(110, 130, 90, 20);
 		tfStudentNumber.setBounds(110, 160, 90, 20);
+		tfName.addKeyListener(this);
+		tfSurname.addKeyListener(this);
+		tfStudentNumber.addKeyListener(this);
 		AutoCompleteDecorator.decorate(tfName, lenderModel.getList(), false, new LenderNameConverter() );
 		AutoCompleteDecorator.decorate(tfSurname, lenderModel.getList(), false, new LenderSurnameConverter());
 		AutoCompleteDecorator.decorate(tfStudentNumber, lenderModel.getList(), false, new LenderStudentnumberConverter());
@@ -195,18 +176,75 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		MyFocusTraversalPolicy focusPolicy = new MyFocusTraversalPolicy(order);
 		
 		// New Lending Pane
+		JPanel panelNewLending = new JPanel();
+		panelNewLending.setBorder(new TitledBorder(null, "Neue Ausleihe", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelNewLending.setBounds(0, 252, 589, 205);
+		panelNewLending.setLayout(null);
+		
+		panelNewLending.add(lblArtikelname);
 		panelNewLending.add(lblLenderStudentnumber);
 		panelNewLending.add(lblLenderSurname);
 		panelNewLending.add(lblLenderName);
 		panelNewLending.add(lblStatus);
 		panelNewLending.add(separator);
 		panelNewLending.add(btnSave);
+		panelNewLending.add(lblAusgeliehenAm);
 		panelNewLending.add(btnCancel);
 		panelNewLending.add(tfName);
 		panelNewLending.add(tfSurname);
 		panelNewLending.add(tfStudentNumber);
+		panelNewLending.add(lblNewLabel);
+		panelNewLending.add(lblBenutzer);
+		panelNewLending.add(lblStartDate);
+		panelNewLending.add(dpEstEndDate);
+		panelNewLending.add(cbUserName);
+		panelNewLending.add(lblArticleName);
 		panelNewLending.setFocusTraversalPolicy(focusPolicy);
 		panelNewLending.setFocusCycleRoot(true);
+		
+		// this
+		add(panelFreeArticleList);
+		add(panelNewLending);
+	}
+
+	private void resetForm(){
+		lblStartDate.setText("");
+		lblArticleName.setText("");
+		articleId = -1;
+		tfName.setText("");
+		tfSurname.setText("");
+		tfStudentNumber.setText("");
+	}
+	
+	private void saveButtonPressed(){
+		String pLName = tfName.getText();
+		String pLSurname = tfSurname.getText();
+		String startDate = lblStartDate.getText();
+		Date estEndDate = dpEstEndDate.getDate();
+		String pLSN = tfStudentNumber.getText();
+		String pUsername = userListModel.getSelectedItem();
+		
+		int r = newLendingController.newLending(articleId, pLName, pLSurname, pLSN, startDate, estEndDate, pUsername);
+			
+		switch (r) {
+			case 0:
+				lblStatus.setText("Art-ID "+articleId+" erfolgreich ausgeliehen.");
+				resetForm();
+				break;
+			case 1:
+				lblStatus.setText("Fehler bei Ausleihe, SQL-Fehler.");
+				break;
+			case 2:
+				lblStatus.setText("Notwendige Daten sind leer (Art-ID, Start-Date, Est. End-Date)");
+				break;
+			case 3:
+				lblStatus.setText("Das Rückgabedatum ist früher oder gleich dem Ausleihdatum");
+				break;
+			case 4:
+				lblStatus.setText("Die gegebene Kombination aus Lender-Name, -Surname und -Studentnumber" +
+  						"existiert mehrmals in der Datenbank. Das darf nicht sein und wirft daher einen Fehler!");
+				break;
+		}
 	}
 
 	public void setModeNewLending(int pArticleId, String articleName) {
@@ -223,54 +261,14 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		}
 		
 		if(pEvent.getSource() == btnSave){
-			String pLName = tfName.getText();
-			String pLSurname = tfSurname.getText();
-			String startDate = lblStartDate.getText();
-			Date estEndDate = dpEstEndDate.getDate();
-			String pLSN = tfStudentNumber.getText();
-			String pUsername = userListModel.getSelectedItem();
-			
-			System.out.println("Art-ID: "+articleId);
-			System.out.println("------------------");
-			System.out.println("Lender-Name: "+pLName);
-			System.out.println("Lender-Surname: "+pLSurname);
-			System.out.println("Lender-SN: "+pLSN);
-			System.out.println("------------------");
-			System.out.println("User-Name: "+pUsername);
-			System.out.println("Start-Date: "+startDate);
-			System.out.println("Est. End-Date: "+estEndDate);
-			
-			int r = newLendingController.newLending(articleId, pLName, pLSurname, pLSN, startDate, estEndDate, pUsername);
-			
-			System.out.println("Status: "+r);
-			
-			switch (r) {
-				case 0:
-					lblStatus.setText("Art-ID "+articleId+" erfolgreich ausgeliehen.");
-					resetForm();
-					break;
-				case 1:
-					lblStatus.setText("Fehler bei Ausleihe, SQL-Fehler.");
-					break;
-				case 2:
-					lblStatus.setText("Notwendige Daten sind leer (Art-ID, Start-Date, Est. End-Date)");
-					break;
-				case 3:
-					lblStatus.setText("Das Rückgabedatum ist früher oder gleich dem Ausleihdatum");
-					break;
-				case 4:
-					lblStatus.setText("Die gegebene Kombination aus Lender-Name, -Surname und -Studentnumber" +
-	  						"existiert mehrmals in der Datenbank. Das darf nicht sein und wirft daher einen Fehler!");
-					break;
-			}
+			saveButtonPressed();
 		}
 		
 	}
 
 	@Override
 	public void focusGained(FocusEvent pEvent) {
-	
-		
+		// TODO Auto-generated method stub
 	}
 
 	public void focusLost(FocusEvent pEvent) {
@@ -282,13 +280,21 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 			tfStudentNumber.setText(String.valueOf(result.get(0).getStudentnumber()));
 		}
 	}
-	
-	private void resetForm(){
-		lblStartDate.setText("");
-		lblArticleName.setText("");
-		articleId = -1;
-		tfName.setText("");
-		tfSurname.setText("");
-		tfStudentNumber.setText("");
+
+	public void keyPressed(KeyEvent pKeyPress) {
+		if(pKeyPress.getKeyCode() == KeyEvent.VK_ENTER) saveButtonPressed();
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

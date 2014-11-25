@@ -1,10 +1,12 @@
 package de.katho.kBorrow.gui;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import org.jdesktop.swingx.JXErrorPane;
+import org.jdesktop.swingx.error.ErrorInfo;
 
 import java.awt.BorderLayout;
 import java.io.IOException;
@@ -43,20 +45,21 @@ public class MainWindow {
 	 * @throws IOException 
 	 */
 	public MainWindow() {
-		this.set = new Settings();
-		this.frame = new JFrame();
-		this.frame.setResizable(false);
-		this.frame.setBounds(100, 100, 600, 500);
-		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		set = new Settings();
+		frame = new JFrame();
+		frame.setResizable(false);
+		frame.setBounds(100, 100, 600, 500);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			
 			if(set.getProperty("dBType").equals("sqlite")){
-				this.dbCon = new SqliteConnector(set.getProperty("sqlitePath"));			
+				dbCon = new SqliteConnector(set.getProperty("sqlitePath"));			
 			}
 			else if(set.getProperty("dBType").equals("mysql")) {
-				this.dbCon = new SqlConnector();
+				dbCon = new SqlConnector();
 			}
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
 			models = new HashMap<String, Object>();
 			models.put("usermodel", new UserTableModel(dbCon));
@@ -65,16 +68,17 @@ public class MainWindow {
 			models.put("freearticlemodel", new FreeArticleTableModel(dbCon));
 			models.put("lendermodel", new LenderModel(dbCon));
 			
-			this.tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-			this.frame.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);
-			this.tabbedPane.addTab("Neue Ausleihe", new NewLendingPanel(this.dbCon, models));
-			this.tabbedPane.addTab("Ausleihen verwalten", new ManageLendingsPanel(this.dbCon, models));
-			this.tabbedPane.addTab("Artikel verwalten", new ArticlePanel(this.dbCon, models));
-			this.tabbedPane.addTab("Benutzer verwalten", new UserPanel(this.dbCon, models));
+			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+			frame.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);
+			tabbedPane.addTab("Neue Ausleihe", new NewLendingPanel(this.dbCon, models));
+			tabbedPane.addTab("Ausleihen verwalten", new ManageLendingsPanel(this.dbCon, models));
+			tabbedPane.addTab("Artikel verwalten", new ArticlePanel(this.dbCon, models));
+			tabbedPane.addTab("Benutzer verwalten", new UserPanel(this.dbCon, models));
 			
 		}
 		catch(ClassNotFoundException | InstantiationException | IllegalAccessException | IOException | UnsupportedLookAndFeelException | SQLException e) {
-			JOptionPane.showMessageDialog(this.frame, e.getStackTrace(), "Fatal error", JOptionPane.ERROR_MESSAGE);
+			ErrorInfo info = new ErrorInfo("Exception", e.getMessage(), null, null, e, null, null);
+			JXErrorPane.showDialog(frame, info);
 			System.exit(1);
 		}
 		
