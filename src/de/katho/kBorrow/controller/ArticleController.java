@@ -13,8 +13,8 @@ public class ArticleController {
 	
 	public ArticleController(DbConnector pDbCon, HashMap<String, Object> pModels){
 		dbCon = pDbCon;
-		articleTableModel = (ArticleTableModel)pModels.get("articlemodel");
-		freeArticleTableModel = (FreeArticleTableModel)pModels.get("freearticlemodel");
+		articleTableModel = (ArticleTableModel)pModels.get("articletablemodel");
+		freeArticleTableModel = (FreeArticleTableModel)pModels.get("freearticletablemodel");
 	}
 	
 	/**
@@ -59,10 +59,13 @@ public class ArticleController {
 	/**
 	 * Löscht den Artikel mit der gegebenen ID in der Datenbank und aktualisiert die Tabelle.
 	 * 
-	 * @param id	ID des Artikels, der gelöscht werden soll.
+	 * @param pRow	Row des Artikels, der gelöscht werden soll.
 	 * @return		true, wenn der Artikel erfolgreich gelöscht wurde. false, wenn ein Fehler aufgetreten ist.
 	 */
-	public boolean deleteArticle(int id) {
+	public boolean deleteArticle(int pRow) {
+				
+		int id = articleTableModel.getArticleByRow(pRow).getId();
+		
 		if(this.dbCon.deleteArticle(id)){
 			articleTableModel.updateModel();
 			freeArticleTableModel.updateModel();

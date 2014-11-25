@@ -10,6 +10,7 @@ import de.katho.kBorrow.data.KLender;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.models.FreeArticleTableModel;
 import de.katho.kBorrow.models.LenderModel;
+import de.katho.kBorrow.models.LendingTableModel;
 import de.katho.kBorrow.models.UserListModel;
 
 public class NewLendingController {
@@ -17,12 +18,14 @@ public class NewLendingController {
 	private UserListModel userListModel;
 	private LenderModel lenderModel;
 	private FreeArticleTableModel freeArticleModel;
+	private LendingTableModel lendingTableModel;
 	
 	public NewLendingController(DbConnector pDbCon, HashMap<String, Object> pModels){
 		dbCon = pDbCon;
 		userListModel = (UserListModel)pModels.get("userlistmodel");
 		lenderModel = (LenderModel)pModels.get("lendermodel");
-		freeArticleModel = (FreeArticleTableModel)pModels.get("freearticlemodel");
+		freeArticleModel = (FreeArticleTableModel)pModels.get("freearticletablemodel");
+		lendingTableModel = (LendingTableModel)pModels.get("lendingtablemodel");
 	}
 	
 	/**
@@ -34,10 +37,12 @@ public class NewLendingController {
 	 * 				3:		Das Rückgabedatum ist früher oder gleich dem Ausleihdatum
 	 * 				4:		Die gegebene Kombination aus Lender-Name, -Surname und -Studentnumber
 	 * 						existiert mehrmals in der Datenbank. Das darf nicht sein und wirft daher einen Fehler!
+	 * 				5:		Matrikelnummer muss eine Zahl sein!
 	 */
 	public int newLending(int pArtId, String pLName, String pLSurname, String pLSN, String pStartDate, Date pEstEndDate, String pUsername){
-		if (pArtId == -1 || pStartDate.isEmpty() || pEstEndDate == null || pLName.isEmpty() || pLSurname.isEmpty() || pUsername.isEmpty()) return 2;
-		if (pEstEndDate.before(new Date())) return 3;
+		if(pArtId == -1 || pStartDate.isEmpty() || pEstEndDate == null || pLName.isEmpty() || pLSurname.isEmpty() || pUsername.isEmpty()) return 2;
+		if(pEstEndDate.before(new Date())) return 3;
+		if(!pLSN.matches("[0-9]+")) return 5;
 		
 		ArrayList<KLender> lenders = lenderModel.getLenders(pLName, pLSurname, pLSN);
 		if(lenders.size() == 0) {
@@ -45,6 +50,7 @@ public class NewLendingController {
 			
 			if(result == 0){
 				lenderModel.updateModel();
+				
 				return newLending(pArtId, pLName, pLSurname, pLSN, pStartDate, pEstEndDate, pUsername);
 			}
 			else return result;
@@ -57,6 +63,7 @@ public class NewLendingController {
 			
 			if(result == 0){
 				freeArticleModel.updateModel();
+				lendingTableModel.updateModel();
 				return result;
 			}
 			else return result;

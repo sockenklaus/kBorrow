@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.data.KLender;
+import de.katho.kBorrow.data.KLending;
 import de.katho.kBorrow.data.KUser;
 
 public class SqlConnector implements DbConnector{
@@ -82,6 +83,18 @@ public class SqlConnector implements DbConnector{
 
 	@Override
 	public int createNewLender(String pLName, String pLSurname, String pLSN) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ArrayList<KLending> getActiveLendingList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int returnLending(int id, int artId, String end_date) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

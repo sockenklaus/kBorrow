@@ -62,37 +62,6 @@ public class ArticleTableModel extends AbstractTableModel {
 		if (pCol > 2) return true;
 		return false;
 	}
-
-	/**
-	 * Gibt die ID der gegebenen Tabellenzeile aus.
-	 * 
-	 * @param row	Tabellenzeile, zu der die ID ausgegeben werden soll.
-	 * @return		Artikel-ID als int.
-	 */
-	public int getArticleId(int row) {
-		return this.data.get(row).getId();
-	}
-	
-	/**
-	 * Gibt den Artikelnamen der gegebenen Tabellenzeile aus.
-	 * 
-	 * @param pRow	Tabellenzeile, zu der der Name ausgegeben werden soll.
-	 * @return		Artikelname als String
-	 */
-	public String getArticleName(int pRow){
-		return this.data.get(pRow).getName();
-	}
-	
-	/**
-	 * Gibt die Artikelbeschreibung der gegebenen Tabellenzeile aus.
-	 * 
-	 * @param pRow	Tabellenzeile, zu der die Beschreibung ausgegeben werden soll
-	 * @return		Artikelbeschreibung als String.
-	 */
-	public String getArticleDescription(int pRow){
-		return this.data.get(pRow).getDescription();
-	}
-
 	
 	/**
 	 * Gibt die entsprechende Zeile in der Tabelle für ein Objekt mit der gegebenen ID zurück.
@@ -114,7 +83,7 @@ public class ArticleTableModel extends AbstractTableModel {
 	 * @return	KArticle-Objekt
 	 */
 	public KArticle getArticleByRow(int pRow){
-		return this.data.get(pRow);
+		return data.get(pRow);
 	}
 	
 	/**

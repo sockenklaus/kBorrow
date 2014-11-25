@@ -10,7 +10,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
 import de.katho.kBorrow.gui.UserPanel;
-import de.katho.kBorrow.models.UserTableModel;
 
 public class UserEditTableButton extends TableButton {
 
@@ -30,10 +29,9 @@ public class UserEditTableButton extends TableButton {
 			public void actionPerformed(ActionEvent e){
 				fireEditingStopped();
 				
-				UserTableModel model = (UserTableModel) pTable.getModel();
 				int row = pTable.getSelectedRow();
 				
-				pPanel.setModeEditUser(model.getUserId(row), model.getUserName(row), model.getUserSurname(row));	
+				pPanel.setModeEditUser(row);	
 			}
 		});
 		

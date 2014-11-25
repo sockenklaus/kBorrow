@@ -9,19 +9,20 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
-import de.katho.kBorrow.gui.NewLendingPanel;
+import de.katho.kBorrow.controller.ManageLendingsController;
 
-public class NewLendingTableButton extends TableButton {
+public class LendingReturnTableButton extends TableButton {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7492272258718253745L;
+	private static final long serialVersionUID = 4841475504601928160L;
 
-	public NewLendingTableButton(String pLabel, final JTable pTable, final NewLendingPanel pPanel) throws IOException {
+	public LendingReturnTableButton(String pLabel, final JTable pTable, final ManageLendingsController pController) throws IOException {
 		super(pLabel);
-		ImageIcon icon = new ImageIcon(ImageIO.read(new File("assets/icons/go-down.png")));
-	
+		
+		ImageIcon icon = new ImageIcon(ImageIO.read(new File("assets/icons/edit-undo.png")));
+		
 		this.buttonE.setIcon(icon);
 		this.buttonR.setIcon(icon);
 		
@@ -30,8 +31,8 @@ public class NewLendingTableButton extends TableButton {
 				fireEditingStopped();
 				
 				int row = pTable.getSelectedRow();
-				
-				pPanel.setModeNewLending(row);
+
+				pController.returnLending(row);
 			}
 		});
 	}

@@ -24,6 +24,7 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import de.katho.kBorrow.controller.ArticleController;
+import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.ArticleDeleteTableButton;
 import de.katho.kBorrow.listener.ArticleEditTableButton;
@@ -49,7 +50,7 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 	public ArticlePanel(final DbConnector dbCon, HashMap<String, Object> pModels) throws IOException {	
 		super();
 		this.setLayout(null);
-		articleTableModel = (ArticleTableModel)pModels.get("articlemodel");
+		articleTableModel = (ArticleTableModel)pModels.get("articletablemodel");
 		articleController = new ArticleController(dbCon, pModels);
 		
 		/*
@@ -170,11 +171,13 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 		this.textAreaArticleDescription.setText("");
 	}
 
-	public void setModeEditArticle(int articleId, String articleName, String articleDescription) {
+	public void setModeEditArticle(int pRow) {
+		KArticle art = articleTableModel.getArticleByRow(pRow);
+		
 		this.articleModeEdit = true;
-		this.articleEditId = articleId;
-		this.textFieldArticleName.setText(articleName);
-		this.textAreaArticleDescription.setText(articleDescription);
+		this.articleEditId = art.getId();
+		this.textFieldArticleName.setText(art.getName());
+		this.textAreaArticleDescription.setText(art.getDescription());
 	}
 
 	private void saveButtonPressed(){

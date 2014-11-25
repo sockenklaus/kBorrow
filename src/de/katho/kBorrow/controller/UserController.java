@@ -14,7 +14,7 @@ public class UserController {
 	
 	public UserController(DbConnector pDbCon, HashMap<String, Object> pModels) {
 		dbCon = pDbCon;
-		userTableModel = (UserTableModel)pModels.get("usermodel");
+		userTableModel = (UserTableModel)pModels.get("usertablemodel");
 		userListModel = (UserListModel)pModels.get("userlistmodel");
 	}
 
@@ -38,7 +38,9 @@ public class UserController {
 		return status;
 	}
 	
-	public boolean deleteUser(int id){
+	public boolean deleteUser(int pRow){
+		int id = userTableModel.getUserByRow(pRow).getId();
+		
 		if(dbCon.deleteUser(id)){
 			userTableModel.updateModel();
 			userListModel.updateModel();

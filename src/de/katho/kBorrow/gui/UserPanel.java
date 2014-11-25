@@ -20,6 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import de.katho.kBorrow.controller.UserController;
+import de.katho.kBorrow.data.KUser;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.UserDeleteTableButton;
 import de.katho.kBorrow.listener.UserEditTableButton;
@@ -41,7 +42,7 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 	public UserPanel(final DbConnector dbCon, HashMap<String, Object> pModels) throws IOException{
 		super();
 		setLayout(null);
-		userTableModel = (UserTableModel)pModels.get("usermodel");
+		userTableModel = (UserTableModel)pModels.get("usertablemodel");
 		userController = new UserController(dbCon, pModels);
 		
 		//Tabelle und drumherum
@@ -146,11 +147,13 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 		this.textFieldUserSurname.setText("");
 	}
 
-	public void setModeEditUser(int pId, String pName, String pSurname){
+	public void setModeEditUser(int pRow){
+		KUser user = userTableModel.getUserByRow(pRow);
+		
 		this.userModeEdit = true;
-		this.userEditId = pId;
-		this.textFieldUserName.setText(pName);
-		this.textFieldUserSurname.setText(pSurname);		
+		this.userEditId = user.getId();
+		this.textFieldUserName.setText(user.getName());
+		this.textFieldUserSurname.setText(user.getSurname());		
 	}
 	
 	private void saveButtonPressed(){

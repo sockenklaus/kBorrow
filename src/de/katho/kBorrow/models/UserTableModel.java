@@ -22,17 +22,14 @@ public class UserTableModel extends AbstractTableModel {
 		updateModel();
 	}
 	
-	@Override
 	public int getColumnCount() {
 		return this.header.length;
 	}
 
-	@Override
 	public int getRowCount() {		
 		return this.data.size();
 	}
 
-	@Override
 	public String getValueAt(int row, int col) {
 		switch(col){
 		case 0:
@@ -62,18 +59,6 @@ public class UserTableModel extends AbstractTableModel {
 	public boolean isCellEditable(int row, int col){
 		if (col > 2) return true;
 		return false;
-	}
-	
-	public int getUserId(int row){
-		return this.data.get(row).getId();
-	}
-	
-	public String getUserName(int row){
-		return this.data.get(row).getName();
-	}
-	
-	public String getUserSurname(int row){
-		return this.data.get(row).getSurname();
 	}
 	
 	/**

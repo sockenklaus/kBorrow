@@ -20,6 +20,7 @@ import de.katho.kBorrow.db.SqliteConnector;
 import de.katho.kBorrow.models.ArticleTableModel;
 import de.katho.kBorrow.models.FreeArticleTableModel;
 import de.katho.kBorrow.models.LenderModel;
+import de.katho.kBorrow.models.LendingTableModel;
 import de.katho.kBorrow.models.UserTableModel;
 import de.katho.kBorrow.models.UserListModel;
 
@@ -62,11 +63,12 @@ public class MainWindow {
 			}
 			
 			models = new HashMap<String, Object>();
-			models.put("usermodel", new UserTableModel(dbCon));
+			models.put("usertablemodel", new UserTableModel(dbCon));
 			models.put("userlistmodel", new UserListModel(dbCon));
-			models.put("articlemodel", new ArticleTableModel(dbCon));
-			models.put("freearticlemodel", new FreeArticleTableModel(dbCon));
+			models.put("articletablemodel", new ArticleTableModel(dbCon));
+			models.put("freearticletablemodel", new FreeArticleTableModel(dbCon));
 			models.put("lendermodel", new LenderModel(dbCon));
+			models.put("lendingtablemodel", new LendingTableModel(dbCon, models));
 			
 			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 			frame.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);

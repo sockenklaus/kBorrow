@@ -104,4 +104,15 @@ public class LenderModel {
 		
 		return elems;
 	}
+	
+	public KLender getLenderById(int pId){
+		for(KLender elem : data){
+			if(elem.getId() == pId) return elem;
+		}
+		return null;
+	}
+	
+	public KLender getLenderByRow(int pRow){
+		return data.get(pRow);
+	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.data.KLender;
+import de.katho.kBorrow.data.KLending;
 import de.katho.kBorrow.data.KUser;
 
 public interface DbConnector {
@@ -20,5 +21,6 @@ public interface DbConnector {
 	public ArrayList<KLender> getLenderList();
 	public int createNewLending(int pArtId, int pUId, int pLId, String pStartDate, String pEstEndDate);
 	public int createNewLender(String pLName, String pLSurname, String pLSN);
-	
+	public ArrayList<KLending> getActiveLendingList();
+	public int returnLending(int lendingId, int artId, String string);
 }

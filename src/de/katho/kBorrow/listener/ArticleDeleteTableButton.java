@@ -11,7 +11,6 @@ import javax.swing.JTable;
 
 import de.katho.kBorrow.controller.ArticleController;
 import de.katho.kBorrow.gui.ArticlePanel;
-import de.katho.kBorrow.models.ArticleTableModel;
 
 public class ArticleDeleteTableButton extends TableButton {
 
@@ -31,12 +30,9 @@ public class ArticleDeleteTableButton extends TableButton {
 			public void actionPerformed(ActionEvent e){
 				fireEditingStopped();
 				
-				ArticleTableModel model = (ArticleTableModel) pTable.getModel();
-				
 				int row = pTable.getSelectedRow();
-				int id = model.getArticleId(row);
 				
-				pController.deleteArticle(id);		
+				pController.deleteArticle(row);		
 				pPanel.resetModeEditArticle();
 			}
 		});

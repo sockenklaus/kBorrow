@@ -14,6 +14,7 @@ import java.util.Map.Entry;
 
 import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.data.KLender;
+import de.katho.kBorrow.data.KLending;
 import de.katho.kBorrow.data.KUser;
 
 /**
@@ -264,6 +265,27 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
+	public ArrayList<KLending> getActiveLendingList() {
+		ArrayList<KLending> lendingArr = new ArrayList<KLending>();
+		
+		try {
+			Statement st = connection.createStatement();
+			String query = 	"SELECT id, user_id, lender_id, article_id, start_date, expected_end_date, end_date FROM lending WHERE end_date IS NULL";
+			
+			ResultSet rs = st.executeQuery(query);
+			
+			while (rs.next()){
+				lendingArr.add(new KLending(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("lender_id"), rs.getInt("article_id"), rs.getString("start_date"), rs.getString("expected_end_date"), rs.getString("end_date")));
+			}
+			
+			return lendingArr;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return lendingArr;
+		}
+	}
+
 	/**
 	 * 
 	 * @return  0: Benutzer erfolgreich erzeugt
@@ -402,6 +424,23 @@ public class SqliteConnector implements DbConnector {
 			e.printStackTrace();
 			return 1;
 		}
+	}
+
+	public int returnLending(int lendingId, int artId, String end_date) {
+		try{
+			Statement st = connection.createStatement();
+			String query = "UPDATE article SET is_free = 1 WHERE id = '"+artId+"';"
+					+ "UPDATE lending SET end_date = '"+end_date+"' WHERE id = '"+lendingId+"';";
+			
+			st.executeUpdate(query);
+			
+			return 0;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return 1;
+		}
+		
 	}
 	
 }

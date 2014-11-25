@@ -33,6 +33,7 @@ import de.katho.kBorrow.controller.NewLendingController;
 import de.katho.kBorrow.converter.LenderNameConverter;
 import de.katho.kBorrow.converter.LenderStudentnumberConverter;
 import de.katho.kBorrow.converter.LenderSurnameConverter;
+import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.data.KLender;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.NewLendingTableButton;
@@ -74,7 +75,7 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		articleId = -1;
 		
 		// FreeArticleTable
-		freeArticleTableModel = (FreeArticleTableModel)pModel.get("freearticlemodel");
+		freeArticleTableModel = (FreeArticleTableModel)pModel.get("freearticletablemodel");
 		userListModel = (UserListModel)pModel.get("userlistmodel");
 		lenderModel = (LenderModel)pModel.get("lendermodel");
 		newLendingController = new NewLendingController(dbCon, pModel);
@@ -244,14 +245,18 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 				lblStatus.setText("Die gegebene Kombination aus Lender-Name, -Surname und -Studentnumber" +
   						"existiert mehrmals in der Datenbank. Das darf nicht sein und wirft daher einen Fehler!");
 				break;
+			case 5:
+				lblStatus.setText("Matrikelnummer muss eine Zahl sein!");
+				break;
 		}
 	}
 
-	public void setModeNewLending(int pArticleId, String articleName) {
+	public void setModeNewLending(int pRow) {
+		KArticle art = freeArticleTableModel.getArticleByRow(pRow);		
 		
 		lblStartDate.setText(Util.getCurrentDate());
-		lblArticleName.setText(articleName);
-		articleId = pArticleId;
+		lblArticleName.setText(art.getName());
+		articleId = art.getId();
 		
 	}
 
