@@ -1,5 +1,4 @@
 package de.katho.kBorrow.gui;
-import java.awt.Color;
 import java.util.HashMap;
 
 import javax.swing.JPanel;
@@ -14,7 +13,6 @@ import de.katho.kBorrow.models.LendingTableModel;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import java.awt.BorderLayout;
@@ -38,26 +36,37 @@ public class ManageLendingsPanel extends JPanel {
 		
 		// Lending-Table
 		JTable lendingTable = new JTable(lendingTableModel);
-		lendingTable.setFillsViewportHeight(true);
-		lendingTable.setRowHeight(30);
-		
 		LendingReturnTableButton lrtb = new LendingReturnTableButton("Ausleihe beenden", lendingTable, manageLendingsController);
-		
-		for(int i = 5; i <= 6; i++){
-			lendingTable.getColumnModel().getColumn(i).setCellEditor(i == 5 ? null : lrtb);
-			lendingTable.getColumnModel().getColumn(i).setCellRenderer(i == 5 ? null : lrtb);
-			
-			lendingTable.getColumnModel().getColumn(i).setMinWidth(30);
-			lendingTable.getColumnModel().getColumn(i).setMaxWidth(30);
-			lendingTable.getColumnModel().getColumn(i).setPreferredWidth(30);
-		}
 		lendingTable.getColumnModel().getColumn(0).setMinWidth(30);
 		lendingTable.getColumnModel().getColumn(0).setMaxWidth(30);
 		lendingTable.getColumnModel().getColumn(0).setPreferredWidth(30);
+		lendingTable.setFillsViewportHeight(true);
+		lendingTable.setRowHeight(30);
 		
-		setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Aktive Ausleihen", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		setLayout(new BorderLayout(0, 0));
-		add(new JScrollPane(lendingTable));
+		
+		lendingTable.getColumnModel().getColumn(6).setCellEditor(lrtb);
+		lendingTable.getColumnModel().getColumn(6).setCellRenderer(lrtb);
+			
+		lendingTable.getColumnModel().getColumn(6).setMinWidth(30);
+		lendingTable.getColumnModel().getColumn(6).setMaxWidth(30);
+		lendingTable.getColumnModel().getColumn(6).setPreferredWidth(30);
+		
+		setBorder(null);
+		setLayout(null);
+		
+		JPanel panelActiveLendings = new JPanel();
+		panelActiveLendings.setBorder(new TitledBorder(null, "Aktive Ausleihen", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelActiveLendings.setBounds(0, 0, 595, 296);
+		add(panelActiveLendings);
+		
+		
+		panelActiveLendings.setLayout(new BorderLayout(0, 0));
+		JScrollPane scrollPane = new JScrollPane(lendingTable);
+		panelActiveLendings.add(scrollPane);
+		
+		JPanel panelManageLendings = new JPanel();
+		panelManageLendings.setBounds(0, 293, 595, 189);
+		add(panelManageLendings);
 	}
 
 }
