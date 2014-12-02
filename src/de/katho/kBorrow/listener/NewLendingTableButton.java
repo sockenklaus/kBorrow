@@ -2,13 +2,13 @@ package de.katho.kBorrow.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
+import sun.tools.jar.Main;
 import de.katho.kBorrow.gui.NewLendingPanel;
 
 public class NewLendingTableButton extends TableButton {
@@ -20,7 +20,8 @@ public class NewLendingTableButton extends TableButton {
 
 	public NewLendingTableButton(String pLabel, final JTable pTable, final NewLendingPanel pPanel) throws IOException {
 		super(pLabel);
-		ImageIcon icon = new ImageIcon(ImageIO.read(new File("assets/icons/go-down.png")));
+		URL url = Main.class.getResource("/icons/go-down.png");
+		ImageIcon icon = new ImageIcon(url);
 	
 		this.buttonE.setIcon(icon);
 		this.buttonR.setIcon(icon);

@@ -3,6 +3,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import de.katho.kBorrow.db.DbConnector;
+
 
 public class Util {
 	public static String getCurrentDate(){

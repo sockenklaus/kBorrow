@@ -8,6 +8,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.error.ErrorInfo;
 
+
 import java.awt.BorderLayout;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -45,7 +46,7 @@ public class MainWindow {
 	 * @throws ClassNotFoundException 
 	 * @throws IOException 
 	 */
-	public MainWindow() {
+	public MainWindow() throws IOException {
 		set = new Settings();
 		frame = new JFrame();
 		frame.setResizable(false);
@@ -87,7 +88,7 @@ public class MainWindow {
 		this.frame.setVisible(true);
 	}
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws IOException{
 		new MainWindow();
 	}
 }

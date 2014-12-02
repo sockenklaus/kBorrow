@@ -2,13 +2,13 @@ package de.katho.kBorrow.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JTable;
 
+import sun.tools.jar.Main;
 import de.katho.kBorrow.controller.UserController;
 import de.katho.kBorrow.gui.UserPanel;
 
@@ -18,7 +18,8 @@ public class UserDeleteTableButton extends TableButton {
 	
 	public UserDeleteTableButton(String pLabel, final JTable pTable, final UserPanel pPanel, final UserController pController ) throws IOException{
 		super(pLabel);
-		ImageIcon icon = new ImageIcon(ImageIO.read(new File("assets/icons/edit-delete.png")));
+		URL url = Main.class.getResource("/icons/edit-delete.png");
+		ImageIcon icon = new ImageIcon(url);
 		
 		this.buttonE.setIcon(icon);
 		this.buttonR.setIcon(icon);

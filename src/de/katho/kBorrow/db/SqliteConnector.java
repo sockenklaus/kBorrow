@@ -104,6 +104,7 @@ public class SqliteConnector implements DbConnector {
 			for (Entry<String, String> pEntry : pScheme.entrySet()){
 				st.executeUpdate(pEntry.getValue());
 			}
+			
 			return true;
 		}
 		catch (SQLException e){
