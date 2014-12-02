@@ -62,7 +62,7 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 		articleTable.setRowHeight(30);
 		ArticleDeleteTableButton articleDeleteTableButton = new ArticleDeleteTableButton("Löschen", articleTable, this, articleController);
 		ArticleEditTableButton articleEditTableButton = new ArticleEditTableButton("Bearbeiten", articleTable, this);
-		ArticleInspectTableButton articleInspectTableButton = new ArticleInspectTableButton("Details", articleTable, pModels);
+		ArticleInspectTableButton articleInspectTableButton = new ArticleInspectTableButton("Details", articleTable, dbCon, pModels);
 		
 		for (int i = 3; i <= 5; i++){
 			articleTable.getColumnModel().getColumn(i).setCellEditor(i == 3 ? articleInspectTableButton : i == 4 ? articleEditTableButton : articleDeleteTableButton);

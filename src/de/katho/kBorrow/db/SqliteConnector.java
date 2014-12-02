@@ -286,6 +286,27 @@ public class SqliteConnector implements DbConnector {
 			return lendingArr;
 		}
 	}
+	
+	public ArrayList<KLending> getLendingListForArticle(int pArtId){
+		ArrayList<KLending> lendingArr = new ArrayList<KLending>();
+		
+		try{
+			Statement st = connection.createStatement();
+			String query = "SELECT id, user_id, lender_id, start_date, expected_end_date, end_date FROM lending WHERE article_id = '"+pArtId+"' ORDER BY id DESC";
+			
+			ResultSet rs = st.executeQuery(query);
+			
+			while(rs.next()){
+				lendingArr.add(new KLending(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("lender_id"), pArtId, rs.getString("start_date"), rs.getString("expected_end_date"), rs.getString("end_date")));
+			}
+			
+			return lendingArr;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return lendingArr;
+		}
+	}
 
 	/**
 	 * 
