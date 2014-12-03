@@ -23,4 +23,5 @@ public interface DbConnector {
 	public int createNewLender(String pLName, String pLSurname, String pLSN);
 	public ArrayList<KLending> getActiveLendingList();
 	public int returnLending(int lendingId, int artId, String string);
+	public ArrayList<KLending> getLendingListForArticle(int pArtId);
 }

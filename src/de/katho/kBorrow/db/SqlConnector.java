@@ -98,5 +98,11 @@ public class SqlConnector implements DbConnector{
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public ArrayList<KLending> getLendingListForArticle(int pArtId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

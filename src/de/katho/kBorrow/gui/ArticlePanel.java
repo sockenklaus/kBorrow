@@ -28,6 +28,7 @@ import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.listener.ArticleDeleteTableButton;
 import de.katho.kBorrow.listener.ArticleEditTableButton;
+import de.katho.kBorrow.listener.ArticleInspectTableButton;
 import de.katho.kBorrow.models.ArticleTableModel;
 
 public class ArticlePanel extends JPanel implements ActionListener, KeyListener {
@@ -61,10 +62,11 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 		articleTable.setRowHeight(30);
 		ArticleDeleteTableButton articleDeleteTableButton = new ArticleDeleteTableButton("Löschen", articleTable, this, articleController);
 		ArticleEditTableButton articleEditTableButton = new ArticleEditTableButton("Bearbeiten", articleTable, this);
+		ArticleInspectTableButton articleInspectTableButton = new ArticleInspectTableButton("Details", articleTable, dbCon, pModels);
 		
-		for (int i = 3; i <= 4; i++){
-			articleTable.getColumnModel().getColumn(i).setCellEditor(i == 3 ? articleEditTableButton : articleDeleteTableButton);
-			articleTable.getColumnModel().getColumn(i).setCellRenderer(i == 3 ? articleEditTableButton : articleDeleteTableButton);
+		for (int i = 3; i <= 5; i++){
+			articleTable.getColumnModel().getColumn(i).setCellEditor(i == 3 ? articleInspectTableButton : i == 4 ? articleEditTableButton : articleDeleteTableButton);
+			articleTable.getColumnModel().getColumn(i).setCellRenderer(i == 3 ? articleInspectTableButton : i == 4 ? articleEditTableButton : articleDeleteTableButton);
 			
 			articleTable.getColumnModel().getColumn(i).setMinWidth(30);
 			articleTable.getColumnModel().getColumn(i).setMaxWidth(30);

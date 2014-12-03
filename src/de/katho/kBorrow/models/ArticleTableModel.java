@@ -18,7 +18,7 @@ public class ArticleTableModel extends AbstractTableModel {
 	protected ArrayList<KArticle> data = new ArrayList<KArticle>();
 
 	public ArticleTableModel(DbConnector pDbCon){
-		header = new String [] {"ID", "Artikelname", "Artikelbeschreibung", "", ""};
+		header = new String [] {"ID", "Artikelname", "Artikelbeschreibung", "", "", ""};
 		this.dbCon = pDbCon;
 		this.updateModel();
 	}
