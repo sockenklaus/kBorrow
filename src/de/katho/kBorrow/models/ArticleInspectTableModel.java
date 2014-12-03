@@ -55,6 +55,10 @@ public class ArticleInspectTableModel extends AbstractTableModel {
 		return data.size();
 	}
 
+	public boolean isCellEditable(int pRow, int pCol){
+		return false;
+	}
+	
 	public Object getValueAt(int row, int col) {
 		switch(col){
 		case 0:
