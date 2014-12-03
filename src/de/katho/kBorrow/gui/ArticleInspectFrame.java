@@ -61,7 +61,7 @@ public class ArticleInspectFrame extends JFrame {
 				
 		lblNewLabel_1.setBounds(10, 21, 100, 20);
 		lblNewLabel_2.setBounds(10, 47, 100, 20);
-		lblArticleName.setBounds(120, 21, 100, 20);
+		lblArticleName.setBounds(120, 21, 250, 20);
 		taArticleDesc.setBounds(120, 45, 250, 78);
 		taArticleDesc.setEditable(false);
 			
