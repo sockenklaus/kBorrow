@@ -79,11 +79,10 @@ public class LendingTableModel extends AbstractTableModel {
 		}
 	}
 	
-	// Die Funktion muss differenzierter werden
-		public boolean isCellEditable(int row, int col){
-			if (col > 4) return true;
-			return false;
-		}
+	public boolean isCellEditable(int row, int col){
+		if (col > 4) return true;
+		return false;
+	}
 	
 	public void updateModel(){
 		data = dbCon.getActiveLendingList();
@@ -99,6 +98,10 @@ public class LendingTableModel extends AbstractTableModel {
 			if(elem.getId() == id) return elem;
 		}
 		return null;
+	}
+	
+	public ArrayList<KLending> getLendingList(){
+		return data;
 	}
 
 }

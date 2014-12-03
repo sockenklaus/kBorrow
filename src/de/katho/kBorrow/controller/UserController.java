@@ -1,8 +1,11 @@
 package de.katho.kBorrow.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.katho.kBorrow.data.KLending;
 import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.models.LendingTableModel;
 import de.katho.kBorrow.models.UserTableModel;
 import de.katho.kBorrow.models.UserListModel;
 
@@ -11,11 +14,13 @@ public class UserController {
 	private DbConnector dbCon;
 	private UserTableModel userTableModel;
 	private UserListModel userListModel;
+	private LendingTableModel lendingTableModel;
 	
 	public UserController(DbConnector pDbCon, HashMap<String, Object> pModels) {
 		dbCon = pDbCon;
 		userTableModel = (UserTableModel)pModels.get("usertablemodel");
 		userListModel = (UserListModel)pModels.get("userlistmodel");
+		lendingTableModel = (LendingTableModel)pModels.get("lendingtablemodel");
 	}
 
 	public int createUser(String pName, String pSurname){
@@ -41,13 +46,28 @@ public class UserController {
 	public boolean deleteUser(int pRow){
 		int id = userTableModel.getUserByRow(pRow).getId();
 		
-		if(dbCon.deleteUser(id)){
-			userTableModel.updateModel();
-			userListModel.updateModel();
-			
-			return true;
+		boolean isOccupied = false;
+		ArrayList<KLending> lendingList = lendingTableModel.getLendingList();
+		for(KLending elem : lendingList){
+			if(elem.getUserId() == id){
+				isOccupied = true;
+				break;
+			}
 		}
-		return false;
+		
+		if(isOccupied){
+			//select und rewrite
+			return deleteUser(pRow);
+		}
+		else {
+			if(dbCon.deleteUser(id)){
+				userTableModel.updateModel();
+				userListModel.updateModel();
+			
+				return true;
+			}
+			return false;
+		}
 	}
 
 }
