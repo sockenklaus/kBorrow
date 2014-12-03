@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import de.katho.kBorrow.data.KLender;
 import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.models.ArticleTableModel;
 import de.katho.kBorrow.models.FreeArticleTableModel;
 import de.katho.kBorrow.models.LenderModel;
 import de.katho.kBorrow.models.LendingTableModel;
@@ -19,12 +20,14 @@ public class NewLendingController {
 	private LenderModel lenderModel;
 	private FreeArticleTableModel freeArticleModel;
 	private LendingTableModel lendingTableModel;
+	private ArticleTableModel articleTableModel;
 	
 	public NewLendingController(DbConnector pDbCon, HashMap<String, Object> pModels){
 		dbCon = pDbCon;
 		userListModel = (UserListModel)pModels.get("userlistmodel");
 		lenderModel = (LenderModel)pModels.get("lendermodel");
 		freeArticleModel = (FreeArticleTableModel)pModels.get("freearticletablemodel");
+		articleTableModel = (ArticleTableModel)pModels.get("articletablemodel");
 		lendingTableModel = (LendingTableModel)pModels.get("lendingtablemodel");
 	}
 	
@@ -63,6 +66,7 @@ public class NewLendingController {
 			
 			if(result == 0){
 				freeArticleModel.updateModel();
+				articleTableModel.updateModel();
 				lendingTableModel.updateModel();
 				return result;
 			}
