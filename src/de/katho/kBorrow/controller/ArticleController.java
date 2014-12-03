@@ -60,20 +60,23 @@ public class ArticleController {
 	 * Löscht den Artikel mit der gegebenen ID in der Datenbank und aktualisiert die Tabelle.
 	 * 
 	 * @param pRow	Row des Artikels, der gelöscht werden soll.
-	 * @return		true, wenn der Artikel erfolgreich gelöscht wurde. false, wenn ein Fehler aufgetreten ist.
+	 * @return		0: Artikel konnte erfolgreich gelöscht werden
+	 * 				1: Artikel konnte nicht gelöscht werden, unbekannter Fehler (SQL-Fehler)
+	 * 				2: Artikel konnte nicht gelöscht werden, weil er im Moment verliehen ist.
 	 */
-	public boolean deleteArticle(int pRow) {
-				
-		int id = articleTableModel.getArticleByRow(pRow).getId();
+	public int deleteArticle(int pRow) {
 		
-		if(this.dbCon.deleteArticle(id)){
+		if(!articleTableModel.getArticleByRow(pRow).getIsFree()) return 2;
+		
+		int id = articleTableModel.getArticleByRow(pRow).getId();
+		int returnCode = dbCon.deleteArticle(id);
+		
+		if(returnCode == 0){
 			articleTableModel.updateModel();
 			freeArticleTableModel.updateModel();
-			
-			return true;
 		}
 		
-		return false;
+		return returnCode;
 	}
 
 }

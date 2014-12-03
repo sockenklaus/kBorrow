@@ -51,9 +51,9 @@ public class SqlConnector implements DbConnector{
 	}
 
 	@Override
-	public boolean deleteArticle(int id) {
+	public int deleteArticle(int id) {
 		// TODO Auto-generated method stub
-		return false;
+		return 0;
 	}
 
 	@Override

@@ -96,7 +96,7 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 		this.lblArticleStatus = new JLabel("");
 		lblName.setBounds(10, 30, 70, 20);
 		lblDescription.setBounds(10, 61, 70, 20);
-		this.lblArticleStatus.setBounds(90, 145, 250, 14);
+		this.lblArticleStatus.setBounds(90, 145, 390, 14);
 		
 		// Edit: Name-Textfield
 		this.textFieldArticleName = new JTextField();
@@ -232,7 +232,6 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 		}		
 	}
 	
-	@Override
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) saveButtonPressed();
 		
@@ -246,6 +245,20 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 	public void keyTyped(KeyEvent e) {
 		// Nothing to implement
 		
+	}
+	
+	public void setDeleteStatusLabel(int pCode){
+		switch(pCode){
+			case 0:
+				lblArticleStatus.setText("Artikel erfolgreich gelöscht.");
+				break;
+			case 1:
+				lblArticleStatus.setText("Artikel kann nicht gelöscht werden.");
+				break;
+			case 2:
+				lblArticleStatus.setText("Artikel kann nicht gelöscht werden, während er verliehen ist.");
+				break;
+		}
 	}
 
 }

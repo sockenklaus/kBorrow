@@ -211,11 +211,11 @@ public class SqliteConnector implements DbConnector {
 		
 		try {
 			Statement st = this.connection.createStatement();
-			String query = "SELECT id, name, description FROM article";
+			String query = "SELECT id, name, is_free, description FROM article";
 			ResultSet rs = st.executeQuery(query);
 			
 			while (rs.next()){
-				artArr.add(new KArticle(rs.getInt("id"), rs.getString("name"), rs.getString("description")));
+				artArr.add(new KArticle(rs.getInt("id"), rs.getString("name"), rs.getBoolean("is_free"), rs.getString("description")));
 			}
 			
 			return artArr;
@@ -231,11 +231,11 @@ public class SqliteConnector implements DbConnector {
 		
 		try {
 			Statement st = this.connection.createStatement();
-			String query = "SELECT id, name, description FROM article WHERE is_free = 1;";
+			String query = "SELECT id, name, is_free, description FROM article WHERE is_free = 1;";
 			ResultSet rs = st.executeQuery(query);
 			
 			while (rs.next()){
-				artArr.add(new KArticle(rs.getInt("id"), rs.getString("name"), rs.getString("description")));
+				artArr.add(new KArticle(rs.getInt("id"), rs.getString("name"), rs.getBoolean("is_free"), rs.getString("description")));
 			}
 			
 			return artArr;
@@ -378,18 +378,18 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
-	public boolean deleteArticle(int id) {
+	public int deleteArticle(int id) {
 		try {
-			Statement st = this.connection.createStatement();
+			Statement st = connection.createStatement();
 			String query = "DELETE FROM article WHERE id = '"+id+"'";
 			
 			st.executeUpdate(query);
 			
-			return true;
+			return 0;
 		}
 		catch (SQLException e){
 			e.printStackTrace();
-			return false;
+			return 1;
 		}
 	}
 

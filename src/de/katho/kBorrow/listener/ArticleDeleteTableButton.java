@@ -33,7 +33,7 @@ public class ArticleDeleteTableButton extends TableButton {
 				
 				int row = pTable.getSelectedRow();
 				
-				pController.deleteArticle(row);		
+				pPanel.setDeleteStatusLabel(pController.deleteArticle(row));		
 				pPanel.resetModeEditArticle();
 			}
 		});
