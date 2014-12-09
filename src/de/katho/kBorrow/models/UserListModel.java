@@ -14,9 +14,9 @@ public class UserListModel extends AbstractListModel<String> implements ComboBox
 	 * 
 	 */
 	private static final long serialVersionUID = -8653066929273274524L;
-	private DbConnector dbCon;
-	private ArrayList<KUser> data;
-	private String selectedItem = null;
+	protected DbConnector dbCon;
+	protected ArrayList<KUser> data;
+	protected String selectedItem = null;
 	
 	public UserListModel(DbConnector pDbCon){		
 		super();

@@ -104,5 +104,17 @@ public class SqlConnector implements DbConnector{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public ArrayList<KUser> getRewriteUserList(int id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean rewriteToNewUser(int pOldId, int pNewId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

@@ -205,6 +205,10 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 		}
 	}
 
+	public void setStatusLabel(String pText){
+		lblUserStatus.setText(pText);
+	}
+	
 	@Override
 	public void keyPressed(KeyEvent pKeyPress) {
 		if(pKeyPress.getKeyCode() == KeyEvent.VK_ENTER) saveButtonPressed();		

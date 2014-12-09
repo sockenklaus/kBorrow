@@ -24,4 +24,6 @@ public interface DbConnector {
 	public ArrayList<KLending> getActiveLendingList();
 	public int returnLending(int lendingId, int artId, String string);
 	public ArrayList<KLending> getLendingListForArticle(int pArtId);
+	public ArrayList<KUser> getRewriteUserList(int id);
+	public boolean rewriteToNewUser(int pOldId, int pNewId);
 }

@@ -206,6 +206,26 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
+	public ArrayList<KUser> getRewriteUserList(int id) {
+		ArrayList<KUser> userArr = new ArrayList<KUser>();
+		
+		try {
+			Statement st = this.connection.createStatement();
+			String query = "SELECT id, name, surname FROM user WHERE id != "+id;
+			ResultSet rs = st.executeQuery(query);
+			
+			while (rs.next()){
+				userArr.add(new KUser(rs.getInt("id"), rs.getString("name"), rs.getString("surname")));
+			}
+			
+			return userArr;
+		} 
+		catch (SQLException e){
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	public ArrayList<KArticle> getArticleList() {
 		ArrayList<KArticle> artArr = new ArrayList<KArticle>();
 		
@@ -432,19 +452,18 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
-	public int createNewLender(String pLName, String pLSurname, String pLSN) {
-		try{
+	public boolean rewriteToNewUser(int pOldId, int pNewId) {
+		try {
 			Statement st = connection.createStatement();
-			String query = "INSERT into lender (name, surname, student_number) "
-							+ "VALUES ('"+pLName+"', '"+pLSurname+"', '"+pLSN+"')";
+			String query = "UPDATE lending SET user_id = '"+pNewId+"' WHERE user_id = '"+pOldId+"'";
 			
 			st.executeUpdate(query);
 			
-			return 0;
+			return true;
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-			return 1;
+			return false;
 		}
 	}
 
@@ -463,6 +482,22 @@ public class SqliteConnector implements DbConnector {
 			return 1;
 		}
 		
+	}
+
+	public int createNewLender(String pLName, String pLSurname, String pLSN) {
+		try{
+			Statement st = connection.createStatement();
+			String query = "INSERT into lender (name, surname, student_number) "
+							+ "VALUES ('"+pLName+"', '"+pLSurname+"', '"+pLSN+"')";
+			
+			st.executeUpdate(query);
+			
+			return 0;
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+			return 1;
+		}
 	}
 	
 }

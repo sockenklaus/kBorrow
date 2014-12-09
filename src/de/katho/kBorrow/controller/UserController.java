@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import de.katho.kBorrow.data.KLending;
 import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.gui.RewriteToNewUserDialog;
 import de.katho.kBorrow.models.LendingTableModel;
 import de.katho.kBorrow.models.UserTableModel;
 import de.katho.kBorrow.models.UserListModel;
@@ -43,7 +44,7 @@ public class UserController {
 		return status;
 	}
 	
-	public boolean deleteUser(int pRow){
+	public boolean deleteUser(int pRow) {
 		int id = userTableModel.getUserByRow(pRow).getId();
 		
 		boolean isOccupied = false;
@@ -56,18 +57,26 @@ public class UserController {
 		}
 		
 		if(isOccupied){
-			//select und rewrite
-			return deleteUser(pRow);
+			RewriteToNewUserDialog dialog = new RewriteToNewUserDialog(id, dbCon);
+			if(dialog.getResult() == 0){
+				lendingTableModel.updateModel();
+				userTableModel.updateModel();
+				userListModel.updateModel();
+				
+				return deleteUser(pRow);
+			}
+			else return false;
+				
 		}
 		else {
 			if(dbCon.deleteUser(id)){
 				userTableModel.updateModel();
 				userListModel.updateModel();
+				lendingTableModel.updateModel();
 			
 				return true;
 			}
 			return false;
 		}
 	}
-
 }
