@@ -72,6 +72,13 @@ public class UserListModel extends AbstractListModel<String> implements ComboBox
 		return -1;
 	}
 	
+	public KUser getUserById(int pId){
+		for (KUser elem : data){
+			if(elem.getId() == pId) return elem;
+		}
+		return null;
+	}
+	
 	
 }
 

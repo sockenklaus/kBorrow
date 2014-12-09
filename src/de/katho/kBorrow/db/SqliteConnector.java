@@ -430,25 +430,40 @@ public class SqliteConnector implements DbConnector {
 	}
 
 	/**
+	 * Erstellt eine neue Ausleihe.
 	 * 
-	 * @return	Status-Code:
-	 * 			0:		Erfolg
-	 * 			1:		SQL-Fehler
+	 * 
+	 * @return	Rückgabewert ist ein Array mit zwei Werten.
+	 * 
+	 * 			Index		0:	Enthält den Rückgabestatus:
+	 * 			- Status 	0:	Alles in Ordnung
+	 * 			- Status	1:	SQL-Fehler
+	 * 
+	 * 			Index 1: Enthält die ID der gerade erzeugten Tabellenzeile
 	 */
-	public int createNewLending(int pArtId, int pUId, int pLId, String pStartDate, String pEstEndDate) {
+	public int[] createNewLending(int pArtId, int pUId, int pLId, String pStartDate, String pEstEndDate) {
+		int[] result = new int[2];
+		
 		try{
 			Statement st = connection.createStatement();
 			String query = "INSERT INTO lending (article_id, user_id, lender_id, start_date, expected_end_date ) "
-					+ "VALUES ("+pArtId+", "+pUId+", "+pLId+", '"+pStartDate+"', '"+pEstEndDate+"');"
+							+ "VALUES ("+pArtId+", "+pUId+", "+pLId+", '"+pStartDate+"', '"+pEstEndDate+"');"
 							+ "UPDATE article SET is_free = 0 WHERE id = "+pArtId+";";
 			
 			st.executeUpdate(query);
 			
-			return 0;
+			query = "SELECT id FROM lending ORDER BY id DESC LIMIT 1;";
+			
+			ResultSet rs = st.executeQuery(query);
+			
+			result[1] = rs.getInt("id");
+			result[0] = 0;
+			
+			return result;
 		}
 		catch(SQLException e){
 			e.printStackTrace();
-			return 1;
+			return new int[]{1,0};
 		}
 	}
 

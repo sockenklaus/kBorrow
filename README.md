@@ -13,3 +13,6 @@ This software uses the Oracle MySQL Java Connector (http://dev.mysql.com/downloa
 ### Tango Desktop Project
 This software also uses icons provided by the Tango Desktop Project (http://tango.freedesktop.org/).
 License will follow!
+
+### Apache PDFBox
+This software uses the Apache PDFBox (https://pdfbox.apache.org/) package which is published under Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0);

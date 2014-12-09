@@ -1,12 +1,23 @@
 package de.katho.kBorrow.controller;
 
+import org.apache.pdfbox.exceptions.COSVisitorException;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.data.KLender;
+import de.katho.kBorrow.data.KLending;
+import de.katho.kBorrow.data.KUser;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.models.ArticleTableModel;
 import de.katho.kBorrow.models.FreeArticleTableModel;
@@ -62,16 +73,51 @@ public class NewLendingController {
 			KLender lender = lenders.get(0);
 			int uId = userListModel.getIdByFullname(pUsername);
 			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-			int result = dbCon.createNewLending(pArtId, uId, lender.getId(), pStartDate, dateFormat.format(pEstEndDate));
 			
-			if(result == 0){
+			int[] result = dbCon.createNewLending(pArtId, uId, lender.getId(), pStartDate, dateFormat.format(pEstEndDate));
+			
+			if(result[0] == 0){
 				freeArticleModel.updateModel();
 				articleTableModel.updateModel();
 				lendingTableModel.updateModel();
-				return result;
+				createPdfFile(result[1]);
+				
+				return result[0];
 			}
-			else return result;
+			else return result[0];
 		}
 		return 4;
+	}
+	
+	
+	// TODO http://www.coderanch.com/how-to/java/PDFBoxExample
+	private void createPdfFile(int pLendingId){
+		KLending lending = lendingTableModel.getLendingById(pLendingId);
+		KArticle article = articleTableModel.getArticleById(lending.getArticleId());
+		KUser user = userListModel.getUserById(lending.getUserId());
+		KLender lender = lenderModel.getLenderById(lending.getLenderId());
+		
+		PDDocument doc = new PDDocument();
+		PDPage page = new PDPage();
+		doc.addPage(page);
+		
+		PDFont font = PDType1Font.HELVETICA;
+		try {
+			PDPageContentStream contentStream = new PDPageContentStream(doc, page);
+			contentStream.beginText();
+			contentStream.setFont(font, 12);
+			contentStream.moveTextPositionByAmount(100, 700);
+			contentStream.drawString("hallo");
+			contentStream.drawString("hallo2");
+			contentStream.endText();
+			contentStream.close();
+			
+			doc.save("test.pdf");
+			doc.close();
+		} catch (IOException | COSVisitorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

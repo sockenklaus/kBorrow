@@ -75,10 +75,10 @@ public class SqlConnector implements DbConnector{
 	}
 
 	@Override
-	public int createNewLending(int pArtId, int pUId, int pLId,
+	public int[] createNewLending(int pArtId, int pUId, int pLId,
 			String pStartDate, String pEstEndDate) {
 		// TODO Auto-generated method stub
-		return 0;
+		return new int[2];
 	}
 
 	@Override
