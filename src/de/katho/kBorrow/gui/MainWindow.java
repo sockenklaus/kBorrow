@@ -9,7 +9,9 @@ import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.error.ErrorInfo;
 
 
+
 import java.awt.BorderLayout;
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -53,6 +55,16 @@ public class MainWindow {
 		frame.setBounds(100, 100, 600, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		// Delete all files in tmp-dir
+		Runtime.getRuntime().addShutdownHook(new Thread(){
+			public void run(){
+				File dir = new File(set.getSettingsDir()+"/tmp/");
+				if(dir.isDirectory()){
+					for(File file : dir.listFiles()) file.delete();
+				}
+			}
+		});
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
@@ -73,7 +85,7 @@ public class MainWindow {
 			
 			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 			frame.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);
-			tabbedPane.addTab("Neue Ausleihe", new NewLendingPanel(this.dbCon, models));
+			tabbedPane.addTab("Neue Ausleihe", new NewLendingPanel(this.dbCon, models, set));
 			tabbedPane.addTab("Ausleihen verwalten", new ManageLendingsPanel(this.dbCon, models));
 			tabbedPane.addTab("Artikel verwalten", new ArticlePanel(this.dbCon, models));
 			tabbedPane.addTab("Benutzer verwalten", new UserPanel(this.dbCon, models));

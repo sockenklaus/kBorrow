@@ -108,4 +108,8 @@ public class Settings {
 			e.printStackTrace();
 		}		
 	}
+	
+	public String getSettingsDir(){
+		return filePath;
+	}
 }

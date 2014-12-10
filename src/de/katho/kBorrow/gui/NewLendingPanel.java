@@ -28,6 +28,7 @@ import javax.swing.border.TitledBorder;
 import org.jdesktop.swingx.JXDatePicker;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
+import de.katho.kBorrow.Settings;
 import de.katho.kBorrow.Util;
 import de.katho.kBorrow.controller.NewLendingController;
 import de.katho.kBorrow.converter.LenderNameConverter;
@@ -70,7 +71,7 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 	 * @param dbCon 
 	 * @throws IOException 
 	 */
-	public NewLendingPanel(final DbConnector dbCon, HashMap<String, Object> pModel) throws IOException {
+	public NewLendingPanel(final DbConnector dbCon, HashMap<String, Object> pModel, final Settings pSettings) throws IOException {
 		setLayout(null);
 		articleId = -1;
 		
@@ -78,7 +79,7 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		freeArticleTableModel = (FreeArticleTableModel)pModel.get("freearticletablemodel");
 		userListModel = (UserListModel)pModel.get("userlistmodel");
 		lenderModel = (LenderModel)pModel.get("lendermodel");
-		newLendingController = new NewLendingController(dbCon, pModel);
+		newLendingController = new NewLendingController(dbCon, pModel, pSettings);
 		
 		JTable freeArticleTable = new JTable(freeArticleTableModel);
 		freeArticleTable.setRowHeight(30);

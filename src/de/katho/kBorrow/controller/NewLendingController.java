@@ -3,10 +3,13 @@ package de.katho.kBorrow.controller;
 import org.apache.pdfbox.exceptions.COSVisitorException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -14,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import de.katho.kBorrow.Settings;
+import de.katho.kBorrow.Util;
 import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.data.KLender;
 import de.katho.kBorrow.data.KLending;
@@ -32,14 +37,16 @@ public class NewLendingController {
 	private FreeArticleTableModel freeArticleModel;
 	private LendingTableModel lendingTableModel;
 	private ArticleTableModel articleTableModel;
+	private Settings settings;
 	
-	public NewLendingController(DbConnector pDbCon, HashMap<String, Object> pModels){
+	public NewLendingController(DbConnector pDbCon, HashMap<String, Object> pModels, final Settings pSettings){
 		dbCon = pDbCon;
 		userListModel = (UserListModel)pModels.get("userlistmodel");
 		lenderModel = (LenderModel)pModels.get("lendermodel");
 		freeArticleModel = (FreeArticleTableModel)pModels.get("freearticletablemodel");
 		articleTableModel = (ArticleTableModel)pModels.get("articletablemodel");
 		lendingTableModel = (LendingTableModel)pModels.get("lendingtablemodel");
+		settings = pSettings;
 	}
 	
 	/**
@@ -90,34 +97,97 @@ public class NewLendingController {
 	}
 	
 	
-	// TODO http://www.coderanch.com/how-to/java/PDFBoxExample
 	private void createPdfFile(int pLendingId){
 		KLending lending = lendingTableModel.getLendingById(pLendingId);
 		KArticle article = articleTableModel.getArticleById(lending.getArticleId());
 		KUser user = userListModel.getUserById(lending.getUserId());
-		KLender lender = lenderModel.getLenderById(lending.getLenderId());
+		KLender lender = lenderModel.getLenderById(lending.getLenderId());		
 		
 		PDDocument doc = new PDDocument();
-		PDPage page = new PDPage();
+		PDPage page = new PDPage(PDPage.PAGE_SIZE_A4);
+		PDRectangle rect = page.getMediaBox();
 		doc.addPage(page);
 		
-		PDFont font = PDType1Font.HELVETICA;
+		PDFont fontNormal = PDType1Font.HELVETICA;
+		PDFont fontBold = PDType1Font.HELVETICA_BOLD;
+		
+		String[] text = {
+							"Artikel: ",
+							"Verliehen von: ",
+							"Ausgeliehen an: ",
+							"Start der Ausleihe: ",
+							"Voraussichtliche Rückgabe: "
+						};
+		String[] vars = {
+							article.getName(),
+							user.getName()+" "+user.getSurname(),
+							lender.getName()+" "+lender.getSurname()+" ("+lender.getStudentnumber()+")",
+							lending.getStartDate(),
+							lending.getExpectedEndDate()
+						};
 		try {
-			PDPageContentStream contentStream = new PDPageContentStream(doc, page);
-			contentStream.beginText();
-			contentStream.setFont(font, 12);
-			contentStream.moveTextPositionByAmount(100, 700);
-			contentStream.drawString("hallo");
-			contentStream.drawString("hallo2");
-			contentStream.endText();
-			contentStream.close();
+			File file = createRandomFile();
 			
-			doc.save("test.pdf");
+			PDPageContentStream cos = new PDPageContentStream(doc, page);
+			
+			cos.beginText();
+			cos.moveTextPositionByAmount(100, rect.getHeight() - 100);
+			cos.setFont(fontBold, 16);
+			cos.drawString("Ausleihe #"+lending.getId());
+			cos.endText();
+			
+			int i = 0;
+			
+			while (i < text.length){
+				cos.beginText();
+				cos.moveTextPositionByAmount(100, rect.getHeight() - 25*(i+2) - 100 );
+				cos.setFont(fontBold, 12);
+				cos.drawString(text[i]);
+				cos.moveTextPositionByAmount(rect.getWidth() / 2 - 100, 0);
+				cos.setFont(fontNormal, 12);
+				cos.drawString(vars[i]);
+				cos.endText();
+				i++;
+			}
+			
+			i = i+2;
+			cos.setLineWidth(1);
+			cos.addLine(100, rect.getHeight() - 25*(i+2) - 100, 300, rect.getHeight() - 25*(i+2) - 100);
+			cos.closeAndStroke();
+			
+			i++;
+			
+			cos.beginText();
+			cos.moveTextPositionByAmount(100, rect.getHeight() - 25*(i+2) - 100);
+			cos.setFont(fontNormal, 12);
+			cos.drawString("Unterschrift "+lender.getName()+" "+lender.getSurname());
+			cos.endText();			
+		
+			cos.close();
+			doc.save(file);
 			doc.close();
+			
+			if(Desktop.isDesktopSupported()){
+				Desktop desktop = Desktop.getDesktop();
+				if(desktop.isSupported(Desktop.Action.OPEN)){
+					desktop.open(file);
+				}
+			}
 		} catch (IOException | COSVisitorException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private File createRandomFile() throws IOException{
+		File dir = new File(settings.getSettingsDir()+"/tmp");
+		File file = new File(settings.getSettingsDir()+"/tmp/"+Util.generateRandomString(8)+".pdf");
+		if(!dir.isDirectory()) dir.mkdir();
+		if(!file.isFile()) file.createNewFile();
+		else {
+			file.delete();
+			file.createNewFile();
+		}
 		
+		return file;
 	}
 }
