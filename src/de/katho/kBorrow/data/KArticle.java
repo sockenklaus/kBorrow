@@ -7,22 +7,22 @@ public class KArticle {
 	private boolean isFree;
 
 	public KArticle(int pId, String pName, boolean pFree, String pDesc) {
-		this.id = pId;
-		this.name = pName;
-		this.description = pDesc;
+		id = pId;
+		name = pName;
+		description = pDesc;
 		isFree = pFree;
 	}
 
 	public int getId() {
-		return this.id;
+		return id;
 	}
 
 	public String getName() {
-		return this.name;
+		return name;
 	}
 
 	public String getDescription() {
-		return this.description;
+		return description;
 	}
 	
 	public boolean getIsFree(){
@@ -30,11 +30,11 @@ public class KArticle {
 	}
 	
 	public void setName(String pName){
-		this.name = pName;
+		name = pName;
 	}
 	
 	public void setDescription(String pDesc){
-		this.description = pDesc;
+		description = pDesc;
 	}
 	
 	public void setIsFree(boolean pFree){

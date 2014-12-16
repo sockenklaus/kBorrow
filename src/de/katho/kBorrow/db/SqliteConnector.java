@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map.Entry;
 
+import de.katho.kBorrow.Util;
 import de.katho.kBorrow.data.KArticle;
 import de.katho.kBorrow.data.KLender;
 import de.katho.kBorrow.data.KLending;
@@ -92,7 +93,7 @@ public class SqliteConnector implements DbConnector {
 			return true;
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Util.showWarning(e);
 			return false;
 		}		
 	}
@@ -108,7 +109,7 @@ public class SqliteConnector implements DbConnector {
 			return true;
 		}
 		catch (SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return false;
 		}
 	}
@@ -201,7 +202,7 @@ public class SqliteConnector implements DbConnector {
 			return userArr;
 		} 
 		catch (SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return null;
 		}
 	}
@@ -221,7 +222,7 @@ public class SqliteConnector implements DbConnector {
 			return userArr;
 		} 
 		catch (SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return null;
 		}
 	}
@@ -241,7 +242,7 @@ public class SqliteConnector implements DbConnector {
 			return artArr;
 		}
 		catch (SQLException ex){
-			ex.printStackTrace();
+			Util.showWarning(ex);
 			return null;
 		}
 	}
@@ -261,7 +262,7 @@ public class SqliteConnector implements DbConnector {
 			return artArr;
 		}
 		catch(SQLException ex){
-			ex.printStackTrace();
+			Util.showWarning(ex);
 			return null;
 		}
 	}
@@ -281,7 +282,7 @@ public class SqliteConnector implements DbConnector {
 			return lendArr;
 		}
 		catch(SQLException ex){
-			ex.printStackTrace();
+			Util.showWarning(ex);
 			return null;
 		}
 	}
@@ -302,7 +303,7 @@ public class SqliteConnector implements DbConnector {
 			return lendingArr;
 		}
 		catch(SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return lendingArr;
 		}
 	}
@@ -323,7 +324,7 @@ public class SqliteConnector implements DbConnector {
 			return lendingArr;
 		}
 		catch(SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return lendingArr;
 		}
 	}
@@ -345,7 +346,7 @@ public class SqliteConnector implements DbConnector {
 			return 0;
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Util.showWarning(e);
 			return 1;
 		}
 	}
@@ -361,7 +362,7 @@ public class SqliteConnector implements DbConnector {
 			return 0;
 		}
 		catch(SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return 1;
 		}
 	}
@@ -377,7 +378,7 @@ public class SqliteConnector implements DbConnector {
 			return true;
 		}
 		catch (SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return false;
 		}
 	}
@@ -393,7 +394,7 @@ public class SqliteConnector implements DbConnector {
 			return 0;
 			
 		} catch (SQLException e) {
-			e.printStackTrace();
+			Util.showWarning(e);
 			return 1;
 		}
 	}
@@ -408,7 +409,7 @@ public class SqliteConnector implements DbConnector {
 			return 0;
 		}
 		catch (SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return 1;
 		}
 	}
@@ -424,7 +425,7 @@ public class SqliteConnector implements DbConnector {
 			return 0;
 		}
 		catch(SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return 1;
 		}
 	}
@@ -462,7 +463,7 @@ public class SqliteConnector implements DbConnector {
 			return result;
 		}
 		catch(SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return new int[]{1,0};
 		}
 	}
@@ -477,7 +478,7 @@ public class SqliteConnector implements DbConnector {
 			return true;
 		}
 		catch(SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return false;
 		}
 	}
@@ -493,7 +494,7 @@ public class SqliteConnector implements DbConnector {
 			return 0;
 		}
 		catch(SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return 1;
 		}
 		
@@ -510,7 +511,7 @@ public class SqliteConnector implements DbConnector {
 			return 0;
 		}
 		catch(SQLException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return 1;
 		}
 	}

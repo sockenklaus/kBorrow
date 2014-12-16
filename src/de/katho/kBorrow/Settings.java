@@ -15,13 +15,13 @@ public class Settings {
 	private String filePath;
 	private String fileName;
 	
-	public Settings() {
-		this.properties = new Properties();
-		this.filePath = System.getProperty("user.home")+"/kBorrow";
-		this.fileName = "Settings.cfg";
+	public Settings() throws Exception {
+		properties = new Properties();
+		filePath = System.getProperty("user.home")+"/kBorrow";
+		fileName = "Settings.cfg";
 				
-		if(!this.filePathHasValidConfig()){
-			this.createDefaultConfig();
+		if(!filePathHasValidConfig()){
+			createDefaultConfig();
 		}
 	}
 	
@@ -31,14 +31,14 @@ public class Settings {
 	 */
 	private boolean filePathHasValidConfig(){
 		try {
-			InputStream in = new FileInputStream(this.filePath+"/"+this.fileName);
-			this.properties = new Properties();
+			InputStream in = new FileInputStream(filePath+"/"+fileName);
+			properties = new Properties();
 			
-			this.properties.load(in);
+			properties.load(in);
 			
 			// Check if the properties file holds certain keys and values.
-			if(		(this.properties.containsKey("dBType") && this.properties.containsValue("sqlite") && this.properties.containsKey("sqlitePath")) || 
-					(this.properties.contains("dbType") && this.properties.containsValue("mysql") && this.properties.containsKey("mysqlDB") && this.properties.containsKey("mysqlHost") && this.properties.containsKey("mysqlUser") && this.properties.containsKey("mysqlPass"))) {
+			if(		(properties.containsKey("dBType") && properties.containsValue("sqlite") && properties.containsKey("sqlitePath")) || 
+					(properties.contains("dbType") && properties.containsValue("mysql") && properties.containsKey("mysqlDB") && properties.containsKey("mysqlHost") && properties.containsKey("mysqlUser") && properties.containsKey("mysqlPass"))) {
 				in.close();
 				return true;
 				
@@ -49,21 +49,23 @@ public class Settings {
 			}
 				
 		} catch (FileNotFoundException e) {
+			Util.showWarning(new Exception("Kann die Settingsdatei nicht finden. Versuche, eine neue zu erzeugen.", e));
 			return false;
 		} catch (IOException e){
-			e.printStackTrace();
+			Util.showWarning(e);
 			return false;
 		}
 	}
 	
 	/**
 	 * Writes a default config to the config file.
+	 * @throws Exception 
 	 * 
 	 */
-	private void createDefaultConfig() {		
+	private void createDefaultConfig() throws Exception {		
 		try {
-			File dir = new File(this.filePath);
-			File file = new File(this.filePath+"/"+this.fileName);
+			File dir = new File(filePath);
+			File file = new File(filePath+"/"+fileName);
 			if(!dir.isDirectory()) dir.mkdir();
 			if(!file.isFile()) file.createNewFile();
 			else {
@@ -73,39 +75,36 @@ public class Settings {
 			
 			OutputStream os = new FileOutputStream(this.filePath+"/"+this.fileName);
 			
-			this.properties.put("dBType", "sqlite");
-			this.properties.put("sqlitePath",System.getProperty("user.home").replace("\\", "/")+"/kBorrow/kBorrow.db" );
-			this.properties.store(os, null);
+			properties.put("dBType", "sqlite");
+			properties.put("sqlitePath",System.getProperty("user.home").replace("\\", "/")+"/kBorrow/kBorrow.db" );
+			properties.store(os, null);
 			
 			os.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("I couldn't find the specified properties file while trying to create a default config.");
-			e.printStackTrace();
+			throw new Exception("I couldn't find the specified properties file while trying to create a default config.", e);
 		} catch (IOException e) {
-			System.out.println("I had problems, writing to the properties file while trying to create a default config.");
-			e.printStackTrace();
+			throw new Exception("I had problems writing to the properties file while trying to create a default config.", e);
 		}		
 	}
 	
 	public String getProperty(String pKey){
-		return this.properties.getProperty(pKey);
+		if(properties.containsKey(pKey)) return properties.getProperty(pKey);
+		return "";
 	}
 	
-	public void setProperty(String pKey, String pValue){
-		this.properties.put(pKey, pValue);
+	public void setProperty(String pKey, String pValue) throws IOException{
+		properties.put(pKey, pValue);
 		
 		OutputStream os;
 		try {
 			os = new FileOutputStream(this.filePath+"/"+this.fileName);
-			this.properties.store(os, null);
+			properties.store(os, null);
 			
 			os.close();
 		} catch (FileNotFoundException e) {
-			System.out.println("I couldn't find the specified properties file while trying to write the config.");
-			e.printStackTrace();
+			throw new FileNotFoundException("I couldn't find the specified properties file while trying to write the config.");
 		} catch (IOException e) {
-			System.out.println("I had problems, writing to the properties file while saving a setting.");
-			e.printStackTrace();
+			throw new IOException("I had problems, writing to the properties file while saving a setting.");
 		}		
 	}
 	

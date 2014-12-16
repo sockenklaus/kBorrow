@@ -218,7 +218,7 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		tfStudentNumber.setText("");
 	}
 	
-	private void saveButtonPressed(){
+	private void saveButtonPressed() throws Exception {
 		String pLName = tfName.getText();
 		String pLSurname = tfSurname.getText();
 		String startDate = lblStartDate.getText();
@@ -267,7 +267,11 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		}
 		
 		if(pEvent.getSource() == btnSave){
-			saveButtonPressed();
+			try {
+				saveButtonPressed();
+			} catch (Exception e) {
+				Util.showError(e);
+			}
 		}
 		
 	}
@@ -288,7 +292,12 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 	}
 
 	public void keyPressed(KeyEvent pKeyPress) {
-		if(pKeyPress.getKeyCode() == KeyEvent.VK_ENTER) saveButtonPressed();
+		if(pKeyPress.getKeyCode() == KeyEvent.VK_ENTER)
+			try {
+				saveButtonPressed();
+			} catch (Exception e) {
+				Util.showError(e);
+			}
 		
 	}
 

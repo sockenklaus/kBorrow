@@ -5,18 +5,13 @@ import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import org.jdesktop.swingx.JXErrorPane;
-import org.jdesktop.swingx.error.ErrorInfo;
-
-
-
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.HashMap;
 
 import de.katho.kBorrow.Settings;
+import de.katho.kBorrow.Util;
 import de.katho.kBorrow.db.DbConnector;
 import de.katho.kBorrow.db.SqlConnector;
 import de.katho.kBorrow.db.SqliteConnector;
@@ -48,13 +43,7 @@ public class MainWindow {
 	 * @throws ClassNotFoundException 
 	 * @throws IOException 
 	 */
-	public MainWindow() throws IOException {
-		set = new Settings();
-		frame = new JFrame();
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 600, 500);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+	public MainWindow() {
 		// Delete all files in tmp-dir
 		Runtime.getRuntime().addShutdownHook(new Thread(){
 			public void run(){
@@ -66,6 +55,13 @@ public class MainWindow {
 		});
 		
 		try {
+			frame = new JFrame();
+			frame.setResizable(false);
+			frame.setBounds(100, 100, 600, 500);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			Util.setMainWindow(frame);
+			set = new Settings();
+			
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			
 			if(set.getProperty("dBType").equals("sqlite")){
@@ -84,23 +80,22 @@ public class MainWindow {
 			models.put("lendingtablemodel", new LendingTableModel(dbCon, models));
 			
 			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-			frame.getContentPane().add(this.tabbedPane, BorderLayout.CENTER);
+			frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 			tabbedPane.addTab("Neue Ausleihe", new NewLendingPanel(this.dbCon, models, set));
 			tabbedPane.addTab("Ausleihen verwalten", new ManageLendingsPanel(this.dbCon, models));
 			tabbedPane.addTab("Artikel verwalten", new ArticlePanel(this.dbCon, models));
 			tabbedPane.addTab("Benutzer verwalten", new UserPanel(this.dbCon, models));
 			
 		}
-		catch(ClassNotFoundException | InstantiationException | IllegalAccessException | IOException | UnsupportedLookAndFeelException | SQLException e) {
-			ErrorInfo info = new ErrorInfo("Exception", e.getMessage(), null, null, e, null, null);
-			JXErrorPane.showDialog(frame, info);
+		catch(Exception e) {
+			Util.showError(e);
 			System.exit(1);
 		}
 		
-		this.frame.setVisible(true);
+		frame.setVisible(true);
 	}
 	
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) {
 		new MainWindow();
 	}
 }

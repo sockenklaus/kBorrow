@@ -59,8 +59,9 @@ public class NewLendingController {
 	 * 				4:		Die gegebene Kombination aus Lender-Name, -Surname und -Studentnumber
 	 * 						existiert mehrmals in der Datenbank. Das darf nicht sein und wirft daher einen Fehler!
 	 * 				5:		Matrikelnummer muss eine Zahl sein!
+	 * @throws Exception 
 	 */
-	public int newLending(int pArtId, String pLName, String pLSurname, String pLSN, String pStartDate, Date pEstEndDate, String pUsername){
+	public int newLending(int pArtId, String pLName, String pLSurname, String pLSN, String pStartDate, Date pEstEndDate, String pUsername) throws Exception{
 		if(pArtId == -1 || pStartDate.isEmpty() || pEstEndDate == null || pLName.isEmpty() || pLSurname.isEmpty() || pUsername.isEmpty()) return 2;
 		if(pEstEndDate.before(new Date())) return 3;
 		if(!pLSN.matches("[0-9]+")) return 5;
@@ -97,7 +98,7 @@ public class NewLendingController {
 	}
 	
 	
-	private void createPdfFile(int pLendingId){
+	private void createPdfFile(int pLendingId) throws Exception {
 		KLending lending = lendingTableModel.getLendingById(pLendingId);
 		KArticle article = articleTableModel.getArticleById(lending.getArticleId());
 		KUser user = userListModel.getUserById(lending.getUserId());
@@ -174,7 +175,7 @@ public class NewLendingController {
 				}
 			}
 		} catch (IOException | COSVisitorException e) {
-			e.printStackTrace();
+			throw new Exception("Problem bei der Erstellung der PDF-Datei.", e);
 		}
 	}
 	
