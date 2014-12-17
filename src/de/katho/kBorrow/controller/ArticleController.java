@@ -2,7 +2,8 @@ package de.katho.kBorrow.controller;
 
 import java.util.HashMap;
 
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.models.ArticleTableModel;
 import de.katho.kBorrow.models.FreeArticleTableModel;
 
@@ -11,10 +12,10 @@ public class ArticleController {
 	private ArticleTableModel articleTableModel;
 	private FreeArticleTableModel freeArticleTableModel;
 	
-	public ArticleController(DbConnector pDbCon, HashMap<String, Object> pModels){
+	public ArticleController(DbConnector pDbCon, HashMap<String, KDataModel> models){
 		dbCon = pDbCon;
-		articleTableModel = (ArticleTableModel)pModels.get("articletablemodel");
-		freeArticleTableModel = (FreeArticleTableModel)pModels.get("freearticletablemodel");
+		articleTableModel = (ArticleTableModel)models.get("articletablemodel");
+		freeArticleTableModel = (FreeArticleTableModel)models.get("freearticletablemodel");
 	}
 	
 	/**

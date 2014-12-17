@@ -4,10 +4,11 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import de.katho.kBorrow.data.KArticle;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.objects.KArticle;
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KGuiModel;
 
-public class ArticleTableModel extends AbstractTableModel {
+public class ArticleTableModel extends AbstractTableModel implements KGuiModel {
 
 	/**
 	 * 

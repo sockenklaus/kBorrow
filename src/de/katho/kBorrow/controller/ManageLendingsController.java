@@ -3,8 +3,9 @@ package de.katho.kBorrow.controller;
 import java.util.HashMap;
 
 import de.katho.kBorrow.Util;
-import de.katho.kBorrow.data.KLending;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.objects.KLending;
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.models.ArticleTableModel;
 import de.katho.kBorrow.models.FreeArticleTableModel;
 import de.katho.kBorrow.models.LendingTableModel;
@@ -16,12 +17,12 @@ public class ManageLendingsController {
 	private ArticleTableModel articleTableModel;
 	private LendingTableModel lendingTableModel;
 	
-	public ManageLendingsController(DbConnector pDbCon, HashMap<String, Object> pModels){
+	public ManageLendingsController(DbConnector pDbCon, HashMap<String, KDataModel> models){
 		dbCon = pDbCon;
 		
-		freeArticleTableModel = (FreeArticleTableModel)pModels.get("freearticletablemodel");
-		articleTableModel = (ArticleTableModel)pModels.get("articletablemodel");
-		lendingTableModel = (LendingTableModel)pModels.get("lendingtablemodel");
+		freeArticleTableModel = (FreeArticleTableModel)models.get("freearticletablemodel");
+		articleTableModel = (ArticleTableModel)models.get("articletablemodel");
+		lendingTableModel = (LendingTableModel)models.get("lendingtablemodel");
 	}
 	
 	public void returnLending(int pRow) {

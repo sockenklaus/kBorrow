@@ -1,6 +1,6 @@
 package de.katho.kBorrow.controller;
 
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.interfaces.DbConnector;
 
 public class RewriteToNewUserController {
 

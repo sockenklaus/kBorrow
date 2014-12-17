@@ -12,16 +12,14 @@ import java.util.HashMap;
 
 import de.katho.kBorrow.Settings;
 import de.katho.kBorrow.Util;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.KArticleModel;
+import de.katho.kBorrow.data.KLenderModel;
+import de.katho.kBorrow.data.KLendingModel;
+import de.katho.kBorrow.data.KUserModel;
 import de.katho.kBorrow.db.SqlConnector;
 import de.katho.kBorrow.db.SqliteConnector;
-import de.katho.kBorrow.models.ArticleTableModel;
-import de.katho.kBorrow.models.FreeArticleTableModel;
-import de.katho.kBorrow.models.LenderModel;
-import de.katho.kBorrow.models.LendingTableModel;
-import de.katho.kBorrow.models.UserTableModel;
-import de.katho.kBorrow.models.UserListModel;
-
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 
 public class MainWindow {
 
@@ -33,7 +31,7 @@ public class MainWindow {
 
 
 	private Settings set;
-	private HashMap<String, Object> models;
+	private HashMap<String, KDataModel> models;
 
 	/**
 	 * Create the application.
@@ -71,14 +69,12 @@ public class MainWindow {
 				dbCon = new SqlConnector();
 			}
 			
-			models = new HashMap<String, Object>();
-			models.put("usertablemodel", new UserTableModel(dbCon));
-			models.put("userlistmodel", new UserListModel(dbCon));
-			models.put("articletablemodel", new ArticleTableModel(dbCon));
-			models.put("freearticletablemodel", new FreeArticleTableModel(dbCon));
-			models.put("lendermodel", new LenderModel(dbCon));
-			models.put("lendingtablemodel", new LendingTableModel(dbCon, models));
-			
+			models = new HashMap<String, KDataModel>();
+			models.put("karticlemodel", new KArticleModel(dbCon));
+			models.put("klendermodel", new KLenderModel(dbCon));
+			models.put("klendingmodel", new KLendingModel(dbCon));
+			models.put("kusermodel", new KUserModel(dbCon));
+
 			tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 			frame.getContentPane().add(tabbedPane, BorderLayout.CENTER);
 			tabbedPane.addTab("Neue Ausleihe", new NewLendingPanel(this.dbCon, models, set));

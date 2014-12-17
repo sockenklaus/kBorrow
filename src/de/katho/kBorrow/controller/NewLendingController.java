@@ -19,11 +19,12 @@ import java.util.HashMap;
 
 import de.katho.kBorrow.Settings;
 import de.katho.kBorrow.Util;
-import de.katho.kBorrow.data.KArticle;
-import de.katho.kBorrow.data.KLender;
-import de.katho.kBorrow.data.KLending;
-import de.katho.kBorrow.data.KUser;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.objects.KArticle;
+import de.katho.kBorrow.data.objects.KLender;
+import de.katho.kBorrow.data.objects.KLending;
+import de.katho.kBorrow.data.objects.KUser;
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.models.ArticleTableModel;
 import de.katho.kBorrow.models.FreeArticleTableModel;
 import de.katho.kBorrow.models.LenderModel;
@@ -39,13 +40,13 @@ public class NewLendingController {
 	private ArticleTableModel articleTableModel;
 	private Settings settings;
 	
-	public NewLendingController(DbConnector pDbCon, HashMap<String, Object> pModels, final Settings pSettings){
+	public NewLendingController(DbConnector pDbCon, HashMap<String, KDataModel> models, final Settings pSettings){
 		dbCon = pDbCon;
-		userListModel = (UserListModel)pModels.get("userlistmodel");
-		lenderModel = (LenderModel)pModels.get("lendermodel");
-		freeArticleModel = (FreeArticleTableModel)pModels.get("freearticletablemodel");
-		articleTableModel = (ArticleTableModel)pModels.get("articletablemodel");
-		lendingTableModel = (LendingTableModel)pModels.get("lendingtablemodel");
+		userListModel = (UserListModel)models.get("userlistmodel");
+		lenderModel = (LenderModel)models.get("lendermodel");
+		freeArticleModel = (FreeArticleTableModel)models.get("freearticletablemodel");
+		articleTableModel = (ArticleTableModel)models.get("articletablemodel");
+		lendingTableModel = (LendingTableModel)models.get("lendingtablemodel");
 		settings = pSettings;
 	}
 	

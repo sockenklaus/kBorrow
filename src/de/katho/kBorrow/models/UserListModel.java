@@ -5,32 +5,23 @@ import java.util.ArrayList;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
-import de.katho.kBorrow.data.KUser;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.KUserModel;
+import de.katho.kBorrow.data.objects.KUser;
+import de.katho.kBorrow.interfaces.KDataModel;
+import de.katho.kBorrow.interfaces.KGuiModel;
 
-public class UserListModel extends AbstractListModel<String> implements ComboBoxModel<String>  {
+public class UserListModel extends AbstractListModel<String> implements ComboBoxModel<String>, KGuiModel  {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8653066929273274524L;
-	protected DbConnector dbCon;
 	protected ArrayList<KUser> data;
 	protected String selectedItem = null;
 	
-	public UserListModel(DbConnector pDbCon){		
+	public UserListModel(KDataModel pUserModel){		
 		super();
-		dbCon = pDbCon;
-		updateModel();
-	}
-	
-	
-	public void updateModel() {
-		data = dbCon.getUserList();
-		
-		if(data.size() > 0) setSelectedItem(data.get(0).getName()+" "+data.get(0).getSurname());
-		
-		fireIntervalAdded(this, 0, data.size()-1);
+		pUserModel.register(this);
 	}
 	
 	public void setSelectedItem(Object object) {
@@ -77,6 +68,16 @@ public class UserListModel extends AbstractListModel<String> implements ComboBox
 			if(elem.getId() == pId) return elem;
 		}
 		return null;
+	}
+
+	public void fetchData(KDataModel pModel) {
+		if(pModel instanceof KUserModel){
+			data = ((KUserModel)pModel).getData();
+		}
+		
+		if(data.size() > 0) setSelectedItem(data.get(0).getName()+" "+data.get(0).getSurname());
+		
+		fireIntervalAdded(this, 0, data.size()-1);
 	}
 	
 	

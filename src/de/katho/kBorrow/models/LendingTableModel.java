@@ -5,32 +5,34 @@ import java.util.HashMap;
 
 import javax.swing.table.AbstractTableModel;
 
-import de.katho.kBorrow.data.KArticle;
-import de.katho.kBorrow.data.KLender;
-import de.katho.kBorrow.data.KLending;
-import de.katho.kBorrow.data.KUser;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.KLendingModel;
+import de.katho.kBorrow.data.objects.KArticle;
+import de.katho.kBorrow.data.objects.KLender;
+import de.katho.kBorrow.data.objects.KLending;
+import de.katho.kBorrow.data.objects.KUser;
+import de.katho.kBorrow.interfaces.KDataModel;
+import de.katho.kBorrow.interfaces.KGuiModel;
 
-public class LendingTableModel extends AbstractTableModel {
+public class LendingTableModel extends AbstractTableModel implements KGuiModel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1375465648631587292L;
-	private DbConnector dbCon;
 	private String[] header = {"ID", "Artikel", "Verliehen von:", "Ausgeliehen an:", "Ausleihdatum", "Vor. Rückgabe", ""};
 	private ArrayList<KLending> data = new ArrayList<KLending>();
-	private ArticleTableModel articleModel;
-	private LenderModel lenderModel;
-	private UserTableModel userTableModel;
+	private KDataModel articleModel;
+	private KDataModel lenderModel;
+	private KDataModel userModel;
+	private KDataModel lendingModel;
 	
-	public LendingTableModel(DbConnector pDbCon, HashMap<String, Object> pModels ) {
-		dbCon = pDbCon;
-		articleModel = (ArticleTableModel)pModels.get("articletablemodel");
-		lenderModel = (LenderModel)pModels.get("lendermodel");
-		userTableModel = (UserTableModel)pModels.get("usertablemodel");
+	public LendingTableModel(HashMap<String, KDataModel> pModels ) {
+		articleModel = pModels.get("karticlemodel");
+		lenderModel = pModels.get("klendermodel");
+		userModel = pModels.get("kusermodel");
+		lendingModel = pModels.get("klendingmodel");
 		
-		updateModel();
+		lendingModel.register(this);
 	}
 
 	public int getColumnCount() {
@@ -52,19 +54,19 @@ public class LendingTableModel extends AbstractTableModel {
 			
 		case 1:
 			int artId = data.get(row).getArticleId();
-			KArticle art = articleModel.getArticleById(artId);
+			KArticle art = (KArticle) articleModel.get(artId);
 			
 			return art.getName();
 			
 		case 2:
 			int uId = data.get(row).getUserId();
-			KUser user = userTableModel.getUserById(uId);
+			KUser user = (KUser) userModel.get(uId);
 			
 			return user.getName()+" "+user.getSurname();
 			
 		case 3:
 			int lenderId = data.get(row).getLenderId();
-			KLender lender = lenderModel.getLenderById(lenderId);
+			KLender lender = (KLender) lenderModel.get(lenderId);
 			
 			return lender.getName()+" "+lender.getSurname()+" ("+lender.getStudentnumber()+")";
 		
@@ -83,11 +85,6 @@ public class LendingTableModel extends AbstractTableModel {
 		if (col > 4) return true;
 		return false;
 	}
-	
-	public void updateModel(){
-		data = dbCon.getActiveLendingList();
-		fireTableDataChanged();
-	}
 
 	public KLending getLendingByRow(int row) {
 		return data.get(row);
@@ -99,9 +96,14 @@ public class LendingTableModel extends AbstractTableModel {
 		}
 		return null;
 	}
-	
-	public ArrayList<KLending> getLendingList(){
-		return data;
+
+	public void fetchData(KDataModel pModel) {
+		if(pModel instanceof KLendingModel){
+			for(KLending elem : ((KLendingModel)pModel).getData()){
+				if(elem.getEndDate().equals("")) data.add(elem);
+			}
+			fireTableDataChanged();
+		}		
 	}
 
 }

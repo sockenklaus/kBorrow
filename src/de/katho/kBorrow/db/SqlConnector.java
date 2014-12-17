@@ -2,10 +2,11 @@ package de.katho.kBorrow.db;
 
 import java.util.ArrayList;
 
-import de.katho.kBorrow.data.KArticle;
-import de.katho.kBorrow.data.KLender;
-import de.katho.kBorrow.data.KLending;
-import de.katho.kBorrow.data.KUser;
+import de.katho.kBorrow.data.objects.KArticle;
+import de.katho.kBorrow.data.objects.KLender;
+import de.katho.kBorrow.data.objects.KLending;
+import de.katho.kBorrow.data.objects.KUser;
+import de.katho.kBorrow.interfaces.DbConnector;
 
 public class SqlConnector implements DbConnector{
 
@@ -115,6 +116,12 @@ public class SqlConnector implements DbConnector{
 	public boolean rewriteToNewUser(int pOldId, int pNewId) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public ArrayList<KLending> getLendingList() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

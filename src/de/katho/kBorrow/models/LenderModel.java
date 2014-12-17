@@ -2,20 +2,16 @@ package de.katho.kBorrow.models;
 
 import java.util.ArrayList;
 
-import de.katho.kBorrow.data.KLender;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.KLenderModel;
+import de.katho.kBorrow.data.objects.KLender;
+import de.katho.kBorrow.interfaces.KDataModel;
+import de.katho.kBorrow.interfaces.KGuiModel;
 
-public class LenderModel {
+public class LenderModel implements KGuiModel {
 	private ArrayList<KLender> data;
-	private DbConnector dbCon;
 	
-	public LenderModel(DbConnector pDbCon){
-		dbCon = pDbCon;
-		updateModel();
-	}
-	
-	public void updateModel(){
-		data = dbCon.getLenderList();
+	public LenderModel(KDataModel pModel){
+		pModel.register(this);
 	}
 	
 	public ArrayList<KLender> getList(){
@@ -114,5 +110,11 @@ public class LenderModel {
 	
 	public KLender getLenderByRow(int pRow){
 		return data.get(pRow);
+	}
+
+	public void fetchData(KDataModel pModel) {
+		if(pModel instanceof KLenderModel){
+			data = ((KLenderModel)pModel).getData();
+		}
 	}
 }

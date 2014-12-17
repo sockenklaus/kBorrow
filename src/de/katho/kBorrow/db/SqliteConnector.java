@@ -13,10 +13,11 @@ import java.util.Hashtable;
 import java.util.Map.Entry;
 
 import de.katho.kBorrow.Util;
-import de.katho.kBorrow.data.KArticle;
-import de.katho.kBorrow.data.KLender;
-import de.katho.kBorrow.data.KLending;
-import de.katho.kBorrow.data.KUser;
+import de.katho.kBorrow.data.objects.KArticle;
+import de.katho.kBorrow.data.objects.KLender;
+import de.katho.kBorrow.data.objects.KLending;
+import de.katho.kBorrow.data.objects.KUser;
+import de.katho.kBorrow.interfaces.DbConnector;
 
 /**
  * @class sqliteConnector
@@ -287,6 +288,25 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
+	public ArrayList<KLending> getLendingList(){
+		ArrayList<KLending> lendingArr = new ArrayList<KLending>();
+		
+		try {
+			Statement st = connection.createStatement();
+			String query = "SELECT id, user_id, lender_id, article_id, start_date, expected_end_date, end_date FROM lending";
+			
+			ResultSet rs = st.executeQuery(query);
+			
+			while (rs.next()){
+				lendingArr.add(new KLending(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("lender_id"), rs.getInt("article_id"), rs.getString("start_date"), rs.getString("expected_end_date"), rs.getString("end_date")));
+			}
+		}
+		catch(SQLException e){
+			Util.showWarning(e);
+		}
+		return lendingArr;
+	}
+	
 	public ArrayList<KLending> getActiveLendingList() {
 		ArrayList<KLending> lendingArr = new ArrayList<KLending>();
 		

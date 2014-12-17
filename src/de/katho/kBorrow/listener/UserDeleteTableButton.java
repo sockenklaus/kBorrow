@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import sun.tools.jar.Main;
 import de.katho.kBorrow.controller.UserController;
 import de.katho.kBorrow.gui.UserPanel;
+import de.katho.kBorrow.models.UserTableModel;
 
 public class UserDeleteTableButton extends TableButton {
 
@@ -29,8 +30,9 @@ public class UserDeleteTableButton extends TableButton {
 				fireEditingStopped();
 				
 				int row = pTable.getSelectedRow();
+				int id = ((UserTableModel)pTable.getModel()).rowToId(row);
 
-				if(pController.deleteUser(row)) pPanel.setStatusLabel("Benutzer erfolgreich gelöscht.");
+				if(pController.deleteUser(id)) pPanel.setStatusLabel("Benutzer erfolgreich gelöscht.");
 				else pPanel.setStatusLabel("Beuntzer konnte nicht gelöscht werden.");
 				
 				pPanel.resetModeEditUser();

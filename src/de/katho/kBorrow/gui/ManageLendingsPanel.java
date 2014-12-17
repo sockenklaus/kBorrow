@@ -4,10 +4,11 @@ import java.util.HashMap;
 import javax.swing.JPanel;
 
 import de.katho.kBorrow.controller.ManageLendingsController;
-import de.katho.kBorrow.db.DbConnector;
 
 
 
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.listener.LendingReturnTableButton;
 import de.katho.kBorrow.models.LendingTableModel;
 
@@ -29,7 +30,7 @@ public class ManageLendingsPanel extends JPanel {
 	private LendingTableModel lendingTableModel;
 	private ManageLendingsController manageLendingsController;
 	
-	public ManageLendingsPanel(DbConnector dbCon, HashMap<String, Object> models) throws IOException {
+	public ManageLendingsPanel(DbConnector dbCon, HashMap<String, KDataModel> models) throws IOException {
 		
 		lendingTableModel = (LendingTableModel)models.get("lendingtablemodel");
 		manageLendingsController = new ManageLendingsController(dbCon, models);

@@ -1,11 +1,11 @@
-package de.katho.kBorrow.db;
+package de.katho.kBorrow.interfaces;
 
 import java.util.ArrayList;
 
-import de.katho.kBorrow.data.KArticle;
-import de.katho.kBorrow.data.KLender;
-import de.katho.kBorrow.data.KLending;
-import de.katho.kBorrow.data.KUser;
+import de.katho.kBorrow.data.objects.KArticle;
+import de.katho.kBorrow.data.objects.KLender;
+import de.katho.kBorrow.data.objects.KLending;
+import de.katho.kBorrow.data.objects.KUser;
 
 public interface DbConnector {
 
@@ -23,6 +23,7 @@ public interface DbConnector {
 	public int createNewLender(String pLName, String pLSurname, String pLSN);
 	public ArrayList<KLending> getActiveLendingList();
 	public int returnLending(int lendingId, int artId, String string);
+	public ArrayList<KLending> getLendingList();
 	public ArrayList<KLending> getLendingListForArticle(int pArtId);
 	public ArrayList<KUser> getRewriteUserList(int id);
 	public boolean rewriteToNewUser(int pOldId, int pNewId);

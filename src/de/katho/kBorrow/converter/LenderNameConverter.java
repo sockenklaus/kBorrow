@@ -2,7 +2,7 @@ package de.katho.kBorrow.converter;
 
 import org.jdesktop.swingx.autocomplete.ObjectToStringConverter;
 
-import de.katho.kBorrow.data.KLender;
+import de.katho.kBorrow.data.objects.KLender;
 
 public class LenderNameConverter extends ObjectToStringConverter {
 

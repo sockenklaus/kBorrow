@@ -2,33 +2,31 @@ package de.katho.kBorrow.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
 
-import de.katho.kBorrow.data.KLending;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.KLogger;
+import de.katho.kBorrow.data.KLendingModel;
+import de.katho.kBorrow.data.objects.KLending;
 import de.katho.kBorrow.gui.RewriteToNewUserDialog;
-import de.katho.kBorrow.models.LendingTableModel;
-import de.katho.kBorrow.models.UserTableModel;
-import de.katho.kBorrow.models.UserListModel;
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 
 public class UserController {
 
 	private DbConnector dbCon;
-	private UserTableModel userTableModel;
-	private UserListModel userListModel;
-	private LendingTableModel lendingTableModel;
+	private KDataModel userModel;
+	private KDataModel lendingModel;
 	
-	public UserController(DbConnector pDbCon, HashMap<String, Object> pModels) {
+	public UserController(DbConnector pDbCon, HashMap<String, KDataModel> models) {
 		dbCon = pDbCon;
-		userTableModel = (UserTableModel)pModels.get("usertablemodel");
-		userListModel = (UserListModel)pModels.get("userlistmodel");
-		lendingTableModel = (LendingTableModel)pModels.get("lendingtablemodel");
+		userModel = models.get("kusermodel");
+		lendingModel = models.get("klendingmodel");
 	}
 
 	public int createUser(String pName, String pSurname){
 		int status = dbCon.createUser(pName, pSurname);
 		
-		userTableModel.updateModel();
-		userListModel.updateModel();
+		userModel.updateModel();
 		
 		return status;
 	}
@@ -37,42 +35,43 @@ public class UserController {
 		int status = dbCon.editUser(pId, pName, pSurname);
 		
 		if(status == 0){
-			userTableModel.updateModel();
-			userListModel.updateModel();
+			userModel.updateModel();
 		}
 		
 		return status;
 	}
 	
-	public boolean deleteUser(int pRow) {
-		int id = userTableModel.getUserByRow(pRow).getId();
+	public boolean deleteUser(int pId) {
+		if(!(lendingModel instanceof KLendingModel)) {
+			KLogger.log(Level.SEVERE, "UserController: lendingModel type error!", new Exception("UserController: lendingModel type error!"));
+			return false;
+		}
 		
 		boolean isOccupied = false;
-		ArrayList<KLending> lendingList = lendingTableModel.getLendingList();
+		
+		ArrayList<KLending> lendingList = ((KLendingModel)lendingModel).getData();
 		for(KLending elem : lendingList){
-			if(elem.getUserId() == id){
+			if(elem.getUserId() == pId){
 				isOccupied = true;
 				break;
 			}
 		}
 		
 		if(isOccupied){
-			RewriteToNewUserDialog dialog = new RewriteToNewUserDialog(id, dbCon);
+			RewriteToNewUserDialog dialog = new RewriteToNewUserDialog(pId, dbCon);
 			if(dialog.getResult() == 0){
-				lendingTableModel.updateModel();
-				userTableModel.updateModel();
-				userListModel.updateModel();
+				lendingModel.updateModel();
+				userModel.updateModel();
 				
-				return deleteUser(pRow);
+				return deleteUser(pId);
 			}
 			else return false;
 				
 		}
 		else {
-			if(dbCon.deleteUser(id)){
-				userTableModel.updateModel();
-				userListModel.updateModel();
-				lendingTableModel.updateModel();
+			if(dbCon.deleteUser(pId)){
+				userModel.updateModel();
+				lendingModel.updateModel();
 			
 				return true;
 			}

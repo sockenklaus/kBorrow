@@ -11,8 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 
-import de.katho.kBorrow.data.KArticle;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.objects.KArticle;
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.models.ArticleInspectTableModel;
 import de.katho.kBorrow.models.ArticleTableModel;
 
@@ -31,8 +32,8 @@ public class ArticleInspectFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ArticleInspectFrame(int pRow, final DbConnector dbCon, HashMap<String, Object> pModels) {
-		articleModel = (ArticleTableModel)pModels.get("articletablemodel");
+	public ArticleInspectFrame(int pRow, final DbConnector dbCon, HashMap<String, KDataModel> models) {
+		articleModel = (ArticleTableModel)models.get("articletablemodel");
 		article = articleModel.getArticleByRow(pRow);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -71,7 +72,7 @@ public class ArticleInspectFrame extends JFrame {
 		panelInfo.add(taArticleDesc);
 		
 		// Table
-		artInsModel = new ArticleInspectTableModel(pRow, dbCon, pModels);
+		artInsModel = new ArticleInspectTableModel(pRow, dbCon, models);
 		table = new JTable(artInsModel);
 		table.setFillsViewportHeight(true);
 		table.setRowHeight(30);

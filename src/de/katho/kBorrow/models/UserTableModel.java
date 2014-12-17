@@ -4,30 +4,30 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-import de.katho.kBorrow.data.KUser;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.KUserModel;
+import de.katho.kBorrow.data.objects.KUser;
+import de.katho.kBorrow.interfaces.KDataModel;
+import de.katho.kBorrow.interfaces.KGuiModel;
 
-public class UserTableModel extends AbstractTableModel {
+public class UserTableModel extends AbstractTableModel implements KGuiModel {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 435829735305533728L;
-	private DbConnector dbCon;
 	private String[] header = {"ID", "Vorname", "Nachname", "", ""};
-	private ArrayList<KUser> data = new ArrayList<KUser>();
+	private ArrayList<KUser> data;
 	
-	public UserTableModel(DbConnector pDbCon){
-		dbCon = pDbCon;
-		updateModel();
+	public UserTableModel(KDataModel pModel){
+		pModel.register(this);
 	}
 	
 	public int getColumnCount() {
-		return this.header.length;
+		return header.length;
 	}
 
 	public int getRowCount() {		
-		return this.data.size();
+		return data.size();
 	}
 
 	public String getValueAt(int row, int col) {
@@ -48,11 +48,6 @@ public class UserTableModel extends AbstractTableModel {
 
 	public String getColumnName(int index){
 		return header[index];
-	}
-	
-	public void updateModel(){
-		data = dbCon.getUserList();
-		fireTableDataChanged();
 	}
 	
 	// Die Funktion muss differenzierter werden
@@ -82,5 +77,18 @@ public class UserTableModel extends AbstractTableModel {
 			if(elem.getId() == pId) return elem;
 		}
 		return null;
-	}	
+	}
+	
+	public int rowToId(int pRow){
+		return getUserByRow(pRow).getId();
+	}
+
+	public void fetchData(KDataModel pModel) {
+		if(pModel instanceof KUserModel){
+			data = ((KUserModel)pModel).getData();
+			
+			fireTableDataChanged();
+		}
+		
+	}
 }

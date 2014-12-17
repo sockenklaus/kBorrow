@@ -10,11 +10,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 
 import de.katho.kBorrow.controller.RewriteToNewUserController;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.interfaces.DbConnector;
 import de.katho.kBorrow.models.RewriteUserModel;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JLabel;
 
 public class RewriteToNewUserDialog extends JDialog implements ActionListener {

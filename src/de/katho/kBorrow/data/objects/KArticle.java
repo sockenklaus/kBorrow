@@ -1,4 +1,4 @@
-package de.katho.kBorrow.data;
+package de.katho.kBorrow.data.objects;
 
 public class KArticle {
 	private int id;

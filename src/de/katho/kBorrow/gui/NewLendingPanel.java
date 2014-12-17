@@ -34,9 +34,10 @@ import de.katho.kBorrow.controller.NewLendingController;
 import de.katho.kBorrow.converter.LenderNameConverter;
 import de.katho.kBorrow.converter.LenderStudentnumberConverter;
 import de.katho.kBorrow.converter.LenderSurnameConverter;
-import de.katho.kBorrow.data.KArticle;
-import de.katho.kBorrow.data.KLender;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.objects.KArticle;
+import de.katho.kBorrow.data.objects.KLender;
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.listener.NewLendingTableButton;
 import de.katho.kBorrow.models.FreeArticleTableModel;
 import de.katho.kBorrow.models.LenderModel;
@@ -58,7 +59,7 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 	private JLabel lblStartDate;
 	private JLabel lblArticleName;
 	private int articleId;
-	private LenderModel lenderModel;
+	//private LenderModel lenderModel;
 	private JButton btnCancel;
 	private JButton btnSave;
 	private NewLendingController newLendingController;
@@ -71,15 +72,15 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 	 * @param dbCon 
 	 * @throws IOException 
 	 */
-	public NewLendingPanel(final DbConnector dbCon, HashMap<String, Object> pModel, final Settings pSettings) throws IOException {
+	public NewLendingPanel(final DbConnector dbCon, HashMap<String, KDataModel> models, final Settings pSettings) throws IOException {
 		setLayout(null);
 		articleId = -1;
 		
 		// FreeArticleTable
-		freeArticleTableModel = (FreeArticleTableModel)pModel.get("freearticletablemodel");
-		userListModel = (UserListModel)pModel.get("userlistmodel");
-		lenderModel = (LenderModel)pModel.get("lendermodel");
-		newLendingController = new NewLendingController(dbCon, pModel, pSettings);
+		freeArticleTableModel = (FreeArticleTableModel)models.get("freearticletablemodel");
+		userListModel = new UserListModel(models.get("kusermodel"));
+		lenderModel = (LenderModel)models.get("lendermodel");
+		newLendingController = new NewLendingController(dbCon, models, pSettings);
 		
 		JTable freeArticleTable = new JTable(freeArticleTableModel);
 		freeArticleTable.setRowHeight(30);

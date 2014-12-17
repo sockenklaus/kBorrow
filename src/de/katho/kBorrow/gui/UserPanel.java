@@ -20,8 +20,9 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import de.katho.kBorrow.controller.UserController;
-import de.katho.kBorrow.data.KUser;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.objects.KUser;
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.listener.UserDeleteTableButton;
 import de.katho.kBorrow.listener.UserEditTableButton;
 import de.katho.kBorrow.models.UserTableModel;
@@ -39,11 +40,11 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 	private UserTableModel userTableModel;
 	private UserController userController;
 
-	public UserPanel(final DbConnector dbCon, HashMap<String, Object> pModels) throws IOException{
+	public UserPanel(final DbConnector dbCon, HashMap<String, KDataModel> models) throws IOException{
 		super();
 		setLayout(null);
-		userTableModel = (UserTableModel)pModels.get("usertablemodel");
-		userController = new UserController(dbCon, pModels);
+		userTableModel = (UserTableModel)models.get("usertablemodel");
+		userController = new UserController(dbCon, models);
 		
 		//Tabelle und drumherum
 		JTable userTable = new JTable(userTableModel);

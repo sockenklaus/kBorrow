@@ -5,13 +5,15 @@ import java.util.HashMap;
 
 import javax.swing.table.AbstractTableModel;
 
-import de.katho.kBorrow.data.KArticle;
-import de.katho.kBorrow.data.KLender;
-import de.katho.kBorrow.data.KLending;
-import de.katho.kBorrow.data.KUser;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.objects.KArticle;
+import de.katho.kBorrow.data.objects.KLender;
+import de.katho.kBorrow.data.objects.KLending;
+import de.katho.kBorrow.data.objects.KUser;
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
+import de.katho.kBorrow.interfaces.KGuiModel;
 
-public class ArticleInspectTableModel extends AbstractTableModel {
+public class ArticleInspectTableModel extends AbstractTableModel implements KGuiModel {
 
 	/**
 	 * 
@@ -26,12 +28,12 @@ public class ArticleInspectTableModel extends AbstractTableModel {
 	private LenderModel lenderModel;
 	
 	
-	public ArticleInspectTableModel(int pRow, DbConnector pDbCon, HashMap<String, Object> pModels){
+	public ArticleInspectTableModel(int pRow, DbConnector pDbCon, HashMap<String, KDataModel> models){
 		header = new String[] {"ID", "Verliehen von:", "Ausgeliehen an:", "Ausleihdatum", "Vor. Rückgabe", "Rückgabe"};
 		dbCon = pDbCon;
-		articleModel = (ArticleTableModel)pModels.get("articletablemodel");
-		userModel = (UserTableModel)pModels.get("usertablemodel");
-		lenderModel = (LenderModel)pModels.get("lendermodel");
+		articleModel = (ArticleTableModel)models.get("articletablemodel");
+		userModel = (UserTableModel)models.get("usertablemodel");
+		lenderModel = (LenderModel)models.get("lendermodel");
 		
 		article = articleModel.getArticleByRow(pRow);
 		

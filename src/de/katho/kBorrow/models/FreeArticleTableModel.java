@@ -1,8 +1,9 @@
 package de.katho.kBorrow.models;
 
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KGuiModel;
 
-public class FreeArticleTableModel extends ArticleTableModel {
+public class FreeArticleTableModel extends ArticleTableModel implements KGuiModel {
 
 	/**
 	 * 

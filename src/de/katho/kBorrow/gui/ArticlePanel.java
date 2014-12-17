@@ -24,8 +24,9 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import de.katho.kBorrow.controller.ArticleController;
-import de.katho.kBorrow.data.KArticle;
-import de.katho.kBorrow.db.DbConnector;
+import de.katho.kBorrow.data.objects.KArticle;
+import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.listener.ArticleDeleteTableButton;
 import de.katho.kBorrow.listener.ArticleEditTableButton;
 import de.katho.kBorrow.listener.ArticleInspectTableButton;
@@ -48,11 +49,11 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 	 * Create the panel.
 	 * @throws IOException 
 	 */
-	public ArticlePanel(final DbConnector dbCon, HashMap<String, Object> pModels) throws IOException {	
+	public ArticlePanel(final DbConnector dbCon, HashMap<String, KDataModel> models) throws IOException {	
 		super();
 		this.setLayout(null);
-		articleTableModel = (ArticleTableModel)pModels.get("articletablemodel");
-		articleController = new ArticleController(dbCon, pModels);
+		articleTableModel = (ArticleTableModel)models.get("articletablemodel");
+		articleController = new ArticleController(dbCon, models);
 		
 		/*
 		 * Tabelle und drumherum
@@ -62,7 +63,7 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 		articleTable.setRowHeight(30);
 		ArticleDeleteTableButton articleDeleteTableButton = new ArticleDeleteTableButton("Löschen", articleTable, this, articleController);
 		ArticleEditTableButton articleEditTableButton = new ArticleEditTableButton("Bearbeiten", articleTable, this);
-		ArticleInspectTableButton articleInspectTableButton = new ArticleInspectTableButton("Details", articleTable, dbCon, pModels);
+		ArticleInspectTableButton articleInspectTableButton = new ArticleInspectTableButton("Details", articleTable, dbCon, models);
 		
 		for (int i = 3; i <= 5; i++){
 			articleTable.getColumnModel().getColumn(i).setCellEditor(i == 3 ? articleInspectTableButton : i == 4 ? articleEditTableButton : articleDeleteTableButton);
