@@ -56,31 +56,8 @@ public class UserTableModel extends AbstractTableModel implements KGuiModel {
 		return false;
 	}
 	
-	/**
-	 * 
-	 * @param pId
-	 * @return Returns -1 if there is no row for the given id.
-	 */
-	public int getRowFromId(int pId){
-		for(KUser elem : this.data){
-			if(elem.getId() == pId) return data.indexOf(elem);
-		}
-		return -1;
-	}
-	
 	public int getIdFromRow(int pRow){
-		return getUserByRow(pRow).getId();
-	}
-
-	public KUser getUserByRow(int pRow){
-		return this.data.get(pRow);
-	}
-	
-	public KUser getUserById(int pId){
-		for(KUser elem : this.data){
-			if(elem.getId() == pId) return elem;
-		}
-		return null;
+		return data.get(pRow).getId();
 	}
 	
 	public void fetchData(KDataModel pModel) {

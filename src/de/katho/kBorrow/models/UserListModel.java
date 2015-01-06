@@ -55,15 +55,6 @@ public class UserListModel extends AbstractListModel<String> implements ComboBox
 		}
 		return false;
 	}
-	
-	
-	
-	public KUser getUserById(int pId){
-		for (KUser elem : data){
-			if(elem.getId() == pId) return elem;
-		}
-		return null;
-	}
 
 	public void fetchData(KDataModel pModel) {
 		if(pModel instanceof KUserModel){

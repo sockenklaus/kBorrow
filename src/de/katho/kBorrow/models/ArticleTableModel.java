@@ -59,47 +59,11 @@ public class ArticleTableModel extends AbstractTableModel implements KGuiModel {
 		if (pCol > 2) return true;
 		return false;
 	}
-	
-	/**
-	 * Gibt die entsprechende Zeile in der Tabelle für ein Objekt mit der gegebenen ID zurück.
-	 * 
-	 * @param id	ID, für die die Tabellenzeile herausgesucht werden soll
-	 * @return		Zeile in der Tabelle. -1, wenn die ID nicht vorhanden ist.
-	 */
-	public int getRowFromId(int id) {
-		for (KArticle elem : this.data){
-			if(elem.getId() == id) return data.indexOf(elem);
-		}
-		return -1;
-	}
 		
 	public int getIdFromRow(int pRow){
-		return getArticleByRow(pRow).getId();
+		return data.get(pRow).getId();
 	}
 
-	/**
-	 * Gibt das Article-Objekt der übergebenen Zeile zurück.
-	 * 
-	 * @param pRow	Zeile, deren Article-Objekt zurückgegeben werden soll.
-	 * @return	KArticle-Objekt
-	 */
-	public KArticle getArticleByRow(int pRow){
-		return data.get(pRow);
-	}
-	
-	/**
-	 * Gibt das Article-Objekt mit der entsprechendne ID zurück.
-	 * 
-	 * @param pId	Id, deren Objekt zurückgegeben werden soll.
-	 * @return		KArticle-Objekt
-	 */
-	public KArticle getArticleById(int pId){
-		for(KArticle elem : data){
-			if(elem.getId() == pId) return elem;
-		}
-		return null;
-	}
-	
 	public void fetchData(KDataModel pModel) {
 		if(pModel instanceof KArticleModel){
 			data = ((KArticleModel)pModel).getData();

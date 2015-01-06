@@ -86,17 +86,6 @@ public class LendingTableModel extends AbstractTableModel implements KGuiModel {
 		return false;
 	}
 
-	public KLending getLendingByRow(int row) {
-		return data.get(row);
-	}
-	
-	public KLending getLendingById(int id){
-		for(KLending elem : data){
-			if(elem.getId() == id) return elem;
-		}
-		return null;
-	}
-
 	public void fetchData(KDataModel pModel) {
 		data = new ArrayList<KLending>();
 		
@@ -108,15 +97,8 @@ public class LendingTableModel extends AbstractTableModel implements KGuiModel {
 		}		
 	}
 	
-	public int getRowFromId(int pId){
-		for(KLending elem : this.data){
-			if(elem.getId() == pId) return data.indexOf(elem);
-		}
-		return -1;
-	}
-	
 	public int getIdFromRow(int pRow){
-		return getLendingByRow(pRow).getId();
+		return data.get(pRow).getId();
 	}
 
 }
