@@ -58,7 +58,7 @@ public class UserController {
 		}
 		
 		if(isOccupied){
-			RewriteToNewUserDialog dialog = new RewriteToNewUserDialog(pId, dbCon);
+			RewriteToNewUserDialog dialog = new RewriteToNewUserDialog(pId, dbCon, userModel);
 			if(dialog.getResult() == 0){
 				lendingModel.updateModel();
 				userModel.updateModel();

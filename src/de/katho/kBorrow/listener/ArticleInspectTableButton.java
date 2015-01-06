@@ -11,8 +11,8 @@ import javax.swing.JTable;
 
 import sun.tools.jar.Main;
 import de.katho.kBorrow.gui.ArticleInspectFrame;
-import de.katho.kBorrow.interfaces.DbConnector;
 import de.katho.kBorrow.interfaces.KDataModel;
+import de.katho.kBorrow.models.ArticleTableModel;
 
 public class ArticleInspectTableButton extends TableButton {
 
@@ -21,7 +21,7 @@ public class ArticleInspectTableButton extends TableButton {
 	 */
 	private static final long serialVersionUID = -2591133864537097893L;
 
-	public ArticleInspectTableButton(String pLabel, final JTable pTable, final DbConnector dbCon, final HashMap<String, KDataModel> models) throws IOException {
+	public ArticleInspectTableButton(String pLabel, final JTable pTable, final HashMap<String, KDataModel> models) throws IOException {
 		super(pLabel);
 		URL url = Main.class.getResource("/icons/system-search.png");
 		ImageIcon icon = new ImageIcon(url);
@@ -34,8 +34,9 @@ public class ArticleInspectTableButton extends TableButton {
 				fireEditingStopped();
 				
 				int row = pTable.getSelectedRow();
+				int id = ((ArticleTableModel)pTable.getModel()).getIdFromRow(row);
 				
-				new ArticleInspectFrame(row, dbCon, models);
+				new ArticleInspectFrame(id, models);
 			}
 		});
 	}

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
+import de.katho.kBorrow.data.KArticleModel;
 import de.katho.kBorrow.data.objects.KArticle;
 import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.interfaces.KGuiModel;
 
 public class ArticleTableModel extends AbstractTableModel implements KGuiModel {
@@ -18,19 +20,13 @@ public class ArticleTableModel extends AbstractTableModel implements KGuiModel {
 	protected DbConnector dbCon;
 	protected ArrayList<KArticle> data = new ArrayList<KArticle>();
 
-	public ArticleTableModel(DbConnector pDbCon){
+	public ArticleTableModel(KDataModel pModel){
 		header = new String [] {"ID", "Artikelname", "Artikelbeschreibung", "", "", ""};
-		this.dbCon = pDbCon;
-		this.updateModel();
+		pModel.register(this);
 	}
 	
 	public String getColumnName(int index){
 		return header[index];
-	}
-	
-	public void updateModel() {
-		this.data = this.dbCon.getArticleList();
-		this.fireTableDataChanged();		
 	}
 
 	public int getColumnCount() {
@@ -77,6 +73,10 @@ public class ArticleTableModel extends AbstractTableModel implements KGuiModel {
 		return -1;
 	}
 		
+	public int getIdFromRow(int pRow){
+		return getArticleByRow(pRow).getId();
+	}
+
 	/**
 	 * Gibt das Article-Objekt der übergebenen Zeile zurück.
 	 * 
@@ -98,6 +98,15 @@ public class ArticleTableModel extends AbstractTableModel implements KGuiModel {
 			if(elem.getId() == pId) return elem;
 		}
 		return null;
+	}
+	
+	public void fetchData(KDataModel pModel) {
+		if(pModel instanceof KArticleModel){
+			data = ((KArticleModel)pModel).getData();
+			
+			fireTableDataChanged();
+		}
+		
 	}
 
 }

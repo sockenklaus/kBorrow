@@ -20,6 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import de.katho.kBorrow.controller.UserController;
+import de.katho.kBorrow.data.KUserModel;
 import de.katho.kBorrow.data.objects.KUser;
 import de.katho.kBorrow.interfaces.DbConnector;
 import de.katho.kBorrow.interfaces.KDataModel;
@@ -37,17 +38,17 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 	private JButton btnUserCancel;
 	private boolean userModeEdit;
 	private int userEditId;
-	private UserTableModel userTableModel;
+	private KUserModel kUserModel;
 	private UserController userController;
 
 	public UserPanel(final DbConnector dbCon, HashMap<String, KDataModel> models) throws IOException{
 		super();
 		setLayout(null);
-		userTableModel = (UserTableModel)models.get("usertablemodel");
+		kUserModel = (KUserModel)models.get("kusermodel");
 		userController = new UserController(dbCon, models);
 		
 		//Tabelle und drumherum
-		JTable userTable = new JTable(userTableModel);
+		JTable userTable = new JTable(new UserTableModel(kUserModel));
 		userTable.setRowHeight(30);
 		UserDeleteTableButton userDeleteTableButton = new UserDeleteTableButton("Löschen", userTable, this, userController);
 		UserEditTableButton userEditTableButton = new UserEditTableButton("Bearbeiten", userTable, this);
@@ -148,8 +149,8 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 		this.textFieldUserSurname.setText("");
 	}
 
-	public void setModeEditUser(int pRow){
-		KUser user = userTableModel.getUserByRow(pRow);
+	public void setModeEditUser(int pId){
+		KUser user = kUserModel.getElement(pId);
 		
 		this.userModeEdit = true;
 		this.userEditId = user.getId();

@@ -6,5 +6,5 @@ public interface KDataModel {
 	public void register(KGuiModel pModel);
 	public void updateModel();
 	public ArrayList<?> getData();
-	public Object get(int id);
+	public Object getElement(int id);
 }

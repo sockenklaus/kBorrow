@@ -30,7 +30,7 @@ public class UserDeleteTableButton extends TableButton {
 				fireEditingStopped();
 				
 				int row = pTable.getSelectedRow();
-				int id = ((UserTableModel)pTable.getModel()).rowToId(row);
+				int id = ((UserTableModel)pTable.getModel()).getIdFromRow(row);
 
 				if(pController.deleteUser(id)) pPanel.setStatusLabel("Benutzer erfolgreich gelöscht.");
 				else pPanel.setStatusLabel("Beuntzer konnte nicht gelöscht werden.");

@@ -10,6 +10,7 @@ import javax.swing.JTable;
 
 import sun.tools.jar.Main;
 import de.katho.kBorrow.gui.NewLendingPanel;
+import de.katho.kBorrow.models.FreeArticleTableModel;
 
 public class NewLendingTableButton extends TableButton {
 
@@ -31,8 +32,9 @@ public class NewLendingTableButton extends TableButton {
 				fireEditingStopped();
 				
 				int row = pTable.getSelectedRow();
+				int id = ((FreeArticleTableModel)pTable.getModel()).getIdFromRow(row);
 				
-				pPanel.setModeNewLending(row);
+				pPanel.setModeNewLending(id);
 			}
 		});
 	}

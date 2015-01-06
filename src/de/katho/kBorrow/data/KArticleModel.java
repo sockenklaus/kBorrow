@@ -37,8 +37,10 @@ public class KArticleModel implements KDataModel {
 		return data;
 	}
 
-	public Object get(int id) {
-		if(data.size() > id) return data.get(id);
+	public KArticle getElement(int id) {
+		for (KArticle elem : data){
+			if(elem.getId() == id) return elem;
+		}
 		return null;
 	}
 

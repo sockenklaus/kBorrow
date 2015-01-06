@@ -34,13 +34,15 @@ import de.katho.kBorrow.controller.NewLendingController;
 import de.katho.kBorrow.converter.LenderNameConverter;
 import de.katho.kBorrow.converter.LenderStudentnumberConverter;
 import de.katho.kBorrow.converter.LenderSurnameConverter;
+import de.katho.kBorrow.data.KArticleModel;
+import de.katho.kBorrow.data.KLenderModel;
+import de.katho.kBorrow.data.KUserModel;
 import de.katho.kBorrow.data.objects.KArticle;
 import de.katho.kBorrow.data.objects.KLender;
 import de.katho.kBorrow.interfaces.DbConnector;
 import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.listener.NewLendingTableButton;
 import de.katho.kBorrow.models.FreeArticleTableModel;
-import de.katho.kBorrow.models.LenderModel;
 import de.katho.kBorrow.models.UserListModel;
 
 import java.awt.event.FocusEvent;
@@ -51,21 +53,25 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 	 * 
 	 */
 	private static final long serialVersionUID = -7346953418572781322L;
-	private FreeArticleTableModel freeArticleTableModel;
 	private JTextField tfName;
 	private JTextField tfSurname;
 	private JTextField tfStudentNumber;
-	private UserListModel userListModel;
 	private JLabel lblStartDate;
 	private JLabel lblArticleName;
 	private int articleId;
-	//private LenderModel lenderModel;
 	private JButton btnCancel;
 	private JButton btnSave;
 	private NewLendingController newLendingController;
 	private JComboBox<String> cbUserName;
 	private JXDatePicker dpEstEndDate;
 	private JLabel lblStatus;
+	
+	private KArticleModel kArticleModel;
+	private KUserModel kUserModel;
+	private KLenderModel kLenderModel;
+	
+	private UserListModel userListModel;
+	private FreeArticleTableModel freeArticleTableModel;
 	
 	/**
 	 * Create the panel.
@@ -76,10 +82,14 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		setLayout(null);
 		articleId = -1;
 		
+		kArticleModel = (KArticleModel)models.get("karticlemodel");
+		kUserModel = (KUserModel)models.get("kusermodel");
+		kLenderModel = (KLenderModel)models.get("klendermodel");
+		
+		userListModel = new UserListModel(kUserModel);
+		freeArticleTableModel = new FreeArticleTableModel(kArticleModel);
+		
 		// FreeArticleTable
-		freeArticleTableModel = (FreeArticleTableModel)models.get("freearticletablemodel");
-		userListModel = new UserListModel(models.get("kusermodel"));
-		lenderModel = (LenderModel)models.get("lendermodel");
 		newLendingController = new NewLendingController(dbCon, models, pSettings);
 		
 		JTable freeArticleTable = new JTable(freeArticleTableModel);
@@ -157,9 +167,9 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		tfName.addKeyListener(this);
 		tfSurname.addKeyListener(this);
 		tfStudentNumber.addKeyListener(this);
-		AutoCompleteDecorator.decorate(tfName, lenderModel.getList(), false, new LenderNameConverter() );
-		AutoCompleteDecorator.decorate(tfSurname, lenderModel.getList(), false, new LenderSurnameConverter());
-		AutoCompleteDecorator.decorate(tfStudentNumber, lenderModel.getList(), false, new LenderStudentnumberConverter());
+		AutoCompleteDecorator.decorate(tfName, kLenderModel.getData(), false, new LenderNameConverter() );
+		AutoCompleteDecorator.decorate(tfSurname, kLenderModel.getData(), false, new LenderSurnameConverter());
+		AutoCompleteDecorator.decorate(tfStudentNumber, kLenderModel.getData(), false, new LenderStudentnumberConverter());
 		
 		// Buttons
 		btnCancel = new JButton("Abbrechen");
@@ -253,8 +263,8 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		}
 	}
 
-	public void setModeNewLending(int pRow) {
-		KArticle art = freeArticleTableModel.getArticleByRow(pRow);		
+	public void setModeNewLending(int id) {
+		KArticle art = kArticleModel.getElement(id);		
 		
 		lblStartDate.setText(Util.getCurrentDate());
 		lblArticleName.setText(art.getName());
@@ -283,7 +293,7 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 	}
 
 	public void focusLost(FocusEvent pEvent) {
-		ArrayList<KLender> result = lenderModel.getLenders(tfName.getText(), tfSurname.getText(), tfStudentNumber.getText());
+		ArrayList<KLender> result = kLenderModel.getLenders(tfName.getText(), tfSurname.getText(), tfStudentNumber.getText());
 		
 		if(result.size() == 1){
 			tfName.setText(result.get(0).getName());

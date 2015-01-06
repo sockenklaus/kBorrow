@@ -37,9 +37,18 @@ public class KUserModel implements KDataModel {
 		return data;
 	}
 
-	public Object get(int id) {
-		if(data.size() > id) return data.get(id);
+	public KUser getElement(int id) {
+		for(KUser elem : data){
+			if(elem.getId() == id) return elem;
+		}
 		return null;
+	}
+	
+	public int getIdByFullname(String pName){
+		for (KUser elem : data){
+			if(pName.equals(elem.getName()+" "+elem.getSurname())) return elem.getId();
+		}
+		return -1;
 	}
 
 }

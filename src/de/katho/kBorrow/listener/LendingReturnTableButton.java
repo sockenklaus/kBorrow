@@ -10,6 +10,7 @@ import javax.swing.JTable;
 
 import sun.tools.jar.Main;
 import de.katho.kBorrow.controller.ManageLendingsController;
+import de.katho.kBorrow.models.LendingTableModel;
 
 public class LendingReturnTableButton extends TableButton {
 
@@ -31,8 +32,9 @@ public class LendingReturnTableButton extends TableButton {
 				fireEditingStopped();
 				
 				int row = pTable.getSelectedRow();
+				int id = ((LendingTableModel)pTable.getModel()).getIdFromRow(row);
 
-				pController.returnLending(row);
+				pController.returnLending(id);
 			}
 		});
 	}

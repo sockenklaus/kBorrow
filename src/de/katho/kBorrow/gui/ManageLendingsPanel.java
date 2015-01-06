@@ -5,8 +5,6 @@ import javax.swing.JPanel;
 
 import de.katho.kBorrow.controller.ManageLendingsController;
 
-
-
 import de.katho.kBorrow.interfaces.DbConnector;
 import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.listener.LendingReturnTableButton;
@@ -27,16 +25,14 @@ public class ManageLendingsPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 925691137664223491L;
 
-	private LendingTableModel lendingTableModel;
 	private ManageLendingsController manageLendingsController;
 	
 	public ManageLendingsPanel(DbConnector dbCon, HashMap<String, KDataModel> models) throws IOException {
 		
-		lendingTableModel = (LendingTableModel)models.get("lendingtablemodel");
 		manageLendingsController = new ManageLendingsController(dbCon, models);
 		
 		// Lending-Table
-		JTable lendingTable = new JTable(lendingTableModel);
+		JTable lendingTable = new JTable(new LendingTableModel(models));
 		LendingReturnTableButton lrtb = new LendingReturnTableButton("Ausleihe beenden", lendingTable, manageLendingsController);
 		lendingTable.getColumnModel().getColumn(0).setMinWidth(30);
 		lendingTable.getColumnModel().getColumn(0).setMaxWidth(30);

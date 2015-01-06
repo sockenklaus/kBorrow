@@ -10,6 +10,7 @@ import javax.swing.JTable;
 
 import sun.tools.jar.Main;
 import de.katho.kBorrow.gui.ArticlePanel;
+import de.katho.kBorrow.models.ArticleTableModel;
 
 public class ArticleEditTableButton extends TableButton {
 
@@ -31,8 +32,9 @@ public class ArticleEditTableButton extends TableButton {
 				fireEditingStopped();
 				
 				int row = pTable.getSelectedRow();
+				int id = ((ArticleTableModel)pTable.getModel()).getIdFromRow(row);
 				
-				articleTab.setModeEditArticle(row);
+				articleTab.setModeEditArticle(id);
 			}
 		});
 	}

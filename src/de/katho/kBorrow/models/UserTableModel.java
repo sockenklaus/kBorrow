@@ -68,6 +68,10 @@ public class UserTableModel extends AbstractTableModel implements KGuiModel {
 		return -1;
 	}
 	
+	public int getIdFromRow(int pRow){
+		return getUserByRow(pRow).getId();
+	}
+
 	public KUser getUserByRow(int pRow){
 		return this.data.get(pRow);
 	}
@@ -79,10 +83,6 @@ public class UserTableModel extends AbstractTableModel implements KGuiModel {
 		return null;
 	}
 	
-	public int rowToId(int pRow){
-		return getUserByRow(pRow).getId();
-	}
-
 	public void fetchData(KDataModel pModel) {
 		if(pModel instanceof KUserModel){
 			data = ((KUserModel)pModel).getData();

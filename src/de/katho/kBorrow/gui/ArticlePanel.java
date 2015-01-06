@@ -24,6 +24,7 @@ import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
 
 import de.katho.kBorrow.controller.ArticleController;
+import de.katho.kBorrow.data.KArticleModel;
 import de.katho.kBorrow.data.objects.KArticle;
 import de.katho.kBorrow.interfaces.DbConnector;
 import de.katho.kBorrow.interfaces.KDataModel;
@@ -43,7 +44,7 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 	private JLabel lblArticleStatus;
 	private boolean articleModeEdit;
 	private int articleEditId;
-	private ArticleTableModel articleTableModel;
+	private KArticleModel articleModel;
 
 	/**
 	 * Create the panel.
@@ -52,18 +53,18 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 	public ArticlePanel(final DbConnector dbCon, HashMap<String, KDataModel> models) throws IOException {	
 		super();
 		this.setLayout(null);
-		articleTableModel = (ArticleTableModel)models.get("articletablemodel");
+		articleModel = (KArticleModel)models.get("karticlemodel");
 		articleController = new ArticleController(dbCon, models);
 		
 		/*
 		 * Tabelle und drumherum
 		 */
 		
-		JTable articleTable = new JTable(articleTableModel);
+		JTable articleTable = new JTable(new ArticleTableModel(articleModel));
 		articleTable.setRowHeight(30);
 		ArticleDeleteTableButton articleDeleteTableButton = new ArticleDeleteTableButton("Löschen", articleTable, this, articleController);
 		ArticleEditTableButton articleEditTableButton = new ArticleEditTableButton("Bearbeiten", articleTable, this);
-		ArticleInspectTableButton articleInspectTableButton = new ArticleInspectTableButton("Details", articleTable, dbCon, models);
+		ArticleInspectTableButton articleInspectTableButton = new ArticleInspectTableButton("Details", articleTable, models);
 		
 		for (int i = 3; i <= 5; i++){
 			articleTable.getColumnModel().getColumn(i).setCellEditor(i == 3 ? articleInspectTableButton : i == 4 ? articleEditTableButton : articleDeleteTableButton);
@@ -174,8 +175,8 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 		this.textAreaArticleDescription.setText("");
 	}
 
-	public void setModeEditArticle(int pRow) {
-		KArticle art = articleTableModel.getArticleByRow(pRow);
+	public void setModeEditArticle(int pId) {
+		KArticle art = articleModel.getElement(pId);
 		
 		this.articleModeEdit = true;
 		this.articleEditId = art.getId();

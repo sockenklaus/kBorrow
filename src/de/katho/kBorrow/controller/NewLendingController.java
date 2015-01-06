@@ -19,34 +19,31 @@ import java.util.HashMap;
 
 import de.katho.kBorrow.Settings;
 import de.katho.kBorrow.Util;
+import de.katho.kBorrow.data.KArticleModel;
+import de.katho.kBorrow.data.KLenderModel;
+import de.katho.kBorrow.data.KLendingModel;
+import de.katho.kBorrow.data.KUserModel;
 import de.katho.kBorrow.data.objects.KArticle;
 import de.katho.kBorrow.data.objects.KLender;
 import de.katho.kBorrow.data.objects.KLending;
 import de.katho.kBorrow.data.objects.KUser;
 import de.katho.kBorrow.interfaces.DbConnector;
 import de.katho.kBorrow.interfaces.KDataModel;
-import de.katho.kBorrow.models.ArticleTableModel;
-import de.katho.kBorrow.models.FreeArticleTableModel;
-import de.katho.kBorrow.models.LenderModel;
-import de.katho.kBorrow.models.LendingTableModel;
-import de.katho.kBorrow.models.UserListModel;
 
 public class NewLendingController {
 	private DbConnector dbCon;
-	private UserListModel userListModel;
-	private LenderModel lenderModel;
-	private FreeArticleTableModel freeArticleModel;
-	private LendingTableModel lendingTableModel;
-	private ArticleTableModel articleTableModel;
+	private KUserModel kUserModel;
+	private KLenderModel kLenderModel;
+	private KArticleModel kArticleModel;
+	private KLendingModel kLendingModel;
 	private Settings settings;
 	
 	public NewLendingController(DbConnector pDbCon, HashMap<String, KDataModel> models, final Settings pSettings){
 		dbCon = pDbCon;
-		userListModel = (UserListModel)models.get("userlistmodel");
-		lenderModel = (LenderModel)models.get("lendermodel");
-		freeArticleModel = (FreeArticleTableModel)models.get("freearticletablemodel");
-		articleTableModel = (ArticleTableModel)models.get("articletablemodel");
-		lendingTableModel = (LendingTableModel)models.get("lendingtablemodel");
+		kUserModel = (KUserModel)models.get("kusermodel");
+		kLenderModel = (KLenderModel)models.get("klendermodel");
+		kArticleModel = (KArticleModel)models.get("karticlemodel");
+		kLendingModel = (KLendingModel)models.get("klendingmodel");
 		settings = pSettings;
 	}
 	
@@ -67,12 +64,12 @@ public class NewLendingController {
 		if(pEstEndDate.before(new Date())) return 3;
 		if(!pLSN.matches("[0-9]+")) return 5;
 		
-		ArrayList<KLender> lenders = lenderModel.getLenders(pLName, pLSurname, pLSN);
+		ArrayList<KLender> lenders = kLenderModel.getLenders(pLName, pLSurname, pLSN);
 		if(lenders.size() == 0) {
 			int result = dbCon.createNewLender(pLName, pLSurname, pLSN);
 			
 			if(result == 0){
-				lenderModel.updateModel();
+				kLenderModel.updateModel();
 				
 				return newLending(pArtId, pLName, pLSurname, pLSN, pStartDate, pEstEndDate, pUsername);
 			}
@@ -80,15 +77,14 @@ public class NewLendingController {
 		}
 		else if(lenders.size() == 1){
 			KLender lender = lenders.get(0);
-			int uId = userListModel.getIdByFullname(pUsername);
+			int uId = kUserModel.getIdByFullname(pUsername);
 			DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 			
 			int[] result = dbCon.createNewLending(pArtId, uId, lender.getId(), pStartDate, dateFormat.format(pEstEndDate));
 			
 			if(result[0] == 0){
-				freeArticleModel.updateModel();
-				articleTableModel.updateModel();
-				lendingTableModel.updateModel();
+				kArticleModel.updateModel();
+				kLendingModel.updateModel();
 				createPdfFile(result[1]);
 				
 				return result[0];
@@ -100,10 +96,10 @@ public class NewLendingController {
 	
 	
 	private void createPdfFile(int pLendingId) throws Exception {
-		KLending lending = lendingTableModel.getLendingById(pLendingId);
-		KArticle article = articleTableModel.getArticleById(lending.getArticleId());
-		KUser user = userListModel.getUserById(lending.getUserId());
-		KLender lender = lenderModel.getLenderById(lending.getLenderId());		
+		KLending lending = kLendingModel.getElement(pLendingId);
+		KArticle article = kArticleModel.getElement(lending.getArticleId());
+		KUser user = kUserModel.getElement(lending.getUserId());
+		KLender lender = kLenderModel.getElement(lending.getLenderId());		
 		
 		PDDocument doc = new PDDocument();
 		PDPage page = new PDPage(PDPage.PAGE_SIZE_A4);

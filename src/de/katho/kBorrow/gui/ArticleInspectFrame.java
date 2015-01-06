@@ -11,11 +11,10 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 
+import de.katho.kBorrow.data.KArticleModel;
 import de.katho.kBorrow.data.objects.KArticle;
-import de.katho.kBorrow.interfaces.DbConnector;
 import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.models.ArticleInspectTableModel;
-import de.katho.kBorrow.models.ArticleTableModel;
 
 public class ArticleInspectFrame extends JFrame {
 
@@ -25,16 +24,15 @@ public class ArticleInspectFrame extends JFrame {
 	private static final long serialVersionUID = -8993341404926674307L;
 	private JPanel contentPane;
 	private JTable table;
-	private ArticleInspectTableModel artInsModel;
-	private ArticleTableModel articleModel;
+	private KArticleModel articleModel;
 	private KArticle article;
 
 	/**
 	 * Create the frame.
 	 */
-	public ArticleInspectFrame(int pRow, final DbConnector dbCon, HashMap<String, KDataModel> models) {
-		articleModel = (ArticleTableModel)models.get("articletablemodel");
-		article = articleModel.getArticleByRow(pRow);
+	public ArticleInspectFrame(int pId, HashMap<String, KDataModel> models) {
+		articleModel = (KArticleModel)models.get("karticlemodel");
+		article = articleModel.getElement(pId);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(150, 150, 660, 541);
@@ -72,8 +70,7 @@ public class ArticleInspectFrame extends JFrame {
 		panelInfo.add(taArticleDesc);
 		
 		// Table
-		artInsModel = new ArticleInspectTableModel(pRow, dbCon, models);
-		table = new JTable(artInsModel);
+		table = new JTable(new ArticleInspectTableModel(pId, models));
 		table.setFillsViewportHeight(true);
 		table.setRowHeight(30);
 		table.getColumnModel().getColumn(0).setMinWidth(30);

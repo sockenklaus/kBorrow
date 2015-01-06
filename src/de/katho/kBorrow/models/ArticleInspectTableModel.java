@@ -5,11 +5,12 @@ import java.util.HashMap;
 
 import javax.swing.table.AbstractTableModel;
 
-import de.katho.kBorrow.data.objects.KArticle;
+import de.katho.kBorrow.data.KLenderModel;
+import de.katho.kBorrow.data.KLendingModel;
+import de.katho.kBorrow.data.KUserModel;
 import de.katho.kBorrow.data.objects.KLender;
 import de.katho.kBorrow.data.objects.KLending;
 import de.katho.kBorrow.data.objects.KUser;
-import de.katho.kBorrow.interfaces.DbConnector;
 import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.interfaces.KGuiModel;
 
@@ -20,29 +21,19 @@ public class ArticleInspectTableModel extends AbstractTableModel implements KGui
 	 */
 	private static final long serialVersionUID = 2293157709447086998L;
 	private String[] header;
+	private int articleId;
 	private ArrayList<KLending> data;
-	private DbConnector dbCon;
-	private KArticle article;
-	private ArticleTableModel articleModel;
-	private UserTableModel userModel;
-	private LenderModel lenderModel;
+	private KUserModel userModel;
+	private KLenderModel lenderModel;
 	
 	
-	public ArticleInspectTableModel(int pRow, DbConnector pDbCon, HashMap<String, KDataModel> models){
+	public ArticleInspectTableModel(int pId, HashMap<String, KDataModel> models){
 		header = new String[] {"ID", "Verliehen von:", "Ausgeliehen an:", "Ausleihdatum", "Vor. Rückgabe", "Rückgabe"};
-		dbCon = pDbCon;
-		articleModel = (ArticleTableModel)models.get("articletablemodel");
-		userModel = (UserTableModel)models.get("usertablemodel");
-		lenderModel = (LenderModel)models.get("lendermodel");
+		articleId = pId;
+		userModel = (KUserModel)models.get("kusermodel");
+		lenderModel = (KLenderModel)models.get("klendermodel");
 		
-		article = articleModel.getArticleByRow(pRow);
-		
-		updateModel();
-	}
-	
-	public void updateModel() {
-		data = dbCon.getLendingListForArticle(article.getId());
-		fireTableDataChanged();
+		fetchData(((KLendingModel)models.get("klendingmodel")));
 	}
 
 	public int getColumnCount() {
@@ -68,13 +59,13 @@ public class ArticleInspectTableModel extends AbstractTableModel implements KGui
 		
 		case 1:
 			int uid = data.get(row).getUserId();
-			KUser user = userModel.getUserById(uid);
+			KUser user = userModel.getElement(uid);
 			
 			return user.getName()+" "+user.getSurname();
 			
 		case 2:
 			int lid = data.get(row).getLenderId();
-			KLender lender = lenderModel.getLenderById(lid);
+			KLender lender = lenderModel.getElement(lid);
 			
 			return lender.getName()+" "+lender.getSurname()+" ("+lender.getStudentnumber()+")";
 			
@@ -89,6 +80,18 @@ public class ArticleInspectTableModel extends AbstractTableModel implements KGui
 			
 		default:
 			return null;
+		}
+	}
+
+	public void fetchData(KDataModel pModel) {
+		if(pModel instanceof KLendingModel){
+			data = new ArrayList<KLending>();
+			
+			for(KLending elem : ((KLendingModel)pModel).getData()){
+				if(elem.getArticleId() == articleId) data.add(elem);
+			}
+			
+			fireTableDataChanged();
 		}
 	}
 

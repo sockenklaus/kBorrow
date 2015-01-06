@@ -11,6 +11,7 @@ import javax.swing.JTable;
 import sun.tools.jar.Main;
 import de.katho.kBorrow.controller.ArticleController;
 import de.katho.kBorrow.gui.ArticlePanel;
+import de.katho.kBorrow.models.ArticleTableModel;
 
 public class ArticleDeleteTableButton extends TableButton {
 
@@ -24,16 +25,17 @@ public class ArticleDeleteTableButton extends TableButton {
 		URL url = Main.class.getResource("/icons/edit-delete.png");
 		ImageIcon icon = new ImageIcon(url);
 		
-		this.buttonE.setIcon(icon);
-		this.buttonR.setIcon(icon);
+		buttonE.setIcon(icon);
+		buttonR.setIcon(icon);
 		
-		this.buttonE.addActionListener(new ActionListener(){
+		buttonE.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				fireEditingStopped();
 				
 				int row = pTable.getSelectedRow();
+				int id = ((ArticleTableModel)pTable.getModel()).getIdFromRow(row);
 				
-				pPanel.setDeleteStatusLabel(pController.deleteArticle(row));		
+				pPanel.setDeleteStatusLabel(pController.deleteArticle(id));		
 				pPanel.resetModeEditArticle();
 			}
 		});

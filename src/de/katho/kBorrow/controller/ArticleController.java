@@ -2,20 +2,18 @@ package de.katho.kBorrow.controller;
 
 import java.util.HashMap;
 
+import de.katho.kBorrow.data.KArticleModel;
+import de.katho.kBorrow.data.objects.KArticle;
 import de.katho.kBorrow.interfaces.DbConnector;
 import de.katho.kBorrow.interfaces.KDataModel;
-import de.katho.kBorrow.models.ArticleTableModel;
-import de.katho.kBorrow.models.FreeArticleTableModel;
 
 public class ArticleController {
 	private DbConnector dbCon;
-	private ArticleTableModel articleTableModel;
-	private FreeArticleTableModel freeArticleTableModel;
+	private KArticleModel kArticleModel;
 	
 	public ArticleController(DbConnector pDbCon, HashMap<String, KDataModel> models){
 		dbCon = pDbCon;
-		articleTableModel = (ArticleTableModel)models.get("articletablemodel");
-		freeArticleTableModel = (FreeArticleTableModel)models.get("freearticletablemodel");
+		kArticleModel = (KArticleModel)models.get("karticlemodel");
 	}
 	
 	/**
@@ -30,8 +28,7 @@ public class ArticleController {
 	public int createArticle(String pName, String pDesc) {
 		int status = dbCon.createArticle(pName, pDesc);
 		
-		articleTableModel.updateModel();
-		freeArticleTableModel.updateModel();
+		kArticleModel.updateModel();
 		
 		return status;
 	}
@@ -50,8 +47,7 @@ public class ArticleController {
 		int status = this.dbCon.editArticle(pId, pName, pDesc);
 		
 		if(status == 0){
-			articleTableModel.updateModel();
-			freeArticleTableModel.updateModel();
+			kArticleModel.updateModel();
 		}
 		
 		return status;
@@ -60,21 +56,19 @@ public class ArticleController {
 	/**
 	 * Löscht den Artikel mit der gegebenen ID in der Datenbank und aktualisiert die Tabelle.
 	 * 
-	 * @param pRow	Row des Artikels, der gelöscht werden soll.
+	 * @param pId	ID des Artikels, der gelöscht werden soll.
 	 * @return		0: Artikel konnte erfolgreich gelöscht werden
 	 * 				1: Artikel konnte nicht gelöscht werden, unbekannter Fehler (SQL-Fehler)
 	 * 				2: Artikel konnte nicht gelöscht werden, weil er im Moment verliehen ist.
 	 */
-	public int deleteArticle(int pRow) {
+	public int deleteArticle(int pId) {
 		
-		if(!articleTableModel.getArticleByRow(pRow).getIsFree()) return 2;
+		if(!((KArticle)kArticleModel.getElement(pId)).getIsFree()) return 2;
 		
-		int id = articleTableModel.getArticleByRow(pRow).getId();
-		int returnCode = dbCon.deleteArticle(id);
+		int returnCode = dbCon.deleteArticle(pId);
 		
 		if(returnCode == 0){
-			articleTableModel.updateModel();
-			freeArticleTableModel.updateModel();
+			kArticleModel.updateModel();
 		}
 		
 		return returnCode;

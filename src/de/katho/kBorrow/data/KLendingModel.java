@@ -38,8 +38,10 @@ public class KLendingModel implements KDataModel {
 		return data;
 	}
 
-	public Object get(int id) {
-		if(data.size() > id) return data.get(id);
+	public KLending getElement(int id) {
+		for(KLending elem : data){
+			if(elem.getId() == id) return elem;
+		}
 		return null;
 	}
 

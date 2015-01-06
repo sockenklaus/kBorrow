@@ -11,6 +11,7 @@ import javax.swing.JComboBox;
 
 import de.katho.kBorrow.controller.RewriteToNewUserController;
 import de.katho.kBorrow.interfaces.DbConnector;
+import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.models.RewriteUserModel;
 
 import java.awt.event.ActionEvent;
@@ -37,7 +38,7 @@ public class RewriteToNewUserDialog extends JDialog implements ActionListener {
 	/**
 	 * Create the dialog.
 	 */
-	public RewriteToNewUserDialog(int pOldId, DbConnector pDbCon) {
+	public RewriteToNewUserDialog(int pOldId, DbConnector pDbCon, KDataModel userModel) {
 		setTitle("Ausleihe umschreiben");
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -48,7 +49,7 @@ public class RewriteToNewUserDialog extends JDialog implements ActionListener {
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout());
 		oldId = pOldId;
-		rwusermodel = new RewriteUserModel(pDbCon, oldId);
+		rwusermodel = new RewriteUserModel(userModel, oldId);
 		rwcontroller = new RewriteToNewUserController(pDbCon);
 		
 		// Content Panel

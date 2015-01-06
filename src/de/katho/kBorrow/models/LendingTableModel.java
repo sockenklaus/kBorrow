@@ -20,7 +20,7 @@ public class LendingTableModel extends AbstractTableModel implements KGuiModel {
 	 */
 	private static final long serialVersionUID = 1375465648631587292L;
 	private String[] header = {"ID", "Artikel", "Verliehen von:", "Ausgeliehen an:", "Ausleihdatum", "Vor. Rückgabe", ""};
-	private ArrayList<KLending> data = new ArrayList<KLending>();
+	private ArrayList<KLending> data;
 	private KDataModel articleModel;
 	private KDataModel lenderModel;
 	private KDataModel userModel;
@@ -54,19 +54,19 @@ public class LendingTableModel extends AbstractTableModel implements KGuiModel {
 			
 		case 1:
 			int artId = data.get(row).getArticleId();
-			KArticle art = (KArticle) articleModel.get(artId);
+			KArticle art = (KArticle) articleModel.getElement(artId);
 			
 			return art.getName();
 			
 		case 2:
 			int uId = data.get(row).getUserId();
-			KUser user = (KUser) userModel.get(uId);
+			KUser user = (KUser) userModel.getElement(uId);
 			
 			return user.getName()+" "+user.getSurname();
 			
 		case 3:
 			int lenderId = data.get(row).getLenderId();
-			KLender lender = (KLender) lenderModel.get(lenderId);
+			KLender lender = (KLender) lenderModel.getElement(lenderId);
 			
 			return lender.getName()+" "+lender.getSurname()+" ("+lender.getStudentnumber()+")";
 		
@@ -98,12 +98,25 @@ public class LendingTableModel extends AbstractTableModel implements KGuiModel {
 	}
 
 	public void fetchData(KDataModel pModel) {
+		data = new ArrayList<KLending>();
+		
 		if(pModel instanceof KLendingModel){
 			for(KLending elem : ((KLendingModel)pModel).getData()){
-				if(elem.getEndDate().equals("")) data.add(elem);
+				if(elem.getEndDate() == null || elem.getEndDate().equals("")) data.add(elem);
 			}
 			fireTableDataChanged();
 		}		
+	}
+	
+	public int getRowFromId(int pId){
+		for(KLending elem : this.data){
+			if(elem.getId() == pId) return data.indexOf(elem);
+		}
+		return -1;
+	}
+	
+	public int getIdFromRow(int pRow){
+		return getLendingByRow(pRow).getId();
 	}
 
 }
