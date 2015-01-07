@@ -1,0 +1,10 @@
+de.katho.kBorrow
+de.katho.kBorrow.controller
+de.katho.kBorrow.converter
+de.katho.kBorrow.data
+de.katho.kBorrow.data.objects
+de.katho.kBorrow.db
+de.katho.kBorrow.gui
+de.katho.kBorrow.interfaces
+de.katho.kBorrow.listener
+de.katho.kBorrow.models

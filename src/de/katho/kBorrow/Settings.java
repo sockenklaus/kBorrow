@@ -9,31 +9,42 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
+/**
+ * Verwaltet die Settings-Datei von kBorrow. 
+ */
 public class Settings {
 	
-	private Properties properties;
-	private String filePath;
-	private String fileName;
+	/** Properties-Objekt, über das Zugriff auf Settings-Werte erfolgt */
+	private Properties properties = new Properties();
 	
+	/** Pfad zum Settings-Verzeichnis */
+	private final String filePath = System.getProperty("user.home")+"/kBorrow";
+	
+	/** Dateiname der Settingsdatei */
+	private final String fileName = "Settings.cfg";
+	
+	/**
+	 * Initialisiert das Settingsobjekt.
+	 * 
+	 * Prüft, ob am oben definierten Dateipfad eine valide Config existiert. Falls nicht, wird eine neue Config erzeugt.
+	 * 
+	 * @throws Exception wenn eine Exception in {@link #filePathHasValidConfig} oder {@link #createDefaultConfig} auftritt und dort nicht gefangen wird.
+	 */
 	public Settings() throws Exception {
-		properties = new Properties();
-		filePath = System.getProperty("user.home")+"/kBorrow";
-		fileName = "Settings.cfg";
-				
 		if(!filePathHasValidConfig()){
 			createDefaultConfig();
 		}
 	}
 	
 	/**
+	 * Prüft, ob am oben definierten Dateipfad eine valide Config existiert. 
 	 * 
-	 * @return
+	 * @return true, wenn eine valide Config existiert, false, wenn keine Config existiert, oder die Config invalid ist.
 	 */
 	private boolean filePathHasValidConfig(){
 		try {
 			InputStream in = new FileInputStream(filePath+"/"+fileName);
-			properties = new Properties();
-			
+						
 			properties.load(in);
 			
 			// Check if the properties file holds certain keys and values.
@@ -59,8 +70,8 @@ public class Settings {
 	
 	/**
 	 * Writes a default config to the config file.
-	 * @throws Exception 
 	 * 
+	 * @throws Exception wenn Configdatei nicht gefunden oder nicht erzeugt werden konnte.
 	 */
 	private void createDefaultConfig() throws Exception {		
 		try {
@@ -87,12 +98,27 @@ public class Settings {
 		}		
 	}
 	
+	/**
+	 * Gibt einen Propertieswert zum als Parameter übergebenen Key zurück.
+	 * 
+	 * @param pKey	Key des angefragten Propertieswerts, null gibt null zurück
+	 * @return		Propertieswert als String oder null, wenn Key nicht gefunden werden konnte.
+	 */
 	public String getProperty(String pKey){
 		if(properties.containsKey(pKey)) return properties.getProperty(pKey);
-		return "";
+		return null;
 	}
 	
-	public void setProperty(String pKey, String pValue) throws IOException{
+	/**
+	 * Setzt übergebenes Key-Value-Paar und schreibt es in die Configdatei.
+	 * 
+	 * @param pKey			Key des zu schreibenden Key-Value-Paars, not null	
+	 * @param pValue		Value des zu schreibenden Key-Value-Paares, null
+	 * @throws Exception 	Wenn Key null ist, wenn Configdatei nicht gefunden oder nicht beschrieben werden konnte.
+	 */
+	public void setProperty(String pKey, String pValue) throws Exception{
+		if(pKey == null || pKey.equals("")) throw new Exception("Settings#setProperty: Key darf nicht null oder leer sein.");
+		
 		properties.put(pKey, pValue);
 		
 		OutputStream os;
@@ -108,6 +134,11 @@ public class Settings {
 		}		
 	}
 	
+	/**
+	 * Gibt den Pfad zum Configverzeichnis zurück.
+	 * 
+	 * @return	Pfad zum Configverzeichnis als String.
+	 */
 	public String getSettingsDir(){
 		return filePath;
 	}
