@@ -7,7 +7,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.BorderLayout;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 
 import de.katho.kBorrow.Settings;
@@ -39,7 +38,6 @@ public class MainWindow {
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 * @throws ClassNotFoundException 
-	 * @throws IOException 
 	 */
 	public MainWindow() {
 		// Delete all files in tmp-dir

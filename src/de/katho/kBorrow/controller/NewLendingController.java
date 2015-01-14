@@ -30,14 +30,36 @@ import de.katho.kBorrow.data.objects.KUser;
 import de.katho.kBorrow.interfaces.DbConnector;
 import de.katho.kBorrow.interfaces.KDataModel;
 
+/**
+ * NewLendingController führt sämtliche Datenbankoperationen aus, die von {@link de.katho.kBorrow.gui.NewLendingPanel} angestoßen werden.
+ */
 public class NewLendingController {
+	
+	/** Referenz auf die Datenbank */
 	private DbConnector dbCon;
+	
+	/** Referenz auf KUserModel, wird benötigt um Tabellen und Listen zu aktualisieren. */
 	private KUserModel kUserModel;
+	
+	/** Referenz auf KLenderModel, wird benötigt um Tabellen und Listen zu aktualisieren. */
 	private KLenderModel kLenderModel;
+	
+	/** Referenz auf KArticleModel, wird benötigt um Tabellen und Listen zu aktualisieren. */
 	private KArticleModel kArticleModel;
+	
+	/** Referenz auf KLendingModel, wird benötigt um Tabellen und Listen zu aktualisieren. */
 	private KLendingModel kLendingModel;
+	
+	/** Referenz auf die Settings, wird benötigt, um Zugriff auf das Programmverzeichnis im Benutzerprofil zu haben. */
 	private Settings settings;
 	
+	/**
+	 * Erzeugt eine neue Instanz des NewLendingController und setzt alle benötigten Referenzen.
+	 * 
+	 * @param pDbCon		Referenz auf die Datenbank.
+	 * @param models		HashMap mit den KDataModels.
+	 * @param pSettings		Referenz auf die Settings.
+	 */
 	public NewLendingController(DbConnector pDbCon, HashMap<String, KDataModel> models, final Settings pSettings){
 		dbCon = pDbCon;
 		kUserModel = (KUserModel)models.get("kusermodel");
@@ -48,16 +70,29 @@ public class NewLendingController {
 	}
 	
 	/**
+	 * Erzeugt eine neue Ausleihe.
 	 * 
-	 * @return		StatusCode
-	 * 				0:		Erfolgreich gespeichert
-	 * 				1:		SQL-Fehler
-	 * 				2:		Notwendige Daten sind leer (Art-ID, Start-Date, Est. End-Date)
-	 * 				3:		Das Rückgabedatum ist früher oder gleich dem Ausleihdatum
-	 * 				4:		Die gegebene Kombination aus Lender-Name, -Surname und -Studentnumber
-	 * 						existiert mehrmals in der Datenbank. Das darf nicht sein und wirft daher einen Fehler!
-	 * 				5:		Matrikelnummer muss eine Zahl sein!
-	 * @throws Exception 
+	 * <p>Gibt je nach Bearbeitungsergebnis einen anderen Statuscode aus:</p>
+	 * 
+	 * <ul>
+	 * <li>0: Erfolgreich gespeichert</li>
+	 * <li>1: SQL-Fehler</li>
+	 * <li>2: Notwendige Daten sind leer (Art-ID, Start-Date, Est. End Date)</li>
+	 * <li>3: Das Rückgabedatum ist früher oder gleich dem Ausleihdatum</li>
+	 * <li>4: Die gegebene Kombination aus Lender-Name, -Surname und -Studentnumer existiert mehrmals in der Datenbank. Das darf nicht sein und wird daher einen Fehler!</li>
+	 * <li>5: Matrikelnummer muss eine Zahl sein!</li>
+	 * </ul>
+	 * 
+	 * @param pArtId		Artikel-ID des Artikels, der verliehen wird (darf nicht -1 sein).
+	 * @param pLName		Vorname des Ausleihers (darf nicht leer sein).
+	 * @param pLSurname		Nachname des Ausleihers (darf nicht leer sein).
+	 * @param pLSN			Matrikelnummer des Ausleihers (muss numerisch sein).
+	 * @param pStartDate	Startdatum der Ausleihe (darf nicht leer sein).
+	 * @param pEstEndDate	Voraussichtliches Rückgabedatum (darf weder 'null' sein, noch in der Vergagenheit liegen).
+	 * @param pUsername		Username des Ausleihenden.
+	 * 
+	 * @return Statuscode als Int.
+	 * @throws Exception	???
 	 */
 	public int newLending(int pArtId, String pLName, String pLSurname, String pLSN, String pStartDate, Date pEstEndDate, String pUsername) throws Exception{
 		if(pArtId == -1 || pStartDate.isEmpty() || pEstEndDate == null || pLName.isEmpty() || pLSurname.isEmpty() || pUsername.isEmpty()) return 2;
@@ -94,7 +129,12 @@ public class NewLendingController {
 		return 4;
 	}
 	
-	
+	/**
+	 * Erzeugt ein PDF-File mit allen relevanten Daten zur als Parameter übergebenen Lending-ID.
+	 * 
+	 * @param pLendingId	ID der Ausleihe, für die ein PDF erzeugt werden soll.
+	 * @throws Exception	Wenn Probleme beim Erstellen der Datei auftreten.
+	 */
 	private void createPdfFile(int pLendingId) throws Exception {
 		KLending lending = kLendingModel.getElement(pLendingId);
 		KArticle article = kArticleModel.getElement(lending.getArticleId());
@@ -124,7 +164,7 @@ public class NewLendingController {
 							lending.getExpectedEndDate()
 						};
 		try {
-			File file = createRandomFile();
+			File file = createRandomPdf();
 			
 			PDPageContentStream cos = new PDPageContentStream(doc, page);
 			
@@ -176,7 +216,13 @@ public class NewLendingController {
 		}
 	}
 	
-	private File createRandomFile() throws IOException{
+	/**
+	 * Erzeugt ein PDF-File mit zufälligem Dateinamen.
+	 * 
+	 * @return	Gibt eine Referenz auf ein File-Objekt zurück.
+	 * @throws IOException	Wenn Probleme bei der Erstellung der Datei auftreten.
+	 */
+	private File createRandomPdf() throws IOException{
 		File dir = new File(settings.getSettingsDir()+"/tmp");
 		File file = new File(settings.getSettingsDir()+"/tmp/"+Util.generateRandomString(8)+".pdf");
 		if(!dir.isDirectory()) dir.mkdir();

@@ -20,9 +20,6 @@ import de.katho.kBorrow.data.objects.KUser;
 import de.katho.kBorrow.interfaces.DbConnector;
 
 /**
- * @class sqliteConnector
- * @author Servicepoint
- *
  * This class handles connections to a sqlite database.
  */
 public class SqliteConnector implements DbConnector {
@@ -32,7 +29,9 @@ public class SqliteConnector implements DbConnector {
 	
 	/**
 	 * @param pHandle This string contains the path to database file the connector has to use
-	 * @throws FileNotFoundException, SQLException
+	 * @throws FileNotFoundException
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
 	 */
 	public SqliteConnector(String pHandle) throws ClassNotFoundException, SQLException, IOException {
 			
@@ -353,10 +352,9 @@ public class SqliteConnector implements DbConnector {
 	 * 
 	 * @return  0: Benutzer erfolgreich erzeugt
 	 * 			1: SQL-Fehler beim Erzeugen
-	 * 			2: Benutzername ist leer
+	 * 	
 	 */
 	public int createUser(String pName, String pSurname){
-		if (pName.isEmpty() && pSurname.isEmpty()) return 2;
 		try {
 			Statement st = this.connection.createStatement();
 			String query = "INSERT INTO user (name, surname) VALUES ('"+pName+"', '"+pSurname+"')";
@@ -372,7 +370,6 @@ public class SqliteConnector implements DbConnector {
 	}
 
 	public int editUser(int pId, String pName, String pSurname) {
-		if(pName.isEmpty() && pSurname.isEmpty()) return 2;
 		try {
 			Statement st = this.connection.createStatement();
 			String query = "UPDATE user SET name = '"+pName+"', surname = '"+pSurname+"' WHERE id = '"+pId+"'";
@@ -404,7 +401,6 @@ public class SqliteConnector implements DbConnector {
 	}
 
 	public int createArticle(String pName, String pDesc) {
-		if (pName.isEmpty()) return 2;
 		try {
 			Statement st = this.connection.createStatement();
 			String query = "INSERT INTO article (name, description) VALUES ('"+pName+"', '"+pDesc+"')";
@@ -435,7 +431,6 @@ public class SqliteConnector implements DbConnector {
 	}
 
 	public int editArticle(int pId, String pName, String pDesc) {
-		if(pName.isEmpty()) return 2;
 		try {
 			Statement st = this.connection.createStatement();
 			String query = "UPDATE article SET name = '"+pName+"', description = '"+pDesc+"' WHERE id = '"+pId+"'";
