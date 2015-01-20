@@ -64,12 +64,6 @@ public class SqlConnector implements DbConnector{
 	}
 
 	@Override
-	public ArrayList<KArticle> getFreeArticleList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public ArrayList<KLender> getLenderList() {
 		// TODO Auto-generated method stub
 		return null;
@@ -89,12 +83,6 @@ public class SqlConnector implements DbConnector{
 	}
 
 	@Override
-	public ArrayList<KLending> getActiveLendingList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public int returnLending(int id, int artId, String end_date) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -102,12 +90,6 @@ public class SqlConnector implements DbConnector{
 
 	@Override
 	public ArrayList<KLending> getLendingListForArticle(int pArtId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ArrayList<KUser> getRewriteUserList(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -80,4 +80,42 @@ public final class Util {
 	public static void setMainWindow(JFrame p){
 		mainwindow = p;
 	}
+	
+	/**
+	 * Entfernt Linebreaks aus dem übergebenen String.
+	 * 
+	 * @param pString	String, aus dem Linebreaks entfernt werden sollen.
+	 * @return			String ohne Linebreaks.
+	 */
+	public static String removeLineBreaks(String pString){
+		StringBuffer text = new StringBuffer(pString);
+		int i = 0;
+		boolean addI = true;
+		
+		while (i < text.length()) {
+			if (text.charAt(i) == '\n') {
+				text.deleteCharAt(i);
+				addI = false;
+
+			}
+
+			if (text.charAt(i) == '\r') {
+				text.deleteCharAt(i);
+				addI = false;
+			}
+
+			if (text.charAt(i) == '\t') {
+				text.deleteCharAt(i);
+				addI = false;
+			}
+
+			if (addI) {
+				i++;
+			}
+
+			addI = true;
+		}
+
+		return text.toString();
+	}
 }

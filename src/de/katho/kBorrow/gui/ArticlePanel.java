@@ -33,26 +33,51 @@ import de.katho.kBorrow.listener.ArticleEditTableButton;
 import de.katho.kBorrow.listener.ArticleInspectTableButton;
 import de.katho.kBorrow.models.ArticleTableModel;
 
+/**
+ * Erzeugt das Artikelpanel und implementiert damit verbundene Action- und KeyListener.
+ */
 public class ArticlePanel extends JPanel implements ActionListener, KeyListener {
 
+	/** Serial Version UID */
 	private static final long serialVersionUID = -8511924597640457608L;
-	private ArticleController articleController;
+	
+	/** Textarea, die die Artikelbeschreibung enthält. */
 	private JTextArea textAreaArticleDescription;
+	
+	/** Textfeld, das den Artikelnamen enthält. */
 	private JTextField textFieldArticleName;
+	
+	/** Speicherbutton */
 	private JButton btnArticleSave;
+	
+	/** Abbrechenbutton */
 	private JButton btnArticleCancel;
+	
+	/** Label, in dem Statusmeldungen angezeigt werden */
 	private JLabel lblArticleStatus;
+	
+	/** True, wenn ein Artikel bearbeitet wird. Ansonsten false. */
 	private boolean articleModeEdit;
+	
+	/** Enthält die Artikel-ID, wenn ein Arikel bearbeitet wird. */
 	private int articleEditId;
+	
+	/** Referenz auf {@link ArticleController} */
+	private ArticleController articleController;
+	
+	/** Referenz auf {@link KArticleModel} */
 	private KArticleModel articleModel;
 
 	/**
-	 * Create the panel.
-	 * @throws IOException 
+	 * Gestaltet und erzeugt das Panel.
+	 * 
+	 * @param	dbCon			Referenz auf die Datenbankverbindung.
+	 * @param	models			HashMap mit KDataModels.
+	 * @throws 	IOException		Wirft alle IOExceptions, die sonst nirgends bearbeitet wurden (???).
 	 */
 	public ArticlePanel(final DbConnector dbCon, HashMap<String, KDataModel> models) throws IOException {	
 		super();
-		this.setLayout(null);
+		setLayout(null);
 		articleModel = (KArticleModel)models.get("karticlemodel");
 		articleController = new ArticleController(dbCon, models);
 		
@@ -95,40 +120,40 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 		 */
 		JLabel lblName = new JLabel("Name");
 		JLabel lblDescription = new JLabel("Beschreibung");
-		this.lblArticleStatus = new JLabel("");
+		lblArticleStatus = new JLabel("");
 		lblName.setBounds(10, 30, 70, 20);
 		lblDescription.setBounds(10, 61, 70, 20);
-		this.lblArticleStatus.setBounds(90, 145, 390, 14);
+		lblArticleStatus.setBounds(90, 145, 390, 14);
 		
 		// Edit: Name-Textfield
-		this.textFieldArticleName = new JTextField();
-		this.textFieldArticleName.setBounds(90, 30, 250, 20);
-		this.textFieldArticleName.setColumns(10);
-		this.textFieldArticleName.addKeyListener(this);
+		textFieldArticleName = new JTextField();
+		textFieldArticleName.setBounds(90, 30, 250, 20);
+		textFieldArticleName.setColumns(10);
+		textFieldArticleName.addKeyListener(this);
 		
 		//Edit: Desc-TextArea
-		this.textAreaArticleDescription = new JTextArea(5, 30);
-		this.textAreaArticleDescription.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		this.textAreaArticleDescription.setLineWrap(true);
-		this.textAreaArticleDescription.setBounds(90, 59, 250, 80);
-		this.textAreaArticleDescription.setBorder(BorderFactory.createEtchedBorder());
+		textAreaArticleDescription = new JTextArea(5, 30);
+		textAreaArticleDescription.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		textAreaArticleDescription.setLineWrap(true);
+		textAreaArticleDescription.setBounds(90, 59, 250, 80);
+		textAreaArticleDescription.setBorder(BorderFactory.createEtchedBorder());
 		
 		//Edit: Button-Save 
-		this.btnArticleSave = new JButton("Speichern");
-		this.btnArticleSave.addActionListener(this);
-		this.btnArticleSave.setBounds(490, 136, 89, 23);
+		btnArticleSave = new JButton("Speichern");
+		btnArticleSave.addActionListener(this);
+		btnArticleSave.setBounds(490, 136, 89, 23);
 		
 		//Edit: Button-Cancel
-		this.btnArticleCancel = new JButton("Abbrechen");
-		this.btnArticleCancel.addActionListener(this);
-		this.btnArticleCancel.setBounds(490, 102, 89, 23);
+		btnArticleCancel = new JButton("Abbrechen");
+		btnArticleCancel.addActionListener(this);
+		btnArticleCancel.setBounds(490, 102, 89, 23);
 		
 		//Traversal-Policy
 		Vector<Component> order = new Vector<Component>();
-		order.add(this.textFieldArticleName);
-		order.add(this.textAreaArticleDescription);
-		order.add(this.btnArticleCancel);
-		order.add(this.btnArticleSave);
+		order.add(textFieldArticleName);
+		order.add(textAreaArticleDescription);
+		order.add(btnArticleCancel);
+		order.add(btnArticleSave);
 		MyFocusTraversalPolicy focusPolicy = new MyFocusTraversalPolicy(order);
 		
 		/*
@@ -141,114 +166,184 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 		panelArticleEdit.add(lblName);
 		panelArticleEdit.add(lblDescription);
 		panelArticleEdit.add(textFieldArticleName);
-		panelArticleEdit.add(this.textAreaArticleDescription);
-		panelArticleEdit.add(this.btnArticleSave);
-		panelArticleEdit.add(this.btnArticleCancel);		
+		panelArticleEdit.add(textAreaArticleDescription);
+		panelArticleEdit.add(btnArticleSave);
+		panelArticleEdit.add(btnArticleCancel);		
 		panelArticleEdit.add(lblArticleStatus);
 		panelArticleEdit.setFocusTraversalPolicy(focusPolicy);
 		panelArticleEdit.setFocusCycleRoot(true);
 		
-		this.add(panelArticleList);
-		this.add(panelArticleEdit);
+		add(panelArticleList);
+		add(panelArticleEdit);
 	}
 
+	/**
+	 * ActionListener für den Button-Press.
+	 * 
+	 * @param	e	ActionEvent, von dem das Event erzeugt wurde.
+	 */
 	public void actionPerformed(ActionEvent e) {		
 		
 		/**
 		 * Aktionen für den Button "Artikel speichern"
 		 */
-		if(e.getSource() == this.btnArticleSave){
+		if(e.getSource() == btnArticleSave){
 			saveButtonPressed();
 		}
 				
 		/**
 		 * Aktionen für den Button "Artikel abbrechen"
 		 */
-		if(e.getSource() == this.btnArticleCancel){
-			this.resetModeEditArticle();
+		if(e.getSource() == btnArticleCancel){
+			resetModeEditArticle();
 		}
 	}
 
+	/**
+	 * Setzt die Instanzvariable articleModeEdit zurück auf false und leer Textfeld und -area.	 * 
+	 */
 	public void resetModeEditArticle() {
-		this.articleModeEdit = false;
-		this.textFieldArticleName.setText("");
-		this.textAreaArticleDescription.setText("");
+		articleModeEdit = false;
+		textFieldArticleName.setText("");
+		textAreaArticleDescription.setText("");
 	}
 
+	/**
+	 * Setzt die Instanzvariable articleModeEdit auf true und füllt Textfeld und -area entsprechend der übergebenen ID aus.
+	 * 
+	 * @param	pId		Artikel-ID, gemäß der Textfeld und -area ausgefüllt werden sollen.
+	 */
 	public void setModeEditArticle(int pId) {
 		KArticle art = articleModel.getElement(pId);
 		
-		this.articleModeEdit = true;
-		this.articleEditId = art.getId();
-		this.textFieldArticleName.setText(art.getName());
-		this.textAreaArticleDescription.setText(art.getDescription());
+		articleModeEdit = true;
+		articleEditId = art.getId();
+		textFieldArticleName.setText(art.getName());
+		textAreaArticleDescription.setText(art.getDescription());
 	}
 
+	/**
+	 * Führt die Aktionen aus, die beim Speichern eines Artikels geschehen.
+	 * 
+	 * <p>
+	 * Je nachdem, ob {@link #articleModeEdit} true oder false ist, werden
+	 * {@link ArticleController#editArticle} oder {@link ArticleController#createArticle}
+	 * aufgerufen.
+	 * </p>
+	 * <p>
+	 * Falls editArticle aufgerufen wird, werden je nach Rückgabecode folgende Statusmeldungen angezeigt:
+	 * </p>
+	 * <ul>
+	 * <li>0: Artikel-ID "foo" erfolgreich bearbeitet.</li>
+	 * <li>1: SQL-Fehler: Artikel konnte nicht bearbeitet werden.</li>
+	 * <li>2: Artikelname muss ausgefüllt sein.</li>
+	 * </ul>
+	 * <p>
+	 * Falls createArticle aufgerufen wird, werden je nach Rückgabecode folgende Statusmeldungen angezeigt:
+	 * </p>
+	 * <ul>
+	 * <li>0: Artikel "foo" erfolgreich hinzugefügt.</li>
+	 * <li>1: SQL-Fehler. Artikel konnte nicht erstellt werden.</li>
+	 * <li>2: Es muss ein Artikelname vergeben werden.</li>
+	 * </ul>
+	 */
 	private void saveButtonPressed(){
-		if(this.articleModeEdit){
-			int re = articleController.editArticle(this.articleEditId, this.textFieldArticleName.getText(), this.textAreaArticleDescription.getText());
+		if(articleModeEdit){
+			int re = articleController.editArticle(articleEditId, textFieldArticleName.getText(), textAreaArticleDescription.getText());
 			
 			switch(re){
 			case 0:
-				this.lblArticleStatus.setText("Artikel-ID \""+this.articleEditId+"\" erfolgreich bearbeitet.");
-				this.textFieldArticleName.setText("");
-				this.textAreaArticleDescription.setText("");
+				lblArticleStatus.setText("Artikel-ID \""+articleEditId+"\" erfolgreich bearbeitet.");
+				textFieldArticleName.setText("");
+				textAreaArticleDescription.setText("");
 				break;
 				
 			case 1:
-				this.lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht bearbeitet werden.");
-				this.textFieldArticleName.setText("");
-				this.textAreaArticleDescription.setText("");
+				lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht bearbeitet werden.");
+				textFieldArticleName.setText("");
+				textAreaArticleDescription.setText("");
 				break;
 				
 			case 2:
-				this.lblArticleStatus.setText("Artikelname muss ausgefüllt sein.");
+				lblArticleStatus.setText("Artikelname muss ausgefüllt sein.");
 				break;
 				
 			}
 			
-			this.articleModeEdit = false;
-			this.articleEditId = -1;
+			articleModeEdit = false;
+			articleEditId = -1;
 		}
 		
 		else {
-			int re = articleController.createArticle(this.textFieldArticleName.getText(), this.textAreaArticleDescription.getText());
+			int re = articleController.createArticle(textFieldArticleName.getText(), textAreaArticleDescription.getText());
 			
 			switch(re){
 			case 0:
-				this.lblArticleStatus.setText("Artikel \""+this.textFieldArticleName.getText()+"\" erfolgreich hinzugefügt.");
-				this.textFieldArticleName.setText("");
-				this.textAreaArticleDescription.setText("");
+				lblArticleStatus.setText("Artikel \""+textFieldArticleName.getText()+"\" erfolgreich hinzugefügt.");
+				textFieldArticleName.setText("");
+				textAreaArticleDescription.setText("");
 				break;
 				
 			case 1:
-				this.lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht erstellt werden.");
-				this.textFieldArticleName.setText("");
-				this.textAreaArticleDescription.setText("");
+				lblArticleStatus.setText("SQL-Fehler. Artikel konnte nicht erstellt werden.");
+				textFieldArticleName.setText("");
+				textAreaArticleDescription.setText("");
 				break;
 			
 			case 2:
-				this.lblArticleStatus.setText("Es muss ein Artikelname vergeben werden");
+				lblArticleStatus.setText("Es muss ein Artikelname vergeben werden");
 				break;
 			}
 		}		
 	}
 	
+	/**
+	 * KeyListener für den Druck einer Taste
+	 * 
+	 * <p>
+	 * Ruft {@link #saveButtonPressed} auf, wenn die gedrückte Taste die Entertaste war.
+	 * </p>
+	 * 
+	 * @param	e	KeyEvent, von dem das Event erzeugt wurde.
+	 */
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER) saveButtonPressed();
 		
 	}
 
+	/**
+	 * KeyListener für das Loslassen einer Taste.
+	 * 
+	 * <p>Nicht implementiert</p>
+	 * 
+	 * @param	e	KeyEvent, von dem das Event erzeugt wird. 
+	 */
 	public void keyReleased(KeyEvent e) {
-		// Nothign to implement
-		
+		return;
 	}
 
+	/**
+	 * KeyListener für das Tippen (Drücken und Loslassen) einer Taste.
+	 * 
+	 * <p>Nicht implementiert</p>
+	 * 
+	 * @param	e	KeyEvent, von dem das Event erzeugt wird.
+	 */
 	public void keyTyped(KeyEvent e) {
-		// Nothing to implement
-		
+		return;	
 	}
 	
+	/**
+	 * Setzt das {@link #lblArticleStatus} je nach übergebenem Statuscode.
+	 * 
+	 * <ul>
+	 * <li>0: Artikel erfolgreich gelöscht.</li>
+	 * <li>1: Artikel kann nicht gelöscht werden.</li>
+	 * <li>2: Artikel kann nicht gelöscht werden, während er verliehen ist.</li>
+	 * </ul>
+	 *  
+	 * @param	pCode	Statuscode als Int.
+	 */
 	public void setDeleteStatusLabel(int pCode){
 		switch(pCode){
 			case 0:

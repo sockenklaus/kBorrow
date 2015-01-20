@@ -16,30 +16,30 @@ import de.katho.kBorrow.data.objects.KArticle;
 import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.models.ArticleInspectTableModel;
 
+/**
+ * Diese Klasse erzeugt einen JFrame, der weitere Informationen zu einem Artikel anzeigt.
+ */
 public class ArticleInspectFrame extends JFrame {
 
-	/**
-	 * 
-	 */
+	/** Serial Version UID */
 	private static final long serialVersionUID = -8993341404926674307L;
-	private JPanel contentPane;
-	private JTable table;
-	private KArticleModel articleModel;
-	private KArticle article;
 
 	/**
-	 * Create the frame.
+	 * Erstellt den ArticleInspectFrame
+	 * 
+	 * @param	pId		ID des Artikels, der inspiziert werden soll.
+	 * @param	models	HashMap mit KDataModels.
 	 */
 	public ArticleInspectFrame(int pId, HashMap<String, KDataModel> models) {
-		articleModel = (KArticleModel)models.get("karticlemodel");
-		article = articleModel.getElement(pId);
+		KArticleModel articleModel = (KArticleModel)models.get("karticlemodel");
+		KArticle article = articleModel.getElement(pId);
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(150, 150, 660, 541);
 		setTitle("Details: "+article.getName());
 		
 		// ContentPane
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -70,7 +70,7 @@ public class ArticleInspectFrame extends JFrame {
 		panelInfo.add(taArticleDesc);
 		
 		// Table
-		table = new JTable(new ArticleInspectTableModel(pId, models));
+		JTable table = new JTable(new ArticleInspectTableModel(pId, models));
 		table.setFillsViewportHeight(true);
 		table.setRowHeight(30);
 		table.getColumnModel().getColumn(0).setMinWidth(30);

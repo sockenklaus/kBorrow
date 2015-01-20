@@ -17,14 +17,11 @@ public interface DbConnector {
 	public int createArticle(String pName, String pDesc);
 	public int deleteArticle(int id);
 	public int editArticle(int pId, String pName, String pDesc);
-	public ArrayList<KArticle> getFreeArticleList();
 	public ArrayList<KLender> getLenderList();
 	public int[] createNewLending(int pArtId, int pUId, int pLId, String pStartDate, String pEstEndDate);
 	public int createNewLender(String pLName, String pLSurname, String pLSN);
-	public ArrayList<KLending> getActiveLendingList();
 	public int returnLending(int lendingId, int artId, String string);
 	public ArrayList<KLending> getLendingList();
 	public ArrayList<KLending> getLendingListForArticle(int pArtId);
-	public ArrayList<KUser> getRewriteUserList(int id);
 	public boolean rewriteToNewUser(int pOldId, int pNewId);
 }

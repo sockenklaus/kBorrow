@@ -1,7 +1,6 @@
 package de.katho.kBorrow.db;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,29 +22,36 @@ import de.katho.kBorrow.interfaces.DbConnector;
  * This class handles connections to a sqlite database.
  */
 public class SqliteConnector implements DbConnector {
+	
+	/** Referenz auf die Verbindung zur Datenbank */
 	private Connection connection;
-	private String dbHandle;
-	private Hashtable<String, String> sqlScheme;
 	
 	/**
-	 * @param pHandle This string contains the path to database file the connector has to use
-	 * @throws FileNotFoundException
-	 * @throws SQLException
-	 * @throws ClassNotFoundException
+	 * Konstruktor gibt eine neue Instanz des SqliteConnector zurück.
+	 * 
+	 * <p>
+	 * Lädt das Datenbankschema und speichert es zwischen. Prüft, ob bereits eine Datenbankdatei mit dem 
+	 * übergebenen Dateipfad existiert. Falls ja, wird das Datenbankschema überprüft, falls nein, wird eine neue
+	 * Datenbankdatei mit dem vorher geladenen Schema erzeugt.
+	 * </p>
+	 * 
+	 * @param 	pDbHandle 				This string contains the path to database file the connector has to use
+	 * @throws 	IOException				Wenn IO-Fehler, wie Probleme mit den Berechtigungen auftreten, oder der pDbHandle auf einen Symlink oder ein Verzeichnis verweist.	
+	 * @throws 	SQLException			Wenn die gegebene Datenbank nicht dem Datenbankschema entspricht.
+	 * @throws 	ClassNotFoundException	Wenn der JDBC-Connector nicht gefunden werden konnte.
 	 */
-	public SqliteConnector(String pHandle) throws ClassNotFoundException, SQLException, IOException {
+	public SqliteConnector(final String pDbHandle) throws ClassNotFoundException, SQLException, IOException {
 			
-		this.dbHandle = pHandle;
-		this.sqlScheme = this.loadScheme();
+		Hashtable<String, String> sqlScheme = loadScheme();
 		
-		File dbFile = new File(this.dbHandle);
+		File dbFile = new File(pDbHandle);
 		Class.forName("org.sqlite.JDBC");
 			
 		if(dbFile.exists()){
 			if(dbFile.isFile()){
-				this.connection = DriverManager.getConnection("jdbc:sqlite:"+this.dbHandle);
+				connection = DriverManager.getConnection("jdbc:sqlite:"+pDbHandle);
 										
-				if(!this.isValidDB(this.sqlScheme, this.connection)){
+				if(!isValidDB(sqlScheme, connection)){
 					throw new SQLException("The given db file doesn't match the required sql schema.");
 				}
 				else {
@@ -60,11 +66,18 @@ public class SqliteConnector implements DbConnector {
 			System.out.println("There is no db file yet... creating a new db.");
 			dbFile.createNewFile();
 			
-			this.connection = DriverManager.getConnection("jdbc:sqlite:"+this.dbHandle);
-			this.initNewDB(this.sqlScheme, this.connection);
+			connection = DriverManager.getConnection("jdbc:sqlite:"+pDbHandle);
+			initNewDB(sqlScheme, connection);
 		}
 	}
 	
+	/**
+	 * Prüft, ob die übergebene Datenbankverbindung eine Datenbank mit dem übergebenen DB-Schema enthält.
+	 * 
+	 * @param pScheme	Datenbankschema, gegen das geprüft werden soll.
+	 * @param pConn		Datenbankverbindung, die geprüft werden soll.
+	 * @return			True, wenn die übergebene Verbindung eine Datenbank mit dem gegebenen Schema enthält. Andernfalls false.
+	 */
 	private boolean isValidDB(Hashtable<String, String> pScheme, Connection pConn){
 		try {
 			Statement st = pConn.createStatement();
@@ -74,7 +87,7 @@ public class SqliteConnector implements DbConnector {
 			ResultSet rs = st.executeQuery(query);
 			
 			while(rs.next()){
-				dbScheme.put(rs.getString("name"), this.removeLineBreaks(rs.getString("sql")));
+				dbScheme.put(rs.getString("name"), Util.removeLineBreaks(rs.getString("sql")));
 			}
 			
 			for (Entry<String, String> pEntry : pScheme.entrySet()){
@@ -98,6 +111,13 @@ public class SqliteConnector implements DbConnector {
 		}		
 	}
 	
+	/**
+	 * Erstellt an der übergebenen Datenbankverbindung eine neue Datenbank mit dem übergebenen Schema.
+	 * 
+	 * @param pScheme	Schema, nach deren Vorbild die Datenbank erzeugt werden soll.
+	 * @param pConn		Datenbankverbindung, an der versucht werden soll, eine Datenbank zu erzeugen.
+	 * @return			True, wenn die Datenbank erzeugt werden konnte, andernfalls false.
+	 */
 	private boolean initNewDB(Hashtable<String, String> pScheme, Connection pConn){
 		try {
 			Statement st = pConn.createStatement();
@@ -114,6 +134,11 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 	
+	/**
+	 * Erzeugt ein Datenbankschema in einer Hashtable.
+	 * 
+	 * @return	Die erzeugte Hashtable mit dem Datenbankschema.
+	 */
 	private Hashtable<String, String> loadScheme(){
 		Hashtable<String, String> tScheme= new Hashtable<String, String>();
 				
@@ -156,37 +181,11 @@ public class SqliteConnector implements DbConnector {
 		return tScheme;
 	}
 	
-	private String removeLineBreaks(String pString){
-		StringBuffer text = new StringBuffer(pString);
-		int i = 0;
-		boolean addI = true;
-		
-		while (i < text.length()) {
-			if (text.charAt(i) == '\n') {
-				text.deleteCharAt(i);
-				addI = false;
-
-			}
-
-			if (text.charAt(i) == '\r') {
-				text.deleteCharAt(i);
-				addI = false;
-			}
-
-			if (text.charAt(i) == '\t') {
-				text.deleteCharAt(i);
-				addI = false;
-			}
-
-			if (addI) {
-				i++;
-			}
-
-			addI = true;
-		}
-
-		return text.toString();
-	}
+	/**
+	 * Gibt eine Liste aller Benutzer als ArrayList zurück.
+	 * 
+	 * @return	Liste aller Benutzer als ArrayList.
+	 */
 	public ArrayList<KUser> getUserList(){
 		ArrayList<KUser> userArr = new ArrayList<KUser>();
 		
@@ -203,30 +202,15 @@ public class SqliteConnector implements DbConnector {
 		} 
 		catch (SQLException e){
 			Util.showWarning(e);
-			return null;
-		}
-	}
-
-	public ArrayList<KUser> getRewriteUserList(int id) {
-		ArrayList<KUser> userArr = new ArrayList<KUser>();
-		
-		try {
-			Statement st = this.connection.createStatement();
-			String query = "SELECT id, name, surname FROM user WHERE id != "+id;
-			ResultSet rs = st.executeQuery(query);
-			
-			while (rs.next()){
-				userArr.add(new KUser(rs.getInt("id"), rs.getString("name"), rs.getString("surname")));
-			}
-			
 			return userArr;
-		} 
-		catch (SQLException e){
-			Util.showWarning(e);
-			return null;
 		}
 	}
 
+	/**
+	 * Gibt die komplette Artikelliste als ArrayList zurück.
+	 * 
+	 * @return	Komplette Artikelliste als ArrayList.
+	 */
 	public ArrayList<KArticle> getArticleList() {
 		ArrayList<KArticle> artArr = new ArrayList<KArticle>();
 		
@@ -243,30 +227,15 @@ public class SqliteConnector implements DbConnector {
 		}
 		catch (SQLException ex){
 			Util.showWarning(ex);
-			return null;
-		}
-	}
-
-	public ArrayList<KArticle> getFreeArticleList() {
-		ArrayList<KArticle> artArr = new ArrayList<KArticle>();
-		
-		try {
-			Statement st = this.connection.createStatement();
-			String query = "SELECT id, name, is_free, description FROM article WHERE is_free = 1;";
-			ResultSet rs = st.executeQuery(query);
-			
-			while (rs.next()){
-				artArr.add(new KArticle(rs.getInt("id"), rs.getString("name"), rs.getBoolean("is_free"), rs.getString("description")));
-			}
-			
 			return artArr;
 		}
-		catch(SQLException ex){
-			Util.showWarning(ex);
-			return null;
-		}
 	}
 
+	/**
+	 * Gibt die komplette Ausleiher-Liste als ArrayList zurück.
+	 * 
+	 * @return	Komplette Ausleiher-Liste als ArrayList. 	
+	 */
 	public ArrayList<KLender> getLenderList() {
 		ArrayList<KLender> lendArr = new ArrayList<KLender>();
 		
@@ -283,10 +252,15 @@ public class SqliteConnector implements DbConnector {
 		}
 		catch(SQLException ex){
 			Util.showWarning(ex);
-			return null;
+			return lendArr;
 		}
 	}
 
+	/**
+	 * Gibt die komplette Liste der Ausleihen als ArrayList zurück.
+	 * 
+	 * @return	Die komplette Liste der Ausleihen als ArrayList.
+	 */
 	public ArrayList<KLending> getLendingList(){
 		ArrayList<KLending> lendingArr = new ArrayList<KLending>();
 		
@@ -306,27 +280,12 @@ public class SqliteConnector implements DbConnector {
 		return lendingArr;
 	}
 	
-	public ArrayList<KLending> getActiveLendingList() {
-		ArrayList<KLending> lendingArr = new ArrayList<KLending>();
-		
-		try {
-			Statement st = connection.createStatement();
-			String query = 	"SELECT id, user_id, lender_id, article_id, start_date, expected_end_date, end_date FROM lending WHERE end_date IS NULL";
-			
-			ResultSet rs = st.executeQuery(query);
-			
-			while (rs.next()){
-				lendingArr.add(new KLending(rs.getInt("id"), rs.getInt("user_id"), rs.getInt("lender_id"), rs.getInt("article_id"), rs.getString("start_date"), rs.getString("expected_end_date"), rs.getString("end_date")));
-			}
-			
-			return lendingArr;
-		}
-		catch(SQLException e){
-			Util.showWarning(e);
-			return lendingArr;
-		}
-	}
-	
+	/**
+	 * Gibt die Liste der Ausleihen für den Artikel mit der als Parameter übergebenen ID als ArrayList zurück.
+	 * 
+	 * @param pArtId	ID der Artikels, für den die Ausleihen zurückgegeben werden sollen.
+	 * @return			Liste der Ausleihen des Artikels mit der als Parameter übergebenen ID.
+	 */
 	public ArrayList<KLending> getLendingListForArticle(int pArtId){
 		ArrayList<KLending> lendingArr = new ArrayList<KLending>();
 		
@@ -349,9 +308,18 @@ public class SqliteConnector implements DbConnector {
 	}
 
 	/**
+	 * Erzeugt einen neuen Benutzer mit dem übergebenen Vor- und Nachnamen.
 	 * 
-	 * @return  0: Benutzer erfolgreich erzeugt
-	 * 			1: SQL-Fehler beim Erzeugen
+	 * <p> Gibt je nach Ergebnis einen anderen Statuscode als Int zurück: </p>
+	 * 
+	 * <ul>
+	 * <li>0: Benutzer erfolgreich erzeugt.</li>
+	 * <li>1: SQL-Fehler beim Erzeugen.</li>
+	 * </ul>
+	 * 
+	 * @param	pName		Vorname.
+	 * @param	pSurname	Nachname.
+	 * @return  			Statuscode als Int.
 	 * 	
 	 */
 	public int createUser(String pName, String pSurname){
@@ -369,6 +337,21 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
+	/**
+	 * Bearbeitet den Benutzer mit der übergebenen ID und ändert ggf. Vor- und Nachname.
+	 * 
+	 * <p> Gibt je nach Ergebnis einen anderen Statuscode als Int zurück:</p>
+	 * 
+	 * <ul>
+	 * <li>0: Benutzer erfolgreich bearbeitet.</li>
+	 * <li>1: SQL-Fehler beim Bearbeiten.</li>
+	 * </ul>
+	 * 
+	 * @param	pId			ID des Benutzert, der bearbeitet werden soll.
+	 * @param	pName		(Neuer) Vorname.
+	 * @param	pSurname	(Neuer) Nachname.
+	 * @return	Statuscode als Int.
+	 */
 	public int editUser(int pId, String pName, String pSurname) {
 		try {
 			Statement st = this.connection.createStatement();
@@ -384,8 +367,13 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
+	/**
+	 * Löscht den Benutzer mit der als Parameter übergebenen ID.
+	 * 
+	 * @param	id	ID des Benutzers, der gelöscht werden soll.
+	 * @return		True, wenn der Benutzer gelöscht werden konnte, andernfalls false.
+	 */
 	public boolean deleteUser(int id){
-		// @TODO: Ausleihen auf einen anderen User umschreiben!
 		try {
 			Statement st = this.connection.createStatement();
 			String query = "DELETE FROM user WHERE id = '"+id+"'";
@@ -400,6 +388,20 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
+	/**
+	 * Erstellt einen neuen Artikel mit dem übergebenen Namen und der übergebenen Beschreibung.
+	 * 
+	 * <p> Je nach Ergebnis gibt die Funktion einen anderen Statuscode als Int zurück:</p>
+	 * 
+	 * <ul>
+	 * <li>0: Artikel erfolgreich erstellt.</li>
+	 * <li>1: SQL-Fehler beim Erstellen.</li>
+	 * </ul>
+	 * 
+	 * @param	pName	Name des Artikels.
+	 * @param	pDesc	Beschreibung des Artikels.
+	 * @return			Statuscode als Int.
+	 */
 	public int createArticle(String pName, String pDesc) {
 		try {
 			Statement st = this.connection.createStatement();
@@ -415,6 +417,19 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
+	/**
+	 * Löscht den Artikel mit der übergebenen ID.
+	 * 
+	 * <p> Je nach Ergebnis gibt die Funktion einen anderen Statuscode als Int zurück:</p>
+	 * 
+	 * <ul>
+	 * <li>0: Artikel erfolgreich gelöscht.</li>
+	 * <li>1: SQL-Fehler beim Löschen</li>
+	 * </ul>
+	 * 
+	 * @param	id	ID des Artikels, der gelöscht werden soll.
+	 * @return		Statuscode als Int.
+	 */
 	public int deleteArticle(int id) {
 		try {
 			Statement st = connection.createStatement();
@@ -430,6 +445,21 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
+	/**
+	 * Setzt Name und Beschreibung des Artikels mit der übergebenen ID entsprechend.
+	 * 
+	 * <p> Je nach Ergebnis gibt die Funktion einen anderen Statuscode als Int zurück:</p>
+	 * 
+	 * <ul>
+	 * <li>0: Artikel erfolgreich gelöscht.</li>
+	 * <li>1: SQL-Fehler beim Bearbeiten.</li>
+	 * </ul>
+	 * 
+	 * @param	pId		ID des Artikels, der bearbeitet werden soll.
+	 * @param	pName	(Neuer) Name des Artikels.
+	 * @param	pDesc	(Neue) Beschreibung des Artikels.
+	 * @return			Statuscode als Int.
+	 */
 	public int editArticle(int pId, String pName, String pDesc) {
 		try {
 			Statement st = this.connection.createStatement();
@@ -448,14 +478,24 @@ public class SqliteConnector implements DbConnector {
 	/**
 	 * Erstellt eine neue Ausleihe.
 	 * 
+	 * <p>
+	 * Gibt ein Int-Array der Länge 2 zurück. An erster Stelle steht der Rückgabestatus, an zweiter
+	 * Stelle die ID der gerade erzeugten Tabellenzeile.
+	 * </p>
 	 * 
-	 * @return	Rückgabewert ist ein Array mit zwei Werten.
+	 * <p>Die Statuscodes lauten:</p>
 	 * 
-	 * 			Index		0:	Enthält den Rückgabestatus:
-	 * 			- Status 	0:	Alles in Ordnung
-	 * 			- Status	1:	SQL-Fehler
+	 * <ul>
+	 * <li>0: Ausleihe konnte erfolgreich erzeugt werden.</li>
+	 * <li>1: SQL-Fehler beim Erstellen der Ausleihe.</li>
+	 * </ul>
 	 * 
-	 * 			Index 1: Enthält die ID der gerade erzeugten Tabellenzeile
+	 * @param	pArtId			ID des verliehenen Artikels.
+	 * @param	pUId			ID des ausleihenden Benutzers.
+	 * @param	pLId			ID des Ausleihers.
+	 * @param	pStartDate		Startdatum der Ausleihe.
+	 * @param	pEstEndDate		Voraussichtliches Enddatum der Ausleihe.
+	 * @return					Statuscode als Int.
 	 */
 	public int[] createNewLending(int pArtId, int pUId, int pLId, String pStartDate, String pEstEndDate) {
 		int[] result = new int[2];
@@ -483,6 +523,14 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
+	/**
+	 * Schreibt alle Ausleihen von einem auf einen anderen Benutzer um.
+	 * 
+	 * @param	pOldId	ID des alten Benutzers.
+	 * @param	pNewId	ID des Benutzers, auf den die Ausleihen umgeschrieben werden sollen.
+	 * @return			True, wenn erfolgreich umgeschrieben werden konnte, andernfalls false.
+	 * 
+	 */
 	public boolean rewriteToNewUser(int pOldId, int pNewId) {
 		try {
 			Statement st = connection.createStatement();
@@ -498,6 +546,22 @@ public class SqliteConnector implements DbConnector {
 		}
 	}
 
+	/**
+	 * Gibt eine Ausleihe zurück, indem ein End-Datum gesetzt wird und der Artikel wieder freigegeben wird. 
+	 * 
+	 * <p> Je nach Ergebnis gibt die Funktion einen anderen Statuscode als Int zurück:</p>
+	 * 
+	 * <ul>
+	 * <li>0: Artikel erfolgreich gelöscht.</li>
+	 * <li>1: SQL-Fehler beim Umtragen.</li>
+	 * </ul>
+	 * 
+	 * @param	lendingId	ID der Ausleihe, die zurückgegeben werden soll.
+	 * @param	artId		ID des Artikels, der freigegeben werden soll.
+	 * @param	end_date	ID des Rückgabedatums.
+	 * @return				Statuscode als Int.
+	 */
+	// TODO Diese Funktion kann ich auch ohne ArtId implementieren!
 	public int returnLending(int lendingId, int artId, String end_date) {
 		try{
 			Statement st = connection.createStatement();
@@ -515,6 +579,21 @@ public class SqliteConnector implements DbConnector {
 		
 	}
 
+	/**
+	 * Erzeugt einen neuen Ausleiher mit den übergebenen Daten.
+	 * 
+	 * <p>Je nach Ergebnis gibt die Funktion einen anderen Statuscode als Int zurück:</p>
+	 * 
+	 * <ul>
+	 * <li>0: Artikel erfolgreich gelöscht.</li>
+	 * <li>1: SQL-Fehler beim Erstellen.</li>
+	 * </ul>
+	 * 
+	 * @param	pLName		Vorname des neuen Ausleihers.
+	 * @param	pLSurname	Nachname des neuen Ausleihers.
+	 * @param	pLSN		Matrikelnummer des neuen Ausleihers.
+	 * @return				Statuscode als Int.
+	 */
 	public int createNewLender(String pLName, String pLSurname, String pLSN) {
 		try{
 			Statement st = connection.createStatement();
