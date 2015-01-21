@@ -28,19 +28,48 @@ import de.katho.kBorrow.listener.UserDeleteTableButton;
 import de.katho.kBorrow.listener.UserEditTableButton;
 import de.katho.kBorrow.models.UserTableModel;
 
+/**
+ * Erzeugt das UserPanel und reicht Benutzerinteraktionen an den entsprechenden Controller weiter.
+ */
 public class UserPanel extends JPanel implements ActionListener, KeyListener {
 
+	/** Serial Version UID */
 	private static final long serialVersionUID = -319340262589243978L;
+	
+	/** Label: Statusmeldung */
 	private JLabel lblUserStatus;
+	
+	/** Textfeld: Benutzer Vorname */
 	private JTextField textFieldUserName;
+	
+	/** Textfeld: Benutzer Nachname */
 	private JTextField textFieldUserSurname;
+	
+	/** Button: Speichern */
 	private JButton btnUserSave;
+	
+	/** Button: Abbrechen */
 	private JButton btnUserCancel;
+	
+	/** True, wenn gerade ein Benutzer bearbeitet werden soll, andernfalls false. */
 	private boolean userModeEdit;
+	
+	/** ID des Benutzers, der bearbeitet werden soll */
 	private int userEditId;
+	
+	/** Referenz auf das KUserModel */
 	private KUserModel kUserModel;
+	
+	/** Referenz auf den UserController */
 	private UserController userController;
 
+	/**
+	 * Erzeugt das UserPanel
+	 * 
+	 * @param 	dbCon			Referenz auf die Datenbankverbindung.
+	 * @param 	models			HashMaps mit KDataModels.
+	 * @throws 	IOException		Wenn Fehler im {@link UserDeleteTableButton} oder {@link UserEditTableButton} auftreten.
+	 */
 	public UserPanel(final DbConnector dbCon, HashMap<String, KDataModel> models) throws IOException{
 		super();
 		setLayout(null);
@@ -77,7 +106,7 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 		// Edit: Labels
 		JLabel lblUserName = new JLabel("Vorname");
 		JLabel lblUserSurname = new JLabel("Nachname");
-		this.lblUserStatus = new JLabel("");
+		lblUserStatus = new JLabel("");
 		lblUserName.setBounds(10, 30, 70, 20);
 		lblUserSurname.setBounds(10, 61, 70, 20);
 		lblUserStatus.setBounds(6, 89, 413, 14);
@@ -114,117 +143,162 @@ public class UserPanel extends JPanel implements ActionListener, KeyListener {
 		panelUserEdit.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Benutzer hinzuf\u00FCgen / bearbeiten", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelUserEdit.setLayout(null);
 		panelUserEdit.add(lblUserName);
-		panelUserEdit.add(this.textFieldUserName);
+		panelUserEdit.add(textFieldUserName);
 		panelUserEdit.add(lblUserSurname);
-		panelUserEdit.add(this.textFieldUserSurname);
-		panelUserEdit.add(this.textFieldUserSurname);
-		panelUserEdit.add(this.btnUserSave);
-		panelUserEdit.add(this.lblUserStatus);		
-		panelUserEdit.add(this.btnUserCancel);
+		panelUserEdit.add(textFieldUserSurname);
+		panelUserEdit.add(textFieldUserSurname);
+		panelUserEdit.add(btnUserSave);
+		panelUserEdit.add(lblUserStatus);		
+		panelUserEdit.add(btnUserCancel);
 		panelUserEdit.setFocusTraversalPolicy(focusPolicy);
 		panelUserEdit.setFocusCycleRoot(true);
 		
-		this.add(panelUserList);
-		this.add(panelUserEdit);
+		add(panelUserList);
+		add(panelUserEdit);
 	}
 
-	@Override
+	/**
+	 * ActionListener für gedrückte Buttons.
+	 * 
+	 * <p>
+	 * Ruft {@link #saveButtonPressed()} auf, wenn der Speichern-Button 
+	 * und {@link #resetModeEditUser()}, wenn der Abbrechen-Button gedrückt wurde.
+	 * </p>
+	 * 
+	 * @param	e	ActionEvent, das den Listener aufgerufen hat.
+	 */
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == this.btnUserSave){
+		if(e.getSource() == btnUserSave){
 			saveButtonPressed();
 		}
 		
 		/**
 		 * Aktionen für den Button "Benutzer abbrechen"
 		 */
-		if(e.getSource() == this.btnUserCancel){
-			this.resetModeEditUser();
+		if(e.getSource() == btnUserCancel){
+			resetModeEditUser();
 		}
 		
 	}
 
+	/**
+	 * Setzt das Formular zurück.
+	 */
 	public void resetModeEditUser() {
-		this.userModeEdit = false;
-		this.textFieldUserName.setText("");
-		this.textFieldUserSurname.setText("");
+		userModeEdit = false;
+		textFieldUserName.setText("");
+		textFieldUserSurname.setText("");
 	}
 
+	/**
+	 * Setzt Werte im Formular, wenn ein Benutzer bearbeitet werden soll.
+	 * 
+	 * @param	pId		ID des Benutzers, der bearbeitet werden soll.
+	 */
 	public void setModeEditUser(int pId){
 		KUser user = kUserModel.getElement(pId);
 		
-		this.userModeEdit = true;
-		this.userEditId = user.getId();
-		this.textFieldUserName.setText(user.getName());
-		this.textFieldUserSurname.setText(user.getSurname());		
+		userModeEdit = true;
+		userEditId = user.getId();
+		textFieldUserName.setText(user.getName());
+		textFieldUserSurname.setText(user.getSurname());		
 	}
 	
+	/**
+	 * Führt die Aktionen aus, die geschehen, wenn der Speichern-Button gedrückt wird.
+	 * 
+	 * <p>
+	 * Übergibt Inhalt des Formulars an den UserController und gibt je nach Rückgabecode eine andere Statusmeldung aus.
+	 * </p>
+	 */
 	private void saveButtonPressed(){
-		if(this.userModeEdit){
-			int re = this.userController.editUser(this.userEditId, this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
+		if(userModeEdit){
+			int re = userController.editUser(userEditId, textFieldUserName.getText(), textFieldUserSurname.getText());
 			
 			switch(re){
 			case 0:
-				this.lblUserStatus.setText("Benutzer-ID \""+this.userEditId+"\" erfolgreich bearbeitet.");
-				this.textFieldUserName.setText("");
-				this.textFieldUserSurname.setText("");
+				lblUserStatus.setText("Benutzer-ID \""+userEditId+"\" erfolgreich bearbeitet.");
+				textFieldUserName.setText("");
+				textFieldUserSurname.setText("");
 				break;
 				
 			case 1:
-				this.lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht bearbeitet werden.");
-				this.textFieldUserName.setText("");
-				this.textFieldUserSurname.setText("");
+				lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht bearbeitet werden.");
+				textFieldUserName.setText("");
+				textFieldUserSurname.setText("");
 				break;
 				
 			case 2:
-				this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
+				lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
 				break;
 				
 			}
 			
-			this.userModeEdit = false;
-			this.userEditId = -1;
+			userModeEdit = false;
+			userEditId = -1;
 		}
 		else {					
-			int re = userController.createUser(this.textFieldUserName.getText(), this.textFieldUserSurname.getText());
+			int re = userController.createUser(textFieldUserName.getText(), textFieldUserSurname.getText());
 		
 			switch (re){
 			case 0:
-				this.lblUserStatus.setText("Benutzer \""+this.textFieldUserName.getText()+" "+this.textFieldUserSurname.getText()+"\" erfolgreich hinzugefügt.");
-				this.textFieldUserName.setText("");
-				this.textFieldUserSurname.setText("");
+				lblUserStatus.setText("Benutzer \""+textFieldUserName.getText()+" "+textFieldUserSurname.getText()+"\" erfolgreich hinzugefügt.");
+				textFieldUserName.setText("");
+				textFieldUserSurname.setText("");
 				break;
 			
 			case 1:
-				this.lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht erstellt werden.");
-				this.textFieldUserName.setText("");
-				this.textFieldUserSurname.setText("");
+				lblUserStatus.setText("SQL-Fehler. Benutzer konnte nicht erstellt werden.");
+				textFieldUserName.setText("");
+				textFieldUserSurname.setText("");
 				break;
 			
 			case 2:
-				this.lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
+				lblUserStatus.setText("Entweder Vor- oder Nachname müssen ausgefüllt sein.");
 				break;
 			}
 		}
 	}
 
+	/**
+	 * Setzt den als Parameter übergebenen Text in das Status-Label.
+	 * 
+	 * @param	pText	Zu setzender Text.
+	 */
 	public void setStatusLabel(String pText){
 		lblUserStatus.setText(pText);
 	}
 	
-	@Override
+	/**
+	 * KeyListener für den Druck einer Taste
+	 * 
+	 * <p>
+	 * Ruft {@link #saveButtonPressed} auf, wenn die gedrückte Taste die Entertaste war.
+	 * </p>
+	 * 
+	 * @param	pKeyPress	KeyEvent, von dem das Event erzeugt wurde.
+	 */
 	public void keyPressed(KeyEvent pKeyPress) {
 		if(pKeyPress.getKeyCode() == KeyEvent.VK_ENTER) saveButtonPressed();		
 	}
 
-	@Override
+	/**
+	 * KeyListener für das Loslassen einer Taste.
+	 * 
+	 * <p>Nicht implementiert</p>
+	 * 
+	 * @param	arg0	KeyEvent, von dem das Event erzeugt wird. 
+	 */
 	public void keyReleased(KeyEvent arg0) {
-		// Nothing to implement
-		
 	}
 
-	@Override
+	/**
+	 * KeyListener für das Tippen (Drücken und Loslassen) einer Taste.
+	 * 
+	 * <p>Nicht implementiert</p>
+	 * 
+	 * @param	arg0	KeyEvent, von dem das Event erzeugt wird.
+	 */
 	public void keyTyped(KeyEvent arg0) {
-		// Nothing to implement
-		
 	}
 }

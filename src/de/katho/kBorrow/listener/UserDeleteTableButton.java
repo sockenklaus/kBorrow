@@ -15,6 +15,7 @@ import de.katho.kBorrow.models.UserTableModel;
 
 public class UserDeleteTableButton extends TableButton {
 
+	/** Serial Version UID */
 	private static final long serialVersionUID = -886584066497429394L;
 	
 	public UserDeleteTableButton(String pLabel, final JTable pTable, final UserPanel pPanel, final UserController pController ) throws IOException{

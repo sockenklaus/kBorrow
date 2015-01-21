@@ -184,14 +184,14 @@ public class ArticlePanel extends JPanel implements ActionListener, KeyListener 
 	 */
 	public void actionPerformed(ActionEvent e) {		
 		
-		/**
+		/*
 		 * Aktionen für den Button "Artikel speichern"
 		 */
 		if(e.getSource() == btnArticleSave){
 			saveButtonPressed();
 		}
 				
-		/**
+		/*
 		 * Aktionen für den Button "Artikel abbrechen"
 		 */
 		if(e.getSource() == btnArticleCancel){

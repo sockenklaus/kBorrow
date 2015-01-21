@@ -47,36 +47,69 @@ import de.katho.kBorrow.models.UserListModel;
 
 import java.awt.event.FocusEvent;
 
+/**
+ * Erzeugt das NewLendingPanel und leitet User-Interaktionen an den entsprechenden Controller weiter. 
+ */
 public class NewLendingPanel extends JPanel implements ActionListener, FocusListener, KeyListener {
 
-	/**
-	 * 
-	 */
+	/** Serial Version UID */
 	private static final long serialVersionUID = -7346953418572781322L;
+	
+	/** Textfeld: Vorname des Ausleihers */
 	private JTextField tfName;
+
+	/** Textfeld: Nachname des Ausleihers */
 	private JTextField tfSurname;
+	
+	/** Textfeld: Matrikelnummer des Ausleihers */
 	private JTextField tfStudentNumber;
-	private JLabel lblStartDate;
-	private JLabel lblArticleName;
-	private int articleId;
-	private JButton btnCancel;
-	private JButton btnSave;
-	private NewLendingController newLendingController;
-	private JComboBox<String> cbUserName;
-	private JXDatePicker dpEstEndDate;
+	
+	/** Label: Status */
 	private JLabel lblStatus;
 	
+	/** Label: Startdatum */
+	private JLabel lblStartDate;
+	
+	/** Label: Arikelname */
+	private JLabel lblArticleName;
+	
+	/** Button: Abbrechen */
+	private JButton btnCancel;
+	
+	/** Button: Speichern */
+	private JButton btnSave;
+	
+	/** Datepicker: Voraussichtliches Enddatum */
+	private JXDatePicker dpEstEndDate;
+	
+	/** Referenz auf das {@link KArticleModel} */
 	private KArticleModel kArticleModel;
+	
+	/** Referenz auf das {@link KUserModel} */
 	private KUserModel kUserModel;
+	
+	/** Referenz auf das {@link KLenderModel} */
 	private KLenderModel kLenderModel;
 	
+	/** Referenz auf das {@link UserListModel} */
 	private UserListModel userListModel;
+	
+	/** Referenz auf das {@link FreeArticleTableModel} */
 	private FreeArticleTableModel freeArticleTableModel;
 	
+	/** Referenz auf den {@link NewLendingController} */
+	private NewLendingController newLendingController;
+
+	/** Artikel-ID, wird hier vor einer Ausleihe zwischengespeichert. */
+	private int articleId;
+	
 	/**
-	 * Create the panel.
-	 * @param dbCon 
-	 * @throws IOException 
+	 * Erzeugt das Panel
+	 * 
+	 * @param 	dbCon 			Referenz auf die Datenbankverbindung.
+	 * @param	models			Referenz auf die HashMap mit KDataModels.
+	 * @param	pSettings		Referenz auf die Settings, wird für {@link NewLendingController} benötigt.
+	 * @throws	IOException		Wenn Probleme beim erstellen des {@link NewLendingTableButton} auftreten. 
 	 */
 	public NewLendingPanel(final DbConnector dbCon, HashMap<String, KDataModel> models, final Settings pSettings) throws IOException {
 		setLayout(null);
@@ -121,7 +154,7 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 			
 				
 		// Userlist Combobox
-		cbUserName = new JComboBox<String>(userListModel);
+		JComboBox<String> cbUserName = new JComboBox<String>(userListModel);
 		cbUserName.setBounds(430, 20, 130, 20);
 		
 		// Separator
@@ -220,6 +253,9 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		add(panelNewLending);
 	}
 
+	/**
+	 * Setzt das Formular zurück.
+	 */
 	private void resetForm(){
 		lblStartDate.setText("");
 		lblArticleName.setText("");
@@ -229,6 +265,15 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		tfStudentNumber.setText("");
 	}
 	
+	/**
+	 * Führt die Aktionen aus, die geschehen, wenn der Speichern-Button gedrückt wird.
+	 * 
+	 * <p>
+	 * Übergibt Inhalt des Formulars an den NewLendingController und gibt je nach Rückgabecode eine andere Statusmeldung aus.
+	 * </p>
+	 * 
+	 * @throws Exception	Wenn Fehler in {@link NewLendingController#newLending} nicht abgefangen werden können.
+	 */
 	private void saveButtonPressed() throws Exception {
 		String pLName = tfName.getText();
 		String pLSurname = tfSurname.getText();
@@ -263,6 +308,11 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		}
 	}
 
+	/**
+	 * Holt ausgewählten Artikel aus der Tabelle und trägt einige Werte für eine neue Ausleihe in das Formular.
+	 * 
+	 * @param id	ID des ausgewählten Artikels.
+	 */
 	public void setModeNewLending(int id) {
 		KArticle art = kArticleModel.getElement(id);		
 		
@@ -272,6 +322,11 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		
 	}
 
+	/**
+	 * ActionListener für gedrückte Buttons.
+	 * 
+	 * @param	pEvent	ActionEvent, das den Listener aufruft.
+	 */
 	public void actionPerformed(ActionEvent pEvent) {
 		if(pEvent.getSource() == btnCancel){
 			resetForm();
@@ -287,11 +342,27 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		
 	}
 
-	@Override
+	/**
+	 * FocusListener für erhaltenen Fokus.
+	 * 
+	 * <p>
+	 * Nicht implementiert!
+	 * </p>
+	 * 
+	 * @param	pEvent	FocusEvent, das den Listener aufruft.
+	 */
 	public void focusGained(FocusEvent pEvent) {
-		// TODO Auto-generated method stub
 	}
 
+	/**
+	 * FocusListener für verlorenen Focus.
+	 * 
+	 * <p>
+	 * Prüft, ob andere Ausleiher-Textfelder (Vorname, Nachname, Matr.-Nr.) automatisch ausgefüllt werden können.
+	 * </p>
+	 * 
+	 * @param	pEvent	FocusEvent, das den Listener aufruft.
+	 */
 	public void focusLost(FocusEvent pEvent) {
 		ArrayList<KLender> result = kLenderModel.getLenders(tfName.getText(), tfSurname.getText(), tfStudentNumber.getText());
 		
@@ -302,25 +373,40 @@ public class NewLendingPanel extends JPanel implements ActionListener, FocusList
 		}
 	}
 
+	/**
+	 * KeyListener für gedrückte Tasten.
+	 * 
+	 * <p>Fängt den Druck der Entertaste ab und ruft {@link #saveButtonPressed()} auf.</p>
+	 * 
+	 * @param	pKeyPress	KeyEvent, das den Listener aufruft.
+	 */
 	public void keyPressed(KeyEvent pKeyPress) {
-		if(pKeyPress.getKeyCode() == KeyEvent.VK_ENTER)
+		if(pKeyPress.getKeyCode() == KeyEvent.VK_ENTER){
 			try {
 				saveButtonPressed();
 			} catch (Exception e) {
 				Util.showError(e);
 			}
-		
+		}
 	}
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * KeyListener für losgelassene Tasten
+	 * 
+	 * <p>Nicht implementiert!</p>
+	 * 
+	 * @param	e	KeyEvent, das den Listener aufruft.
+	 */
+	public void keyReleased(KeyEvent e) {		
 	}
 
-	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * KeyListener für eine getippte Taste (Drücken und Loslassen)
+	 * 
+	 * <p>Nicht implementiert!</p>
+	 * 
+	 * @param	e	Keyevent, das den Listener aufruft.
+	 */
+	public void keyTyped(KeyEvent e) {		
 	}
 }

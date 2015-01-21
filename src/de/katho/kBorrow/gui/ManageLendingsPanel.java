@@ -17,19 +17,24 @@ import javax.swing.border.TitledBorder;
 import java.awt.BorderLayout;
 import java.io.IOException;
 
-
+/**
+ * Erzeugt das JPanel, auf dem Ausleihen verwaltet werden.
+ */
 public class ManageLendingsPanel extends JPanel {
 
-	/**
-	 * 
-	 */
+	/** Serial Version UID */
 	private static final long serialVersionUID = 925691137664223491L;
 
-	private ManageLendingsController manageLendingsController;
-	
+	/**
+	 * Erzeugt das JPanel, auf dem Ausleihen verwaltet werden.
+	 * 
+	 * @param 	dbCon			Referenz auf die Datenbankverbindung.
+	 * @param 	models			HashMap mit KDataModels
+	 * @throws	IOException		Wenn es Probleme beim Erzeugen des {@link LendingReturnTableButton} gibt.
+	 */
 	public ManageLendingsPanel(DbConnector dbCon, HashMap<String, KDataModel> models) throws IOException {
 		
-		manageLendingsController = new ManageLendingsController(dbCon, models);
+		ManageLendingsController manageLendingsController = new ManageLendingsController(dbCon, models);
 		
 		// Lending-Table
 		JTable lendingTable = new JTable(new LendingTableModel(models));

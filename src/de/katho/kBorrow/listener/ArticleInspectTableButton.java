@@ -16,9 +16,7 @@ import de.katho.kBorrow.models.ArticleTableModel;
 
 public class ArticleInspectTableButton extends TableButton {
 
-	/**
-	 * 
-	 */
+	/** Serial Version UID */
 	private static final long serialVersionUID = -2591133864537097893L;
 
 	public ArticleInspectTableButton(String pLabel, final JTable pTable, final HashMap<String, KDataModel> models) throws IOException {

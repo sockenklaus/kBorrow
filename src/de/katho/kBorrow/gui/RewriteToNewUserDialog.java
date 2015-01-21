@@ -19,26 +19,42 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JLabel;
 
+/**
+ * Erzeugt den Auswahldialog, der es beim Löschen eines Benutzers ermöglicht, alle seine Ausleihen auf einen anderen Benutzer umzuschreiben.
+ */
 public class RewriteToNewUserDialog extends JDialog implements ActionListener {
 
-	/**
-	 * 
-	 */
+	/** Serial Version UID */
 	private static final long serialVersionUID = -6002073589194176368L;
-	private final JPanel contentPanel = new JPanel();
 	
+	/** Button: OK */
 	private JButton okButton;
+	
+	/** Button: Abbrechen */
 	private JButton cancelButton;
+	
+	/** Referenz auf das RewriteUserModel */
 	private RewriteUserModel rwusermodel;
+	
+	/** Referenz auf den RewriteToNewUserController */
 	private RewriteToNewUserController rwcontroller;
 	
+	/** Resultat, das nach dem Schließen des Dialogs zurück an den UserController gegeben wird. */
 	private int result = 1;
+	
+	/** Benutzer-ID des Benutzers, der gelöscht werden soll. */
 	private int oldId;
 
 	/**
-	 * Create the dialog.
+	 * Erzeugt den Dialog.
+	 * 
+	 * @param	pOldId		ID des Benutzers, der gelöscht werden soll.
+	 * @param	pDbCon		Referenz auf die Datenbankverbindung.
+	 * @param	userModel	Referenz auf das KUserModel.
 	 */
 	public RewriteToNewUserDialog(int pOldId, DbConnector pDbCon, KDataModel userModel) {
+		JPanel contentPanel = new JPanel();
+		
 		setTitle("Ausleihe umschreiben");
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -82,6 +98,11 @@ public class RewriteToNewUserDialog extends JDialog implements ActionListener {
 		setVisible(true);
 	}
 
+	/**
+	 * ActionListener für gedrückte Buttons.
+	 * 
+	 * @param	e	ActionEvent, das diesen Listener auslöst. 
+	 */
 	public void actionPerformed(ActionEvent e) {
 		
 		// OK Button pressed
@@ -100,6 +121,11 @@ public class RewriteToNewUserDialog extends JDialog implements ActionListener {
 		}
 	}
 
+	/**
+	 * Gibt Resultat des Umschreibens zurück.
+	 * 
+	 * @return	Resultat des Umschreibens als Int.
+	 */
 	public int getResult(){
 		return result;
 	}

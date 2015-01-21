@@ -14,9 +14,7 @@ import de.katho.kBorrow.models.LendingTableModel;
 
 public class LendingReturnTableButton extends TableButton {
 
-	/**
-	 * 
-	 */
+	/** Serial Version UID */
 	private static final long serialVersionUID = 4841475504601928160L;
 
 	public LendingReturnTableButton(String pLabel, final JTable pTable, final ManageLendingsController pController) throws IOException {

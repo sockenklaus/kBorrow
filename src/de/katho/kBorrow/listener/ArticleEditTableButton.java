@@ -14,9 +14,7 @@ import de.katho.kBorrow.models.ArticleTableModel;
 
 public class ArticleEditTableButton extends TableButton {
 
-	/**
-	 * 
-	 */
+	/** Serial Version UID */
 	private static final long serialVersionUID = -5902626427691636902L;
 
 	public ArticleEditTableButton(String pLabel, final JTable pTable, final ArticlePanel articleTab) throws IOException {
