@@ -17,7 +17,7 @@ public class FreeArticleTableModel extends ArticleTableModel implements KGuiMode
 	private static final long serialVersionUID = 1908669541941834593L;
 	private String[] header;
 	
-	public FreeArticleTableModel(KDataModel pModel) {
+	public FreeArticleTableModel(KArticleModel pModel) {
 		super(pModel);
 		header = new String[] {"ID", "Artikelname", "Artikelbeschreibung", ""};
 		pModel.register(this);

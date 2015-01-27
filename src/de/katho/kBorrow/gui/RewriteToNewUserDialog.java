@@ -10,8 +10,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JComboBox;
 
 import de.katho.kBorrow.controller.RewriteToNewUserController;
+import de.katho.kBorrow.data.KUserModel;
 import de.katho.kBorrow.interfaces.DbConnector;
-import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.models.RewriteUserModel;
 
 import java.awt.event.ActionEvent;
@@ -52,7 +52,7 @@ public class RewriteToNewUserDialog extends JDialog implements ActionListener {
 	 * @param	pDbCon		Referenz auf die Datenbankverbindung.
 	 * @param	userModel	Referenz auf das KUserModel.
 	 */
-	public RewriteToNewUserDialog(int pOldId, DbConnector pDbCon, KDataModel userModel) {
+	public RewriteToNewUserDialog(int pOldId, DbConnector pDbCon, KUserModel userModel) {
 		JPanel contentPanel = new JPanel();
 		
 		setTitle("Ausleihe umschreiben");

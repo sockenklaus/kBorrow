@@ -15,17 +15,32 @@ import de.katho.kBorrow.interfaces.KGuiModel;
 
 public class LendingTableModel extends AbstractTableModel implements KGuiModel {
 
-	/**
-	 * 
-	 */
+	/**	Serial Version UID */
 	private static final long serialVersionUID = 1375465648631587292L;
+	
+	/** Enthält die Überschriften der Tabellenspalten. */
 	private String[] header = {"ID", "Artikel", "Verliehen von:", "Ausgeliehen an:", "Ausleihdatum", "Vor. Rückgabe", ""};
+	
+	/** Daten der Tabelle: Sämtliche aktiven Ausleihen. */
 	private ArrayList<KLending> data;
+	
+	/** Referenz auf das ArticleModel */
 	private KDataModel articleModel;
+	
+	/** Referenz auf das LenderModel */
 	private KDataModel lenderModel;
+	
+	/** Referenz auf das UserModel */
 	private KDataModel userModel;
+	
+	/** Referenz auf das LendingModel */
 	private KDataModel lendingModel;
 	
+	/**
+	 * Erzeugt das LendingTableModel.
+	 * 
+	 * @param	pModels		HashMap mit Referenzen auf alle KDataModels
+	 */
 	public LendingTableModel(HashMap<String, KDataModel> pModels ) {
 		articleModel = pModels.get("karticlemodel");
 		lenderModel = pModels.get("klendermodel");
@@ -35,18 +50,42 @@ public class LendingTableModel extends AbstractTableModel implements KGuiModel {
 		lendingModel.register(this);
 	}
 
+	/**
+	 * Gibt Anzahl der Tabellenspalten zurück.
+	 * 
+	 * @return	Anzahl der Tabellenspalten.
+	 */
 	public int getColumnCount() {
 		return header.length;
 	}
 	
-	public String getColumnName(int index){
-		return header[index];
+	/**
+	 * Gibt Namen der per Parameter angegebenen Tabellenspalte zurück.
+	 * 
+	 * @param	col		Spaltennummer, deren Name zurückgegeben werden soll.
+	 * @return			Spaltenname als String.
+	 */
+	public String getColumnName(int col){
+		if(col < header.length) return header[col];
+		return "";
 	}
-
+	
+	/**
+	 * Gibt Anzahl der Tabellenzeilen zurück.
+	 * 
+	 * @return	Anzahl der Tabellenzeilen als Int.
+	 */
 	public int getRowCount() {
 		return data.size();
 	}
 
+	/**
+	 * Gibt den Wert der per Parameter angegebenen Tabellenzelle zurück.
+	 * 
+	 * @param	row		Zeile der angefragten Tabellenzelle.
+	 * @param	col		Spalte der angefragten Tabellenzelle.
+	 * @return			Inhalt der angefragten Tabellenzelle.
+	 */
 	public Object getValueAt(int row, int col) {
 		switch (col){
 		case 0:
@@ -81,11 +120,25 @@ public class LendingTableModel extends AbstractTableModel implements KGuiModel {
 		}
 	}
 	
+	/**
+	 * Gibt zurück, ob eine Tabellenzelle editierbar ist.
+	 * 
+	 * <p>Alle Spalten größer 4 sind editierbar.</p>
+	 * 
+	 * @param	row		Zeile der angefragten Zelle.
+	 * @param	col		Spalte der angefragten Zelle.
+	 * @return	 		Editierbarkeit einer Tabellenzelle (true, falls col größer 4).
+	 */
 	public boolean isCellEditable(int row, int col){
 		if (col > 4) return true;
 		return false;
 	}
-
+	
+	/**
+	 * Holt die benötigten Daten aus dem als Parameter übergebenen KDataModel.
+	 * 
+	 * @param	pModel	KDataModel, von dem die Daten geholt werden sollen.
+	 */
 	public void fetchData(KDataModel pModel) {
 		data = new ArrayList<KLending>();
 		
@@ -97,6 +150,12 @@ public class LendingTableModel extends AbstractTableModel implements KGuiModel {
 		}		
 	}
 	
+	/**
+	 * Gibt die Ausleihen-ID in der übergebenen Zeile zurück.
+	 * 
+	 * @param	pRow	Zeile, deren Ausleihen-ID ermittelt werden soll.
+	 * @return			Ausleihen-ID als Int.
+	 */
 	public int getIdFromRow(int pRow){
 		return data.get(pRow).getId();
 	}

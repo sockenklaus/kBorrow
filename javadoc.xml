@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="private" author="true" classpath="lib/mysql-connector-java-5.1.32-bin.jar;lib/sqlite-jdbc-3.7.2.jar;lib/swingx-all-1.6.4.jar;lib/pdfbox-app-1.8.7.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="de.katho.kBorrow.listener,de.katho.kBorrow.models,de.katho.kBorrow.gui,de.katho.kBorrow.data.objects,de.katho.kBorrow.data,de.katho.kBorrow.db,de.katho.kBorrow,de.katho.kBorrow.controller,de.katho.kBorrow.converter,de.katho.kBorrow.interfaces" source="1.8" sourcepath="src;assets" splitindex="true" use="true" version="true"/>
+    </target>
+</project>

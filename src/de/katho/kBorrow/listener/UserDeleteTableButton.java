@@ -13,11 +13,23 @@ import de.katho.kBorrow.controller.UserController;
 import de.katho.kBorrow.gui.UserPanel;
 import de.katho.kBorrow.models.UserTableModel;
 
+/**
+ * Erzeugt den "Benutzer löschen"-Button in der UserTable.
+ */
 public class UserDeleteTableButton extends TableButton {
 
 	/** Serial Version UID */
 	private static final long serialVersionUID = -886584066497429394L;
 	
+	/**
+	 * Erzeugt den "Benutzer Löschen"-Button in der UserTable.
+	 * 
+	 * @param 	pLabel			Name des Buttons, dient als Tooltip.
+	 * @param 	pTable			Referenz auf die UserTable.
+	 * @param 	pPanel			Referenz auf das UserPanel.
+	 * @param 	pController		Referenz auf den UserController.
+	 * @throws	IOException		Wenn Probleme beim Einbinden des Icons auftreten.
+	 */
 	public UserDeleteTableButton(String pLabel, final JTable pTable, final UserPanel pPanel, final UserController pController ) throws IOException{
 		super(pLabel);
 		URL url = Main.class.getResource("/icons/edit-delete.png");

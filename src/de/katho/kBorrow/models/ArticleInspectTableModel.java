@@ -14,19 +14,35 @@ import de.katho.kBorrow.data.objects.KUser;
 import de.katho.kBorrow.interfaces.KDataModel;
 import de.katho.kBorrow.interfaces.KGuiModel;
 
+/**
+ * Enthält die für die ArticleInspectTable nötigen Daten.
+ */
 public class ArticleInspectTableModel extends AbstractTableModel implements KGuiModel {
 
-	/**
-	 * 
-	 */
+	/** Serial Version UID */
 	private static final long serialVersionUID = 2293157709447086998L;
+	
+	/** Enthält die Überschriften der Tabellenspalten */
 	private String[] header;
+	
+	/** ID des Artikels, für den alle Ausleihen in der Tabelle angezeigt werden sollen. */
 	private int articleId;
+	
+	/** Daten der Tabelle: Alle Ausleihen für einen Artikel. */
 	private ArrayList<KLending> data;
+	
+	/** Referenz auf das benötigte UserModel. */
 	private KUserModel userModel;
+	
+	/** Referenz auf das benötigte LenderModel. */
 	private KLenderModel lenderModel;
 	
-	
+	/**
+	 * Erzeugt das ArticleInspectTableModel.
+	 * 
+	 * @param pId		ID des Artikel, dessen Ausleihen angezeigt werden sollen.
+	 * @param models	HashMap mit Referenzen auf alle KDataModels.
+	 */
 	public ArticleInspectTableModel(int pId, HashMap<String, KDataModel> models){
 		header = new String[] {"ID", "Verliehen von:", "Ausgeliehen an:", "Ausleihdatum", "Vor. Rückgabe", "Rückgabe"};
 		articleId = pId;
@@ -36,22 +52,55 @@ public class ArticleInspectTableModel extends AbstractTableModel implements KGui
 		fetchData(((KLendingModel)models.get("klendingmodel")));
 	}
 
+	/**
+	 * Gibt Anzahl der Tabellenspalten zurück.
+	 * 
+	 * @return	Anzahl der Tabellenspalten.
+	 */
 	public int getColumnCount() {
 		return header.length;
 	}
 	
+	/**
+	 * Gibt Namen der per Parameter angegebenen Tabellenspalte zurück.
+	 * 
+	 * @param	col		Spaltennummer, deren Name zurückgegeben werden soll.
+	 * @return			Spaltenname als String.
+	 */
 	public String getColumnName(int col){
-		return header[col];
+		if(col < header.length) return header[col];
+		return "";
 	}
 	
+	/**
+	 * Gibt Anzahl der Tabellenzeilen zurück.
+	 * 
+	 * @return	Anzahl der Tabellenzeilen als Int.
+	 */
 	public int getRowCount() {
 		return data.size();
 	}
 
+	/**
+	 * Gibt zurück, ob eine Tabellenzelle editierbar ist.
+	 * 
+	 * <p>Alle Tabellenzellen sind NICHT editierbar!</p>
+	 * 
+	 * @param	pRow	Zeile der angefragten Zelle.
+	 * @param	pCol	Spalte der angefragten Zelle.
+	 * @return	 		Editierbarkeit einer Tabellenzelle (Immer false!)
+	 */
 	public boolean isCellEditable(int pRow, int pCol){
 		return false;
 	}
 	
+	/**
+	 * Gibt den Wert der per Parameter angegebenen Tabellenzelle zurück.
+	 * 
+	 * @param	row		Zeile der angefragten Tabellenzelle.
+	 * @param	col		Spalte der angefragten Tabellenzelle.
+	 * @return			Inhalt der angefragten Tabellenzelle.
+	 */
 	public Object getValueAt(int row, int col) {
 		switch(col){
 		case 0:
@@ -82,7 +131,12 @@ public class ArticleInspectTableModel extends AbstractTableModel implements KGui
 			return null;
 		}
 	}
-
+	
+	/**
+	 * Holt die benötigten Daten aus dem als Parameter übergebenen KDataModel.
+	 * 
+	 * @param	pModel	KDataModel, von dem die Daten geholt werden sollen.
+	 */
 	public void fetchData(KDataModel pModel) {
 		if(pModel instanceof KLendingModel){
 			data = new ArrayList<KLending>();

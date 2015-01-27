@@ -6,6 +6,7 @@ import java.util.logging.Level;
 
 import de.katho.kBorrow.KLogger;
 import de.katho.kBorrow.data.KLendingModel;
+import de.katho.kBorrow.data.KUserModel;
 import de.katho.kBorrow.data.objects.KLending;
 import de.katho.kBorrow.gui.RewriteToNewUserDialog;
 import de.katho.kBorrow.interfaces.DbConnector;
@@ -20,10 +21,10 @@ public class UserController {
 	private DbConnector dbCon;
 	
 	/** Referenz auf das KUserModel, wird benötigt, um Tabellen und Listen zu aktualisieren. */
-	private KDataModel userModel;
+	private KUserModel userModel;
 	
 	/** Referenz auf das KLendingModel, wird benötigt, um Tabellen und Listen zu aktualiseren. */
-	private KDataModel lendingModel;
+	private KLendingModel lendingModel;
 	
 	/**
 	 * Erzeugt eine neue Instanz des UserController und setzt nötige Referenzen.
@@ -33,8 +34,8 @@ public class UserController {
 	 */
 	public UserController(DbConnector pDbCon, HashMap<String, KDataModel> models) {
 		dbCon = pDbCon;
-		userModel = models.get("kusermodel");
-		lendingModel = models.get("klendingmodel");
+		userModel = (KUserModel)models.get("kusermodel");
+		lendingModel = (KLendingModel)models.get("klendingmodel");
 	}
 
 	/**
