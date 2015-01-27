@@ -425,614 +425,1210 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <realization id="48">    
-    <end type="SOURCE" refId="40"/>    
-    <end type="TARGET" refId="46"/>  
-  </realization>  
+  <generalization id="48">    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="37"/>  
+  </generalization>  
   <association id="49">    
-    <bendpoint x="5036" y="801"/>    
-    <end type="SOURCE" refId="36" navigable="false">      
-      <attribute id="50" name="dbCon"/>      
-      <multiplicity id="51" minimum="0" maximum="1"/>    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="50" name="kLendingModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="51" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="52">    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="22"/>  
+  </dependency>  
+  <dependency id="53">    
+    <end type="SOURCE" refId="18"/>    
+    <end type="TARGET" refId="29"/>  
+  </dependency>  
+  <realization id="54">    
+    <end type="SOURCE" refId="42"/>    
+    <end type="TARGET" refId="41"/>  
+  </realization>  
+  <association id="55">    
+    <end type="SOURCE" refId="47" navigable="false">      
+      <attribute id="56" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="57" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="52">    
-    <end type="SOURCE" refId="23"/>    
-    <end type="TARGET" refId="5"/>  
-  </realization>  
-  <association id="53">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="54" name="rwusermodel"/>      
-      <multiplicity id="55" minimum="0" maximum="1"/>    
+  <dependency id="58">    
+    <end type="SOURCE" refId="33"/>    
+    <end type="TARGET" refId="32"/>  
+  </dependency>  
+  <association id="59">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="60" name="kArticleModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="61" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="38" navigable="true"/>    
+    <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="56">    
+  <association id="62">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="63" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="64" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="65">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="24"/>  
+  </dependency>  
+  <dependency id="66">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="44"/>  
+  </dependency>  
+  <dependency id="67">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="27"/>  
+  </dependency>  
+  <dependency id="68">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="69">    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="32"/>  
+  </dependency>  
+  <dependency id="70">    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <dependency id="71">    
+    <end type="SOURCE" refId="46"/>    
+    <end type="TARGET" refId="41"/>  
+  </dependency>  
+  <dependency id="72">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="73">    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <dependency id="74">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="8"/>  
+  </dependency>  
+  <dependency id="75">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="26"/>  
+  </dependency>  
+  <dependency id="76">    
+    <end type="SOURCE" refId="44"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <generalization id="77">    
+    <end type="SOURCE" refId="43"/>    
+    <end type="TARGET" refId="37"/>  
+  </generalization>  
+  <dependency id="78">    
+    <end type="SOURCE" refId="45"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <association id="79">    
+    <bendpoint x="3373" y="801"/>    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="80" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="81" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="82">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="83">    
     <end type="SOURCE" refId="22"/>    
     <end type="TARGET" refId="45"/>  
   </dependency>  
-  <association id="57">    
-    <end type="SOURCE" refId="40" navigable="false">      
-      <attribute id="58" name="data"/>      
-      <multiplicity id="59" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="32" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="60">    
-    <end type="SOURCE" refId="42" navigable="false">      
-      <attribute id="61" name="lenderModel"/>      
-      <multiplicity id="62" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="46" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="63">    
+  <dependency id="84">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="34"/>  
+  </dependency>  
+  <dependency id="85">    
     <end type="SOURCE" refId="22"/>    
-    <end type="TARGET" refId="26"/>  
+    <end type="TARGET" refId="46"/>  
   </dependency>  
-  <generalization id="64">    
-    <end type="SOURCE" refId="45"/>    
-    <end type="TARGET" refId="37"/>  
-  </generalization>  
-  <association id="65">    
-    <bendpoint x="5015" y="801"/>    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="66" name="dbCon"/>      
-      <multiplicity id="67" minimum="0" maximum="1"/>    
+  <dependency id="86">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="87">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="16"/>  
+  </dependency>  
+  <dependency id="88">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <dependency id="89">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="29"/>  
+  </dependency>  
+  <association id="90">    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="91" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="92" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="68">    
-    <end type="SOURCE" refId="27"/>    
-    <end type="TARGET" refId="26"/>  
-  </generalization>  
-  <association id="69">    
-    <end type="SOURCE" refId="40" navigable="false">      
-      <attribute id="70" name="models"/>      
-      <multiplicity id="71" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="41" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="72">    
-    <bendpoint x="3373" y="801"/>    
+  <association id="93">    
     <end type="SOURCE" refId="31" navigable="false">      
-      <attribute id="73" name="data"/>      
-      <multiplicity id="74" minimum="0" maximum="2147483647"/>    
+      <attribute id="94" name="lenderModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="95" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
-    <end type="TARGET" refId="25" navigable="true"/>    
+    <end type="TARGET" refId="40" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="75">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="76" name="models"/>      
-      <multiplicity id="77" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="41" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="78">    
-    <end type="SOURCE" refId="40" navigable="false">      
-      <attribute id="79" name="dbCon"/>      
-      <multiplicity id="80" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="81">    
-    <end type="SOURCE" refId="44"/>    
-    <end type="TARGET" refId="42"/>  
+  <dependency id="96">    
+    <end type="SOURCE" refId="42"/>    
+    <end type="TARGET" refId="1"/>  
   </dependency>  
-  <association id="82">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="83" name="data"/>      
-      <multiplicity id="84" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="25" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="85">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="86" name="data"/>      
-      <multiplicity id="87" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="88">    
-    <end type="SOURCE" refId="31" navigable="false">      
-      <attribute id="89" name="userModel"/>      
-      <multiplicity id="90" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="47" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="91">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="92" name="userModel"/>      
-      <multiplicity id="93" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="47" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="94">    
-    <bendpoint x="3085" y="801"/>    
-    <end type="SOURCE" refId="26" navigable="false">      
-      <attribute id="95" name="data"/>      
-      <multiplicity id="96" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <dependency id="97">    
     <end type="SOURCE" refId="26"/>    
     <end type="TARGET" refId="15"/>  
   </dependency>  
-  <realization id="98">    
+  <dependency id="98">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="25"/>  
+  </dependency>  
+  <dependency id="99">    
+    <end type="SOURCE" refId="42"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <generalization id="100">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="37"/>  
+  </generalization>  
+  <association id="101">    
+    <bendpoint x="4788" y="518"/>    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="102" name="kLenderModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="103" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="104">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <dependency id="105">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="32"/>  
+  </dependency>  
+  <association id="106">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="107" name="rwusermodel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="108" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="38" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="109">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="16"/>  
+  </dependency>  
+  <dependency id="110">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="24"/>  
+  </dependency>  
+  <association id="111">    
+    <bendpoint x="5242" y="518"/>    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="112" name="kUserModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="113" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="47" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="114">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="29"/>  
+  </dependency>  
+  <dependency id="115">    
+    <end type="SOURCE" refId="44"/>    
+    <end type="TARGET" refId="42"/>  
+  </dependency>  
+  <realization id="116">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <generalization id="117">    
+    <end type="SOURCE" refId="12"/>    
+    <end type="TARGET" refId="37"/>  
+  </generalization>  
+  <realization id="118">    
     <bendpoint x="3394" y="801"/>    
     <end type="SOURCE" refId="31"/>    
     <end type="TARGET" refId="41"/>  
   </realization>  
-  <generalization id="99">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="37"/>  
-  </generalization>  
-  <dependency id="100">    
-    <end type="SOURCE" refId="22"/>    
-    <end type="TARGET" refId="19"/>  
-  </dependency>  
-  <generalization id="101">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="37"/>  
-  </generalization>  
-  <association id="102">    
-    <end type="SOURCE" refId="39" navigable="false">      
-      <attribute id="103" name="kArticleModel"/>      
-      <multiplicity id="104" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="105">    
-    <end type="SOURCE" refId="31" navigable="false">      
-      <attribute id="106" name="lenderModel"/>      
-      <multiplicity id="107" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="40" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="108">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="109" name="dbCon"/>      
-      <multiplicity id="110" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="111">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="16"/>  
-  </dependency>  
-  <generalization id="112">    
-    <end type="SOURCE" refId="43"/>    
-    <end type="TARGET" refId="37"/>  
-  </generalization>  
-  <association id="113">    
-    <end type="SOURCE" refId="30" navigable="false">      
-      <attribute id="114" name="dbCon"/>      
-      <multiplicity id="115" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="116">    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="117" name="models"/>      
-      <multiplicity id="118" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="41" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <realization id="119">    
-    <bendpoint x="5502" y="801"/>    
-    <end type="SOURCE" refId="20"/>    
+    <end type="SOURCE" refId="27"/>    
     <end type="TARGET" refId="41"/>  
   </realization>  
-  <association id="120">    
-    <bendpoint x="3600" y="518"/>    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="121" name="freeArticleTableModel"/>      
-      <multiplicity id="122" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="27" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="123">    
-    <end type="SOURCE" refId="14"/>    
-    <end type="TARGET" refId="5"/>  
-  </realization>  
-  <dependency id="124">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="34"/>  
+  <dependency id="120">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="1"/>  
   </dependency>  
-  <association id="125">    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="126" name="userController"/>      
-      <multiplicity id="127" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="128">    
-    <bendpoint x="5822" y="801"/>    
-    <end type="SOURCE" refId="20" navigable="false">      
-      <attribute id="129" name="data"/>      
-      <multiplicity id="130" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="131">    
+  <association id="121">    
     <end type="SOURCE" refId="42" navigable="false">      
-      <attribute id="132" name="data"/>      
-      <multiplicity id="133" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="25" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="134">    
-    <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="135" name="lendingModel"/>      
-      <multiplicity id="136" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="137">    
-    <end type="SOURCE" refId="36" navigable="false">      
-      <attribute id="138" name="kArticleModel"/>      
-      <multiplicity id="139" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="140">    
-    <end type="SOURCE" refId="47" navigable="false">      
-      <attribute id="141" name="dbCon"/>      
-      <multiplicity id="142" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="143">    
-    <end type="SOURCE" refId="34"/>    
-    <end type="TARGET" refId="47"/>  
-  </dependency>  
-  <dependency id="144">    
-    <end type="SOURCE" refId="34"/>    
-    <end type="TARGET" refId="46"/>  
-  </dependency>  
-  <dependency id="145">    
-    <end type="SOURCE" refId="17"/>    
-    <end type="TARGET" refId="34"/>  
-  </dependency>  
-  <dependency id="146">    
-    <end type="SOURCE" refId="26"/>    
-    <end type="TARGET" refId="46"/>  
-  </dependency>  
-  <dependency id="147">    
-    <end type="SOURCE" refId="44"/>    
-    <end type="TARGET" refId="11"/>  
-  </dependency>  
-  <dependency id="148">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="27"/>  
-  </dependency>  
-  <generalization id="149">    
-    <end type="SOURCE" refId="35"/>    
-    <end type="TARGET" refId="37"/>  
-  </generalization>  
-  <realization id="150">    
-    <end type="SOURCE" refId="6"/>    
-    <end type="TARGET" refId="46"/>  
-  </realization>  
-  <generalization id="151">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="37"/>  
-  </generalization>  
-  <dependency id="152">    
-    <end type="SOURCE" refId="35"/>    
-    <end type="TARGET" refId="26"/>  
-  </dependency>  
-  <generalization id="153">    
-    <end type="SOURCE" refId="12"/>    
-    <end type="TARGET" refId="37"/>  
-  </generalization>  
-  <association id="154">    
-    <bendpoint x="4788" y="518"/>    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="155" name="kLenderModel"/>      
-      <multiplicity id="156" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="40" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="157">    
-    <end type="SOURCE" refId="19"/>    
-    <end type="TARGET" refId="22"/>  
-  </dependency>  
-  <realization id="158">    
-    <end type="SOURCE" refId="47"/>    
-    <end type="TARGET" refId="46"/>  
-  </realization>  
-  <association id="159">    
-    <end type="SOURCE" refId="39" navigable="false">      
-      <attribute id="160" name="kLendingModel"/>      
-      <multiplicity id="161" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="162">    
-    <end type="SOURCE" refId="15"/>    
-    <end type="TARGET" refId="46"/>  
-  </realization>  
-  <association id="163">    
-    <end type="SOURCE" refId="39" navigable="false">      
-      <attribute id="164" name="settings"/>      
-      <multiplicity id="165" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="18" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="166">    
-    <end type="SOURCE" refId="34" navigable="false">      
-      <attribute id="167" name="data"/>      
-      <multiplicity id="168" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="169">    
-    <bendpoint x="3973" y="518"/>    
-    <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="170" name="articleModel"/>      
-      <multiplicity id="171" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="172">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="173" name="userListModel"/>      
-      <multiplicity id="174" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="20" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="175">    
-    <end type="SOURCE" refId="42" navigable="false">      
-      <attribute id="176" name="articleModel"/>      
-      <multiplicity id="177" minimum="0" maximum="1"/>    
+      <attribute id="122" name="userModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="123" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="46" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="178">    
-    <bendpoint x="3994" y="518"/>    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="179" name="kArticleModel"/>      
-      <multiplicity id="180" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <realization id="181">    
-    <bendpoint x="3106" y="801"/>    
-    <end type="SOURCE" refId="26"/>    
-    <end type="TARGET" refId="41"/>  
-  </realization>  
-  <realization id="182">    
-    <end type="SOURCE" refId="34"/>    
-    <end type="TARGET" refId="41"/>  
-  </realization>  
-  <dependency id="183">    
-    <end type="SOURCE" refId="45"/>    
-    <end type="TARGET" refId="26"/>  
-  </dependency>  
-  <dependency id="184">    
-    <end type="SOURCE" refId="42"/>    
-    <end type="TARGET" refId="3"/>  
-  </dependency>  
-  <association id="185">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="186" name="lendingModel"/>      
-      <multiplicity id="187" minimum="0" maximum="1"/>    
+  <association id="124">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="125" name="lendingModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="126" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="188">    
-    <end type="SOURCE" refId="19"/>    
+  <dependency id="127">    
+    <end type="SOURCE" refId="44"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <dependency id="128">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="129">    
+    <end type="SOURCE" refId="45"/>    
     <end type="TARGET" refId="26"/>  
   </dependency>  
-  <dependency id="189">    
+  <dependency id="130">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="131">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <dependency id="132">    
     <end type="SOURCE" refId="43"/>    
     <end type="TARGET" refId="34"/>  
   </dependency>  
-  <association id="190">    
+  <dependency id="133">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="134">    
+    <end type="SOURCE" refId="47" navigable="false">      
+      <attribute id="135" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="136" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="137">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="138">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="32"/>  
+  </dependency>  
+  <association id="139">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="140" name="models">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="141" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="41" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="142">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <association id="143">    
     <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="191" name="newLendingController"/>      
-      <multiplicity id="192" minimum="0" maximum="1"/>    
+      <attribute id="144" name="newLendingController">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="145" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="39" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <dependency id="193">    
-    <end type="SOURCE" refId="45"/>    
-    <end type="TARGET" refId="46"/>  
+  <dependency id="146">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="29"/>  
   </dependency>  
-  <association id="194">    
-    <bendpoint x="5616" y="518"/>    
-    <end type="SOURCE" refId="17" navigable="false">      
-      <attribute id="195" name="kUserModel"/>      
-      <multiplicity id="196" minimum="0" maximum="1"/>    
+  <association id="147">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="148" name="userModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="149" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="47" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="197">    
-    <end type="SOURCE" refId="39" navigable="false">      
-      <attribute id="198" name="kLenderModel"/>      
-      <multiplicity id="199" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="40" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="200">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="201" name="articleModel"/>      
-      <multiplicity id="202" minimum="0" maximum="1"/>    
+  <generalization id="150">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="37"/>  
+  </generalization>  
+  <association id="151">    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="152" name="kArticleModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="153" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="203">    
-    <end type="SOURCE" refId="6" navigable="false">      
-      <attribute id="204" name="dbCon"/>      
-      <multiplicity id="205" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="206">    
-    <end type="SOURCE" refId="45"/>    
-    <end type="TARGET" refId="9"/>  
-  </dependency>  
-  <association id="207">    
-    <end type="SOURCE" refId="42" navigable="false">      
-      <attribute id="208" name="userModel"/>      
-      <multiplicity id="209" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="46" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="210">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="211" name="rwcontroller"/>      
-      <multiplicity id="212" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="30" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="213">    
-    <bendpoint x="5057" y="801"/>    
-    <end type="SOURCE" refId="39" navigable="false">      
-      <attribute id="214" name="dbCon"/>      
-      <multiplicity id="215" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="5" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="216">    
-    <end type="SOURCE" refId="42"/>    
-    <end type="TARGET" refId="1"/>  
-  </dependency>  
-  <dependency id="217">    
-    <end type="SOURCE" refId="10"/>    
-    <end type="TARGET" refId="17"/>  
-  </dependency>  
-  <association id="218">    
-    <end type="SOURCE" refId="39" navigable="false">      
-      <attribute id="219" name="kUserModel"/>      
-      <multiplicity id="220" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="47" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="221">    
-    <end type="SOURCE" refId="38"/>    
-    <end type="TARGET" refId="20"/>  
-  </generalization>  
-  <dependency id="222">    
-    <end type="SOURCE" refId="42"/>    
-    <end type="TARGET" refId="6"/>  
-  </dependency>  
-  <association id="223">    
-    <end type="SOURCE" refId="42" navigable="false">      
-      <attribute id="224" name="lendingModel"/>      
-      <multiplicity id="225" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="46" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="226">    
-    <end type="SOURCE" refId="42"/>    
-    <end type="TARGET" refId="32"/>  
-  </dependency>  
-  <association id="227">    
-    <end type="SOURCE" refId="47" navigable="false">      
-      <attribute id="228" name="data"/>      
-      <multiplicity id="229" minimum="0" maximum="2147483647"/>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <dependency id="230">    
-    <end type="SOURCE" refId="11"/>    
+  <dependency id="154">    
+    <end type="SOURCE" refId="44"/>    
     <end type="TARGET" refId="8"/>  
   </dependency>  
-  <dependency id="231">    
-    <end type="SOURCE" refId="11"/>    
-    <end type="TARGET" refId="42"/>  
+  <dependency id="155">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="33"/>  
   </dependency>  
-  <realization id="232">    
-    <end type="SOURCE" refId="42"/>    
-    <end type="TARGET" refId="41"/>  
-  </realization>  
-  <association id="233">    
+  <association id="156">    
+    <end type="SOURCE" refId="42" navigable="false">      
+      <attribute id="157" name="lendingModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="158" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="46" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="159">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="25"/>  
+  </dependency>  
+  <dependency id="160">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="29"/>  
+  </dependency>  
+  <dependency id="161">    
+    <end type="SOURCE" refId="29"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <dependency id="162">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="22"/>  
+  </dependency>  
+  <association id="163">    
     <bendpoint x="5523" y="801"/>    
     <end type="SOURCE" refId="7" navigable="false">      
-      <attribute id="234" name="dbCon"/>      
-      <multiplicity id="235" minimum="0" maximum="1"/>    
+      <attribute id="164" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="165" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="5" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <realization id="236">    
-    <end type="SOURCE" refId="27"/>    
-    <end type="TARGET" refId="41"/>  
-  </realization>  
-  <association id="237">    
+  <association id="166">    
     <end type="SOURCE" refId="47" navigable="false">      
-      <attribute id="238" name="models"/>      
-      <multiplicity id="239" minimum="0" maximum="2147483647"/>    
+      <attribute id="167" name="models">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="168" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="41" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="240">    
-    <bendpoint x="5242" y="518"/>    
+  <dependency id="169">    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="170">    
     <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="241" name="kUserModel"/>      
-      <multiplicity id="242" minimum="0" maximum="1"/>    
+      <attribute id="171" name="userListModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="172" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="173">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="18"/>  
+  </dependency>  
+  <association id="174">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="175" name="kLenderModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="176" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="40" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="177">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <association id="178">    
+    <bendpoint x="3600" y="518"/>    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="179" name="freeArticleTableModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="180" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="181">    
+    <end type="SOURCE" refId="45"/>    
+    <end type="TARGET" refId="37"/>  
+  </generalization>  
+  <association id="182">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="183" name="models">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="184" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="41" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="185">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <realization id="186">    
+    <end type="SOURCE" refId="40"/>    
+    <end type="TARGET" refId="46"/>  
+  </realization>  
+  <association id="187">    
+    <bendpoint x="3994" y="518"/>    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="188" name="kArticleModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="189" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="190">    
+    <bendpoint x="5057" y="801"/>    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="191" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="192" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="193">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="46"/>  
+  </realization>  
+  <dependency id="194">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="35"/>  
+  </dependency>  
+  <dependency id="195">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="47"/>  
+  </dependency>  
+  <dependency id="196">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="17"/>  
+  </dependency>  
+  <dependency id="197">    
+    <end type="SOURCE" refId="23"/>    
+    <end type="TARGET" refId="25"/>  
+  </dependency>  
+  <dependency id="198">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="199">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <dependency id="200">    
+    <end type="SOURCE" refId="10"/>    
+    <end type="TARGET" refId="34"/>  
+  </dependency>  
+  <dependency id="201">    
+    <end type="SOURCE" refId="11"/>    
+    <end type="TARGET" refId="42"/>  
+  </dependency>  
+  <dependency id="202">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="13"/>  
+  </dependency>  
+  <dependency id="203">    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <association id="204">    
+    <bendpoint x="5822" y="801"/>    
+    <end type="SOURCE" refId="20" navigable="false">      
+      <attribute id="205" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="206" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="207">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="208">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="31"/>  
+  </dependency>  
+  <dependency id="209">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <association id="210">    
+    <bendpoint x="5036" y="801"/>    
+    <end type="SOURCE" refId="36" navigable="false">      
+      <attribute id="211" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="212" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="213">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="22"/>  
+  </dependency>  
+  <dependency id="214">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="26"/>  
+  </dependency>  
+  <association id="215">    
+    <end type="SOURCE" refId="42" navigable="false">      
+      <attribute id="216" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="217" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="218">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="219" name="kUserModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="220" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="47" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="243">    
+  <dependency id="221">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <dependency id="222">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="223">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="32"/>  
+  </dependency>  
+  <association id="224">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="225" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="226" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="227">    
+    <end type="SOURCE" refId="42"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="228">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="10"/>  
+  </dependency>  
+  <dependency id="229">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="25"/>  
+  </dependency>  
+  <association id="230">    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="231" name="models">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="232" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="41" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="233">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <association id="234">    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="235" name="userController">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="236" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="237">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="14"/>  
+  </dependency>  
+  <dependency id="238">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <dependency id="239">    
+    <end type="SOURCE" refId="42"/>    
+    <end type="TARGET" refId="32"/>  
+  </dependency>  
+  <association id="240">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="241" name="lendingModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="242" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="243">    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="36"/>  
+  </dependency>  
+  <association id="244">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="245" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="246" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="247">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="23"/>  
+  </dependency>  
+  <association id="248">    
+    <end type="SOURCE" refId="30" navigable="false">      
+      <attribute id="249" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="250" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="251">    
+    <bendpoint x="3106" y="801"/>    
+    <end type="SOURCE" refId="26"/>    
+    <end type="TARGET" refId="41"/>  
+  </realization>  
+  <dependency id="252">    
+    <end type="SOURCE" refId="13"/>    
+    <end type="TARGET" refId="32"/>  
+  </dependency>  
+  <dependency id="253">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="29"/>  
+  </dependency>  
+  <realization id="254">    
+    <end type="SOURCE" refId="47"/>    
+    <end type="TARGET" refId="46"/>  
+  </realization>  
+  <dependency id="255">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="47"/>  
+  </dependency>  
+  <dependency id="256">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="47"/>  
+  </dependency>  
+  <association id="257">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="258" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="259" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="260">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="261" name="articleModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="262" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <realization id="263">    
+    <end type="SOURCE" refId="15"/>    
+    <end type="TARGET" refId="46"/>  
+  </realization>  
+  <dependency id="264">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="47"/>  
+  </dependency>  
+  <dependency id="265">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="266">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <association id="267">    
+    <bendpoint x="5616" y="518"/>    
+    <end type="SOURCE" refId="17" navigable="false">      
+      <attribute id="268" name="kUserModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="269" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="47" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="270">    
+    <end type="SOURCE" refId="43"/>    
+    <end type="TARGET" refId="17"/>  
+  </dependency>  
+  <dependency id="271">    
+    <end type="SOURCE" refId="8"/>    
+    <end type="TARGET" refId="29"/>  
+  </dependency>  
+  <dependency id="272">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="273">    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <dependency id="274">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="28"/>  
+  </dependency>  
+  <dependency id="275">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="4"/>  
+  </dependency>  
+  <association id="276">    
+    <end type="SOURCE" refId="42" navigable="false">      
+      <attribute id="277" name="articleModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="278" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="46" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="279">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="12"/>  
+  </dependency>  
+  <realization id="280">    
+    <bendpoint x="5502" y="801"/>    
+    <end type="SOURCE" refId="20"/>    
+    <end type="TARGET" refId="41"/>  
+  </realization>  
+  <dependency id="281">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="40"/>  
+  </dependency>  
+  <generalization id="282">    
+    <end type="SOURCE" refId="38"/>    
+    <end type="TARGET" refId="20"/>  
+  </generalization>  
+  <dependency id="283">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="32"/>  
+  </dependency>  
+  <dependency id="284">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="47"/>  
+  </dependency>  
+  <dependency id="285">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="286">    
+    <end type="SOURCE" refId="31"/>    
+    <end type="TARGET" refId="6"/>  
+  </dependency>  
+  <dependency id="287">    
+    <end type="SOURCE" refId="39"/>    
+    <end type="TARGET" refId="32"/>  
+  </dependency>  
+  <dependency id="288">    
+    <end type="SOURCE" refId="28"/>    
+    <end type="TARGET" refId="32"/>  
+  </dependency>  
+  <association id="289">    
+    <end type="SOURCE" refId="31" navigable="false">      
+      <attribute id="290" name="userModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="291" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="47" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <generalization id="292">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="26"/>  
+  </generalization>  
+  <dependency id="293">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <association id="294">    
+    <bendpoint x="3085" y="801"/>    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="295" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="296" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="297">    
+    <end type="SOURCE" refId="35"/>    
+    <end type="TARGET" refId="26"/>  
+  </dependency>  
+  <dependency id="298">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <association id="299">    
+    <bendpoint x="3973" y="518"/>    
     <end type="SOURCE" refId="22" navigable="false">      
-      <attribute id="244" name="articleController"/>      
-      <multiplicity id="245" minimum="0" maximum="1"/>    
+      <attribute id="300" name="articleModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="301" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="302">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="303" name="articleController">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="304" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
     </end>    
     <end type="TARGET" refId="36" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <dependency id="305">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="306">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="2"/>  
+  </dependency>  
+  <dependency id="307">    
+    <end type="SOURCE" refId="45"/>    
+    <end type="TARGET" refId="9"/>  
+  </dependency>  
+  <association id="308">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="309" name="rwcontroller">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="310" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="30" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="311">    
+    <end type="SOURCE" refId="22"/>    
+    <end type="TARGET" refId="19"/>  
+  </dependency>  
+  <association id="312">    
+    <bendpoint x="5015" y="801"/>    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="313" name="dbCon">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="314" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="315">    
+    <end type="SOURCE" refId="42" navigable="false">      
+      <attribute id="316" name="lenderModel">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="317" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="46" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="318">    
+    <end type="SOURCE" refId="43"/>    
+    <end type="TARGET" refId="7"/>  
+  </dependency>  
+  <dependency id="319">    
+    <end type="SOURCE" refId="41"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <dependency id="320">    
+    <end type="SOURCE" refId="44"/>    
+    <end type="TARGET" refId="11"/>  
+  </dependency>  
+  <dependency id="321">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="5"/>  
+  </dependency>  
+  <dependency id="322">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="25"/>  
+  </dependency>  
+  <association id="323">    
+    <end type="SOURCE" refId="40" navigable="false">      
+      <attribute id="324" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="325" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="32" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="326">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="1"/>  
+  </dependency>  
+  <realization id="327">    
+    <end type="SOURCE" refId="14"/>    
+    <end type="TARGET" refId="5"/>  
+  </realization>  
+  <association id="328">    
+    <end type="SOURCE" refId="34" navigable="false">      
+      <attribute id="329" name="data">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="330" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="331">    
+    <end type="SOURCE" refId="39" navigable="false">      
+      <attribute id="332" name="settings">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="333" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="18" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <dependency id="334">    
+    <end type="SOURCE" refId="17"/>    
+    <end type="TARGET" refId="43"/>  
+  </dependency>  
+  <realization id="335">    
+    <end type="SOURCE" refId="34"/>    
+    <end type="TARGET" refId="41"/>  
+  </realization>  
+  <dependency id="336">    
+    <end type="SOURCE" refId="36"/>    
+    <end type="TARGET" refId="3"/>  
+  </dependency>  
+  <dependency id="337">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="46"/>  
+  </dependency>  
+  <dependency id="338">    
+    <end type="SOURCE" refId="16"/>    
+    <end type="TARGET" refId="24"/>  
+  </dependency>  
+  <dependency id="339">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
+  <dependency id="340">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="18"/>  
+  </dependency>  
+  <dependency id="341">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="25"/>  
+  </dependency>  
+  <dependency id="342">    
+    <end type="SOURCE" refId="21"/>    
+    <end type="TARGET" refId="17"/>  
+  </dependency>  
+  <generalization id="343">    
+    <end type="SOURCE" refId="19"/>    
+    <end type="TARGET" refId="37"/>  
+  </generalization>  
+  <dependency id="344">    
+    <end type="SOURCE" refId="27"/>    
+    <end type="TARGET" refId="15"/>  
+  </dependency>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
     sort-features="false" accessors="true" visibility="true">    
     <attributes public="true" package="true" protected="true" private="true" static="true"/>    
