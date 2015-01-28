@@ -1,18 +1,19 @@
 # README
 
-kBorrow is going to be a simple application to manage items that have been borrowed from the it department of the Catholic University of Applied Sciences in Paderborn.
+kBorrow wurde entwickelt, um eine einfache Datenbank zur Verwaltung der Ausleihen von Gegenständen, wie Digitalkameras, USB-Sticks oder ähnlichem an Studierende und Mitarbeiter*innen der Katholischen Hochschule in Paderborn zur Verfügung zu stellen.
 
-## Licenses
+## Gnu General Public License v3
 
-### Xerial Sqlite JDBC
-This software uses the Xerial SQLite JDBC (https://bitbucket.org/xerial/sqlite-jdbc). The SQLite JDBC follows the Apache License Version 2.0 (http://www.apache.org/licenses/)
+Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 3 der Lizenz oder (nach Ihrer Option) jeder späteren Version.
 
-### MySQL Connector
-This software uses the Oracle MySQL Java Connector (http://dev.mysql.com/downloads/connector/j/). The MySQL Java Connector is provided under the GPL License Version 2.0 (http://www.gnu.org/licenses/old-licenses/gpl-2.0.html).
+Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.
 
-### Tango Desktop Project
-This software also uses icons provided by the Tango Desktop Project (http://tango.freedesktop.org/).
-License will follow!
+Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>. 
 
-### Apache PDFBox
-This software uses the Apache PDFBox (https://pdfbox.apache.org/) package which is published under Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0);
+## Verwendete Software
+
+* [Xerial SQLite JDBC](https://bitbucket.org/xerial/sqlite-jdbc) ([Apache License Version 2.0](http://www.apache.org/licenses/))
+* [Oracle MySQL Java Connector](http://dev.mysql.com/downloads/connector/j/) ([GPL License Version 2.0](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html))
+* [Tango Desktop Project](http://tango.freedesktop.org/)
+* [Apache PDFBox](https://pdfbox.apache.org/) ([Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0))
+* [SwingLabs SwingX](https://swingx.java.net/) ([Lesser GPL 2.1](http://www.opensource.org/licenses/lgpl-2.1.php))
