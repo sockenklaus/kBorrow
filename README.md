@@ -12,8 +12,8 @@ Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Prog
 
 ## Verwendete Software
 
-* [Xerial SQLite JDBC](https://bitbucket.org/xerial/sqlite-jdbc) ([Apache License Version 2.0](http://www.apache.org/licenses/))
-* [Oracle MySQL Java Connector](http://dev.mysql.com/downloads/connector/j/) ([GPL License Version 2.0](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html))
+* [Xerial SQLite JDBC](https://bitbucket.org/xerial/sqlite-jdbc) (unterliegt der [Apache License Version 2.0](http://www.apache.org/licenses/LICENSE-2.0))
+* [Oracle MySQL Java Connector](http://dev.mysql.com/downloads/connector/j/) (unterliegt der [GPL License Version 2.0](http://www.gnu.org/licenses/old-licenses/gpl-2.0.html))
 * [Tango Desktop Project](http://tango.freedesktop.org/)
-* [Apache PDFBox](https://pdfbox.apache.org/) ([Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0))
-* [SwingLabs SwingX](https://swingx.java.net/) ([Lesser GPL 2.1](http://www.opensource.org/licenses/lgpl-2.1.php))
+* [Apache PDFBox](https://pdfbox.apache.org/) (unterliegt der [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0))
+* [SwingLabs SwingX](https://swingx.java.net/) (unterliegt der [Lesser GPL 2.1](http://www.opensource.org/licenses/lgpl-2.1.php))
